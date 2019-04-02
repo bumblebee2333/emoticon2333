@@ -11,4 +11,5 @@
     <string name="logout">退出登录</string>
     <string name="topic_toast_hint">标签可帮助他人快速搜索找到此表情，标签长按可删除</string>
     <string name="upload_img">正在上传图片</string>
+    <string name="select_type">选择分类</string>
 </resources>
