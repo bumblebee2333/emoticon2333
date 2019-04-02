@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Emoticon</string>
+
+    <string name="search_toast">哦嚯，完蛋~\n什么都没找到（理不直气也壮）</string>
+    <string name="connection_fail">2333，服务器去外太空探索了</string>
+    <string name="nav_emoticon">表情包</string>
+    <string name="nav_paint">涂鸦</string>
+    <string name="nav_person">我的</string>
+    <string name="nav_creative">创意工坊</string>
+    <string name="flowlayout_textview">14sp</string>
+    <string name="logout">退出登录</string>
+    <string name="topic_toast_hint">标签可帮助他人快速搜索找到此表情，标签长按可删除</string>
+    <string name="upload_img">正在上传图片</string>
+</resources>

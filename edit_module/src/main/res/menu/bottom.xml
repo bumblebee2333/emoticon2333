@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/bottom_sticker"
+        android:icon="@drawable/sticker"
+        android:title="@string/sticker"/>
+
+    <item android:id="@+id/bottom_text"
+        android:icon="@drawable/text"
+        android:title="@string/text"/>
+
+    <item android:id="@+id/bottom_brush"
+        android:icon="@drawable/painter"
+        android:title="@string/paint"/>
+
+    <item
+        android:id="@+id/bottom_eraser"
+        android:icon="@drawable/eraser"
+        android:title="@string/earser"/>
+
+    <item
+        android:id="@+id/bottom_pic"
+        android:icon="@drawable/pic"
+        android:title="@string/photo"/>
+
+</menu>

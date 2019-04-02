@@ -1,0 +1,8 @@
+<resources>
+    <string name="input_hint">点击可编辑文字</string>
+    <string name="sticker">贴纸</string>
+    <string name="text">文字</string>
+    <string name="paint">画笔</string>
+    <string name="photo">图片</string>
+    <string name="earser">橡皮擦</string>
+</resources>

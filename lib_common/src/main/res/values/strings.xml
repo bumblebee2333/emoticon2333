@@ -1,0 +1,5 @@
+<resources>
+    <string name="cancel">取消</string>
+    <string name="search">搜索</string>
+    <string name="emoticon_search">表情包搜索</string>
+</resources>

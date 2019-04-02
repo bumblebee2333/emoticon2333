@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
+            android:text="斗图"
+            android:textColor="@color/colorBlack"
+            android:textSize="22dp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:id="@+id/top_search"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/edit_text"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_margin="4dp"
+                android:src="@drawable/edit_search"
+                android:tint="#ababab" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center|left"
+                android:text="搜索表情包"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+           <!-- <ImageView
+                android:id="@+id/top_search"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:src="@drawable/edit_search"
+                android:tint="@color/colorGrey" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout_1"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            app:tabGravity="center"
+            app:tabMode="fixed"
+            app:tabIndicatorColor="@color/tabTextColor"
+            app:tabIndicatorFullWidth="true"
+            app:tabIndicatorHeight="0dp"
+            app:tabSelectedTextColor="@color/tabTextColor"
+            app:tabTextAppearance="@style/TabLayoutTextStyle"
+            app:tabTextColor="@color/colorGrey" />-->
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp">
+
+            <ImageView
+                android:id="@+id/notification"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:padding="16dp"
+                android:src="@drawable/notification"
+                android:tint="@color/colorGrey" />
+
+            <ImageView
+                android:id="@+id/redround"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:paddingBottom="15dp"
+                android:paddingLeft="10dp"
+                android:src="@drawable/redround" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout_1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorPrimary"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/tabTextColor"
+        app:tabIndicatorFullWidth="false"
+        app:tabIndicatorHeight="2dp"
+        app:tabSelectedTextColor="@color/tabTextColor"
+        app:tabTextAppearance="@style/TabLayoutTextStyle"
+        app:tabTextColor="@color/colorGrey" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
