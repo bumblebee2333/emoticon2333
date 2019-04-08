@@ -1,6 +1,7 @@
 package com.example.common.utils;
 
 import android.graphics.RectF;
+import android.view.View;
 
 public class RectUtil {
 
@@ -26,12 +27,12 @@ public class RectUtil {
         float newWidth = width * scale;
         float newHeight = height * scale;
 
-        if(newWidth < 50){
-            newWidth = 50;
-        }
-        if(newHeight < 50){
-            newHeight = 50;
-        }
+//        if(newWidth < 50){
+//            newWidth = 50;
+//        }
+//        if(newHeight < 50){
+//            newHeight = 50;
+//        }
 
         float dx = (newWidth - width) / 2;
         float dy = (newHeight - height) / 2;
@@ -65,5 +66,4 @@ public class RectUtil {
             rect.bottom += dy;
         }
     }
-
 }
