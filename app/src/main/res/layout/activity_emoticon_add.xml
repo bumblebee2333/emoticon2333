@@ -39,7 +39,6 @@
                 android:textColor="@color/typeselect_color"
                 android:textSize="12sp" />
 
-
             <com.cy.cyflowlayoutlibrary.FlowLayout
                 android:id="@+id/flowlayout"
                 android:layout_width="match_parent"
