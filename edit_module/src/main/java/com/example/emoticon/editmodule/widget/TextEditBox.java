@@ -90,6 +90,12 @@ public class TextEditBox extends View{
 
     private long currentTime;//移动消费时间
 
+    private float oldDist = 0;//缩放之前矩形中心距拉动的点的距离
+    private float newDist = 0;//缩放后的距离
+    //编辑框的中心
+    private float box_x = 0;
+    private float box_y = 0;
+
     public TextEditBox(Context context) {
         super(context, null);
         initView(context);
@@ -250,8 +256,20 @@ public class TextEditBox extends View{
                 }else if(mScaleDsRect.contains(x,y)){//缩放模式
                     isShowEditBox = true;
                     mCurrentMode = SCALE_MODE;
+                    //缩放图标的中心坐标
                     last_X = mScaleDsRect.centerX();
                     last_Y = mScaleDsRect.centerY();
+                    //Box中心坐标
+                    box_x = mTextEditBox.centerX();
+                    box_y = mTextEditBox.centerY();
+
+                    dx = last_X - box_x;
+                    dy = last_Y - box_y;
+
+                    oldDist = spacing(dx,dy);
+
+                    dx = 0;
+                    dy = 0;
 
                     currentTime = System.currentTimeMillis();
 
@@ -295,15 +313,15 @@ public class TextEditBox extends View{
                     last_x = (int)event.getRawX();
                     last_y = (int)event.getRawY();
                 }else if(mCurrentMode == SCALE_MODE){
-                    //matrix.set(scaleMatrix);
-                    //Point first = new Point(last_x,last_y);
+                    box_x = mTextEditBox.centerX();
+                    box_y = mTextEditBox.centerY();
 
-                    //Point second = new Point((int)event.getX(),(int)event.getY());
+                    dx = event.getX() - box_x;
+                    dy = event.getY() - box_y;
 
-                    dx = event.getX() - last_X;
-                    dy = event.getY() - last_Y;
-
-                    float scale = calculateScaling(dx,dy);
+                    //float scale = calculateScaling(dx,dy);
+                    newDist = spacing(dx,dy);
+                    float scale = newDist / oldDist;
                     isScaled = true;
 
                     //scaleMatrix.setScale(scale,scale,mTextEditBox.centerX(),mTextEditBox.centerY());
@@ -411,6 +429,11 @@ public class TextEditBox extends View{
         mScale *= scale;
 
         return scale;
+    }
+
+    private float spacing(float dx,float dy){
+        float distance = (float) Math.sqrt(dx * dx + dy * dy);
+        return distance;
     }
 
     public void clearTextContent(){
