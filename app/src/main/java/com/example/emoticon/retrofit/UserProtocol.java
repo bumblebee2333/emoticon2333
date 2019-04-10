@@ -1,6 +1,5 @@
 package com.example.emoticon.retrofit;
 
-import com.example.emoticon.model.Status;
 import com.example.emoticon.model.User;
 import com.google.gson.JsonObject;
 
@@ -16,7 +15,8 @@ public interface UserProtocol {
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
     @FormUrlEncoded
     Call<User> login(@Field("email") String email, @Field("pwd") String pwd);
-  // 注册
+
+    // 注册
     @POST("v1/user/register")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
     @FormUrlEncoded

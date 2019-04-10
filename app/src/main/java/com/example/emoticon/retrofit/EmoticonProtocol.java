@@ -1,6 +1,5 @@
 package com.example.emoticon.retrofit;
 
-import android.app.AlertDialog;
 
 import com.example.emoticon.model.Emoticon;
 import com.example.emoticon.model.Status;
@@ -33,6 +32,6 @@ public interface EmoticonProtocol {
     @POST("v1/emoticon/add")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8") //添加
     @FormUrlEncoded
-    Call<Status> addEmoticon(@Field("token") String token, @Field("typeid") int typeid, @Field("url") String url, @Field("label") String label);
+    Call<Status> addEmoticon(@Field("token") String token, @Field("typeId") int typeId, @Field("url") String url, @Field("label") String label);
 
 }
