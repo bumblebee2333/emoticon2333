@@ -1,8 +1,6 @@
 package com.example.emoticon.retrofit;
 
-import com.example.emoticon.model.Emoticon;
 import com.example.emoticon.model.EmoticonType;
-import com.example.emoticon.model.Status;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
