@@ -10,8 +10,13 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 
+/**
+ * Author: shuike,
+ * Email: shuike007@126.com,
+ * Date: 2019/4/10.
+ * PS: 表情分类
+ */
 public interface EmoticonTypeProtocol {
-
     //获取全部分类
     @GET("v1/type/all")
     Call<EmoticonType.EmoticonTypeList> getEmoticonTypeList(@Query("limit") int limit, @Query("skip") int skip);
