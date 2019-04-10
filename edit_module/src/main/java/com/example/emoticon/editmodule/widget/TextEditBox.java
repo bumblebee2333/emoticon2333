@@ -215,7 +215,7 @@ public class TextEditBox extends View{
         canvas.drawBitmap(mRotateBitmap,mRotateRect,mRotateDsRect,null);
         canvas.drawBitmap(mScaleBitmap,mScaleRect,mScaleDsRect,null);
     }
-
+    //绘制出文字的位置 固定处TextEditBox的边框的存在位置
     private void drawText(Canvas canvas){
         drawText(canvas,layout_x,layout_y,mScale,mRotateAngle);
     }
@@ -235,11 +235,11 @@ public class TextEditBox extends View{
 
         RectUtil.scaleRect(mTextEditBox,scale);
 
-        canvas.save();//保存当前画布状态
-        canvas.scale(scale,scale,mTextEditBox.right,mTextEditBox.bottom);
+        canvas.save();//保存当前画布状态 快照
+        canvas.scale(scale,scale,mTextEditBox.centerX(),mTextEditBox.centerY());//对画布进行缩放
         canvas.rotate(rotate,mTextEditBox.centerX(),mTextEditBox.centerY());
         canvas.drawText(mText,x,y,mTextPaint);
-        canvas.restore();
+        canvas.restore();//回滚 调用后恢复到调用之前的坐标状态
     }
 
     @Override
@@ -298,8 +298,8 @@ public class TextEditBox extends View{
 
             case MotionEvent.ACTION_POINTER_DOWN:
                 mCurrentMode = TWO_FINGER;
+                mSecondaryPointerId = event.getPointerId(event.getActionIndex());
                 try{
-                    mSecondaryPointerId = event.getPointerId(event.getActionIndex());
                     mSecondaryLastX = x;
                     mSecondaryLastY = y;
                     oldDis = spacing(mPrimaryLastX,mPrimaryLastY,mSecondaryLastX,mSecondaryLastY);
@@ -370,6 +370,7 @@ public class TextEditBox extends View{
                     invalidate();
                 }
                 break;
+
             case MotionEvent.ACTION_UP:
                 //判断是否单机编辑框
                 long elapsedTime = System.currentTimeMillis() - currentTime;//移动等事件
