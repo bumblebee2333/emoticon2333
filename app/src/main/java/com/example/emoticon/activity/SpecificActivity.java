@@ -58,6 +58,9 @@ public class SpecificActivity extends BaseActivity {
         getData();
     }
 
+    /**
+     * 获取Intent
+     */
     private void initIntent() {
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
@@ -83,7 +86,7 @@ public class SpecificActivity extends BaseActivity {
                     Intent intent = new Intent(SpecificActivity.this,EmoticonAddActivity.class);
                     intent.putExtra("title",typeList.get(position).getTitle());
                     intent.putExtra("id",typeList.get(position).getId());
-                    intent.putExtra("addtype",addType);
+                    intent.putExtra("addType",addType);
                     setResult(Activity.RESULT_OK,intent);
                     finish();
                 }
@@ -134,7 +137,7 @@ public class SpecificActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<EmoticonType.EmoticonTypeList> call, Throwable t) {
+            public void onFailure(@NonNull Call<EmoticonType.EmoticonTypeList> call, @NonNull Throwable t) {
                 typeList.clear();
                 typeAdapter.notifyDataSetChanged();
 //                toastView.setText(R.string.connection_fail);
@@ -149,21 +152,21 @@ public class SpecificActivity extends BaseActivity {
         final Call<Emoticon> emoticonCall = emoticonProtocol.getEmoticonList(title, 30, 0);
         emoticonCall.enqueue(new Callback<Emoticon>() {
             @Override
-            public void onResponse(Call<Emoticon> call, Response<Emoticon> response) {
-                for (Emoticon.DataBean dataBean : response.body().getData()) {
-                    //System.out.println(dataBean.getImg_url());
-                    list.add(dataBean);
+            public void onResponse(@NonNull Call<Emoticon> call, @NonNull Response<Emoticon> response) {
+                //System.out.println(dataBean.getImg_url());
+                if (response.body() != null) {
+                    list.addAll(response.body().getData());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
             }
 
             @Override
-            public void onFailure(Call<Emoticon> call, Throwable t) {
+            public void onFailure(@NonNull Call<Emoticon> call, @NonNull Throwable t) {
                 Toast.makeText(SpecificActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
