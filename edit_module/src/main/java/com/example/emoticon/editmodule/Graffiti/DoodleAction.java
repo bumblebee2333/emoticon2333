@@ -1,9 +1,10 @@
 package com.example.emoticon.editmodule.Graffiti;
 
 import android.graphics.Canvas;
+import android.os.Parcelable;
 
 /*基础类 画所有图形*/
-public abstract class DoodleAction {
+public abstract class DoodleAction implements Parcelable {
 
     protected int color;
 

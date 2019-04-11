@@ -1,12 +1,17 @@
 package com.example.emoticon.editmodule.Graffiti;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+
+import com.example.emoticon.editmodule.R;
 
 import java.util.ArrayList;
 
@@ -58,11 +63,35 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
 
     public DoodleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init(attrs);
     }
 
     private void init(AttributeSet attributeSet){
+        mIsDoodleEnabled = true;//涂鸦功能可用
+        mDoodleActionList = new ArrayList<>();//创建记录绘画动作的List
         mHolder = getHolder();//初始化一个surfaceholder对象
         mHolder.addCallback(this);//注册surfaceholder回调方法
+        this.setFocusable(true);
+        this.setZOrderOnTop(true);//设置背景透明
+        //PixelFormat 指定图像中每个像素的颜色数据的格式 系统选择支持透明度的格式
+        mHolder.setFormat(PixelFormat.TRANSPARENT);
+        TypedArray typedArray = getResources().obtainAttributes(attributeSet, R.styleable.DoodleView);
+        mCurColor = typedArray.getColor(R.styleable.DoodleView_paintColor,Color.BLACK);
+        mCurStrokeWidth = typedArray.getFloat(R.styleable.DoodleView_paintStrokeWidth,10.0f);
+        typedArray.recycle();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getAction();
+        float x = event.getX();
+        float y = event.getY();
+        switch (action){
+            case MotionEvent.ACTION_DOWN:
+                if(!mIsDoodleEnabled)
+                    return false;
+        }
+        return super.onTouchEvent(event);
     }
 
     //在surfaceview初始化的时候回调
@@ -71,7 +100,7 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
         //surfaceview是双缓冲机制 管理两个画布 一个front 一个back 绘制的内容在back上 lockCanvas获取到画布
         Canvas canvas = mHolder.lockCanvas();
         restorePreAction(canvas);
-        mHolder.unlockCanvasAndPost(canvas);
+        mHolder.unlockCanvasAndPost(canvas);//结束锁定画图，并提交改变
         postDelayed(new Runnable() {//解决surfaceview restore不完全问题
             @Override
             public void run() {
@@ -99,6 +128,7 @@ public class DoodleView extends SurfaceView implements SurfaceHolder.Callback {
         if(canvas == null){
             return;
         }
+        //PorterDuff.Mode类主要用于图形合成时的图像过度模式计算(合成图像数字计算)
         canvas.drawColor(Color.TRANSPARENT,PorterDuff.Mode.CLEAR);//加载之前内容前清空画布
         if(mDoodleActionList != null && mDoodleActionList.size() > 0){
             for(DoodleAction action: mDoodleActionList){
