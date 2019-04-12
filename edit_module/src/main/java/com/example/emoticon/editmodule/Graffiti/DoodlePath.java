@@ -3,6 +3,7 @@ package com.example.emoticon.editmodule.Graffiti;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Parcel;
 
 /**
  * 自由曲线
@@ -18,11 +19,11 @@ public class DoodlePath extends DoodleAction {
     private Paint mPaint;
 
     public DoodlePath(){
-
+        this(0,0,0,10.0f);
     }
 
     public DoodlePath(float startX,float startY){
-
+        this(startX,startY,0,10.0f);
     }
 
     public DoodlePath(float startX,float startY,int color,float strokeWidth){
@@ -78,5 +79,34 @@ public class DoodlePath extends DoodleAction {
         mPrevY = startY;
     }
 
+    //内容描述接口 基本不用管
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    //写入接口函数，打包
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(color);
+        out.writeFloat(strokeWidth);
+    }
 
+    private DoodlePath(Parcel in){
+        color = in.readInt();
+        strokeWidth = in.readFloat();
+    }
+
+    //读取接口，目的是要从Parcel中构造一个实现了Parcelable接口的类的实例
+    //因为实现类在这里是不可知的 所有需要用到模板的方式 继承类名通过模板参数传入
+    public static final Creator<DoodlePath> CREATOR = new Creator<DoodlePath>() {
+        @Override
+        public DoodlePath createFromParcel(Parcel in) {
+            return new DoodlePath(in);
+        }
+
+        @Override
+        public DoodlePath[] newArray(int size) {
+            return new DoodlePath[size];
+        }
+    };
 }
