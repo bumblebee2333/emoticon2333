@@ -12,9 +12,12 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.AttributeSet;
+import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -26,9 +29,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.common.base.BaseActivity;
+import com.example.emoticon.editmodule.Graffiti.DoodleView;
 import com.example.emoticon.editmodule.R;
 import com.example.emoticon.editmodule.widget.TextEditBox;
 import com.example.emoticon.editmodule.widget.TextInputDialog;
+
+import org.xmlpull.v1.XmlPullParser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +52,12 @@ public class EditActivity extends BaseActivity {
     //确定键
     private TextView confirm;
     private TextInputDialog dialog;
+
+    private DoodleView doodleView;
+
+    @SuppressLint("ResourceType")
+    //private XmlPullParser parser=getResources().getXml(R.styleable.DoodleView_paintStrokeWidth);
+    //private final AttributeSet attrs = Xml.asAttributeSet(parser);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -246,7 +258,7 @@ public class EditActivity extends BaseActivity {
 
             } else if (i == R.id.bottom_brush) {
                 item.setIcon(R.drawable.painter_copy);
-
+                doodleView = new DoodleView(EditActivity.this);
             } else if (i == R.id.bottom_eraser) {
                 item.setIcon(R.drawable.earser_copy);
 
@@ -277,4 +289,7 @@ public class EditActivity extends BaseActivity {
 //        Bitmap bitmap = BitmapFactory.decodeByteArray(byteTemp,0,byteTemp.length);
 //        images.setImageBitmap(bitmap);
 //    }
+    public boolean onTouchEvent(MotionEvent event){
+        return doodleView.onTouchEvent(event);
+    }
 }

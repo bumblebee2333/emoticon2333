@@ -6,9 +6,9 @@ import android.os.Parcelable;
 /*基础类 画所有图形*/
 public abstract class DoodleAction implements Parcelable {
 
-    protected int color;
+    public int color;
 
-    protected  float strokeWidth;
+    public float strokeWidth;
 
     public DoodleAction(){}
 

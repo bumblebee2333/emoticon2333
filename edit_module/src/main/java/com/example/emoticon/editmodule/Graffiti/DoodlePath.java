@@ -73,12 +73,6 @@ public class DoodlePath extends DoodleAction {
         mPrevY = y;
     }
 
-    public void moveTo(float startX,float startY){
-        mPath.moveTo(startX,startY);
-        mPrevX = startX;
-        mPrevY = startY;
-    }
-
     //内容描述接口 基本不用管
     @Override
     public int describeContents() {
