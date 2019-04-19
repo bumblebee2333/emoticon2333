@@ -16,8 +16,8 @@ import com.bumptech.glide.Glide;
 import com.example.emoticon.R;
 import com.example.emoticon.activity.LoginActivity;
 import com.example.emoticon.activity.SettingActivity;
-import com.example.emoticon.model.User;
-import com.example.emoticon.utils.UserManager;
+import com.example.common.bean.User;
+import com.example.common.utils.UserManager;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
     View rootview;

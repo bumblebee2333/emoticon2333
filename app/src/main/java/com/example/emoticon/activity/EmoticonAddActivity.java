@@ -1,6 +1,5 @@
 package com.example.emoticon.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -38,7 +37,7 @@ import com.example.emoticon.retrofit.EmoticonProtocol;
 import com.example.emoticon.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.service.OssService;
 import com.example.emoticon.utils.HttpUtils;
-import com.example.emoticon.utils.UserManager;
+import com.example.common.utils.UserManager;
 import com.example.common.widget.Toolbar;
 
 import java.io.File;

@@ -1,13 +1,16 @@
 package com.example.emoticon.retrofit;
 
-import com.example.emoticon.model.User;
+import com.example.common.bean.User;
+import com.example.emoticon.model.Emoticon;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Author: shuike,
@@ -40,5 +43,15 @@ public interface UserProtocol {
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
     @FormUrlEncoded
     Call<JsonObject> register(@Field("email") String email, @Field("name") String username, @Field("pwd") String pwd);
+
+    /**
+     * 按分类id获取
+     * @param id 分类Id
+     * @param limit 获取几条数据
+     * @param skip 跳过几条数据
+     * @return 返回 Emoticon
+     */
+    @GET("v1/user/emoticon")
+    Call<Emoticon> getEmoticonList(@Query("id") int id, @Query("limit") int limit, @Query("skip") int skip);
 
 }

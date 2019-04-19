@@ -27,18 +27,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class GarfieldFragment extends Fragment {
+public class DetailsFragment extends Fragment {
     private List<Emoticon.DataBean> list = new ArrayList<>();
     private EmoticonAdapter adapter;
     public RecyclerView recyclerView;
 
-    public static GarfieldFragment newInstance(String title,int id){
-        GarfieldFragment garfieldFragment = new GarfieldFragment();
+    public static DetailsFragment newInstance(String title, int id){
+        DetailsFragment detailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
         bundle.putString("title",title);
         bundle.putInt("id",id);
-        garfieldFragment.setArguments(bundle);
-        return garfieldFragment;
+        detailsFragment.setArguments(bundle);
+        return detailsFragment;
     }
 
     @Nullable

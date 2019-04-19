@@ -11,9 +11,9 @@ import android.widget.Toast;
 import com.example.emoticon.R;
 import com.example.emoticon.RetroClient;
 import com.example.common.base.BaseActivity;
-import com.example.emoticon.model.User;
+import com.example.common.bean.User;
 import com.example.emoticon.retrofit.UserProtocol;
-import com.example.emoticon.utils.UserManager;
+import com.example.common.utils.UserManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,17 +38,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 call.enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
-                        if (response.body().getStatus() == 200){
-                            new UserManager(LoginActivity.this).saveUser(response.body().getData());
-                            Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }else {
-                            Toast.makeText(LoginActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                        if (response.body() != null) {
+                            if (response.body().getStatus() == 200){
+                                new UserManager(LoginActivity.this).saveUser(response.body().getData());
+                                Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+                                finish();
+                            }else {
+                                Toast.makeText(LoginActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<User> call, Throwable t) {
+                    public void onFailure(@NonNull Call<User> call, @NonNull Throwable t) {
                         Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.common.widget.Toolbar;
@@ -16,6 +17,7 @@ import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.common.base.BaseActivity;
 import com.example.emoticon.model.Emoticon;
 import com.example.emoticon.retrofit.EmoticonProtocol;
+import com.example.emoticon.widget.EmoticonLookDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,7 +54,12 @@ public class EmoticonTypeActivity extends BaseActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new EmoticonAdapter(list, gridLayoutManager);
         recyclerView.setAdapter(adapter);
-
+        adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                EmoticonLookDialog.newInstance(list.get(position).getImg_url()).show(getSupportFragmentManager(), "emoticon_look");
+            }
+        });
     }
 
     private void getData() {
