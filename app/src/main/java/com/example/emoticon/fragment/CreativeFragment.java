@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.activity.EmoticonAddActivity;
 import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.common.bean.Emoticon;
@@ -55,7 +55,7 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
         final RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
 
 
-        swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlue));

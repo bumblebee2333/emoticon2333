@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.example.common.widget.Toolbar;
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.common.base.BaseActivity;
 import com.example.common.bean.Emoticon;

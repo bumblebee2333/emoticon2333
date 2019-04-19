@@ -27,7 +27,7 @@ import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.example.common.particlesmaster.ParticleSmasher;
 import com.example.common.particlesmaster.SmashAnimator;
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.adapter.LabelAdapter;
 import com.example.emoticon.app.Config;
 import com.example.common.base.BaseActivity;

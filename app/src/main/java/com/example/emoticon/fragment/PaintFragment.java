@@ -27,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.editmodule.activity.EditActivity;
 import com.example.emoticon.adapter.MainPageAdapter;
 import com.example.common.bean.Emoticon;

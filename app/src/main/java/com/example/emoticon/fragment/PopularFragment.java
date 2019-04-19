@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.activity.EmoticonTypeActivity;
 import com.example.emoticon.adapter.EmoticonTypeAdapter;
 import com.example.common.bean.EmoticonType;
@@ -60,7 +60,7 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
         recyclerView.setFocusable(false);
 
 
-        swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlue));
