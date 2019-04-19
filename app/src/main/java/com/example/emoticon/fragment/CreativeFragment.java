@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,7 @@ import com.example.emoticon.activity.EmoticonAddActivity;
 import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.emoticon.model.Emoticon;
 import com.example.emoticon.retrofit.EmoticonProtocol;
-import com.example.emoticon.utils.UserManager;
+import com.example.common.utils.UserManager;
 
 import java.util.ArrayList;
 import java.util.List;

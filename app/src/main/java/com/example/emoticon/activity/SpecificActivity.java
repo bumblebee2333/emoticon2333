@@ -22,6 +22,7 @@ import com.example.emoticon.model.EmoticonType;
 import com.example.emoticon.retrofit.EmoticonProtocol;
 import com.example.emoticon.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.utils.IntentUtil;
+import com.example.emoticon.widget.EmoticonLookDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +77,12 @@ public class SpecificActivity extends BaseActivity {
         if (type == SearchActivity.EMOTICON) {
             adapter = new EmoticonAdapter(list, gridLayoutManager);
             recyclerView.setAdapter(adapter);
-
+            adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    EmoticonLookDialog.newInstance(list.get(position).getImg_url()).show(getSupportFragmentManager(), "emoticon_look");
+                }
+            });
         }else {
             typeAdapter = new EmoticonTypeAdapter(typeList, gridLayoutManager);
             recyclerView.setAdapter(typeAdapter);
