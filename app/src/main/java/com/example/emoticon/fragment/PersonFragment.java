@@ -14,15 +14,16 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.emoticon.R;
-import com.example.emoticon.activity.LoginActivity;
+import com.example.emotion.user.activity.LoginActivity;
 import com.example.emoticon.activity.SettingActivity;
 import com.example.common.bean.User;
 import com.example.common.utils.UserManager;
+import com.example.emotion.user.activity.UserEmoticonsActivity;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
-    View rootview;
-    TextView username, hint, title;
-    ImageView usericon;
+    View rootView;
+    TextView userName, hint, title;
+    ImageView userIcon;
     //Button loginbt;
 
     public static PersonFragment newInstance(String title) {
@@ -36,24 +37,25 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        rootview = inflater.inflate(R.layout.person_fragment, container, false);
+        rootView = inflater.inflate(R.layout.person_fragment, container, false);
         initViews();
-        //((BaseActivity)getActivity()).setStatusBarFullTransparent();
-        return rootview;
+        return rootView;
     }
 
     private void initViews() {
-        rootview.findViewById(R.id.setting).setOnClickListener(this);
-        username = rootview.findViewById(R.id.username);
-        usericon = rootview.findViewById(R.id.usericon);
-        title = rootview.findViewById(R.id.title);
-        hint = rootview.findViewById(R.id.hint);
-        rootview.findViewById(R.id.useredit).setOnClickListener(this);
+        rootView.findViewById(R.id.setting).setOnClickListener(this);
+        userName = rootView.findViewById(R.id.username);
+        userIcon = rootView.findViewById(R.id.usericon);
+        title = rootView.findViewById(R.id.title);
+        hint = rootView.findViewById(R.id.hint);
+        rootView.findViewById(R.id.useredit).setOnClickListener(this);
+        rootView.findViewById(R.id.my_submit).setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.useredit) {
+        int id = v.getId();
+        if (id == R.id.useredit) {
             if (new UserManager(getContext()).getUser() != null) {
                 //new UserManager(getContext()).logout();
                 //loginbt.setText("登陆");
@@ -62,9 +64,12 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
             }
         }
-        if (v.getId() == R.id.setting) {
+        if (id == R.id.setting) {
             Intent intent = new Intent(getActivity(), SettingActivity.class);
             startActivity(intent);
+        }
+        if (id == R.id.my_submit){
+            UserEmoticonsActivity.startActivity(getContext());
         }
     }
 
@@ -80,18 +85,18 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     private void userData() {
         User.DataBean user = new UserManager(getContext()).getUser();
         if (user != null) {
-            username.setText(user.getName());
+            userName.setText(user.getName());
 
             hint.setVisibility(View.VISIBLE);
             hint.setText(user.getEmail());
             String icon = user.getIcon();
-            if (!TextUtils.isEmpty(icon)) Glide.with(getContext()).load(icon).into(usericon);
-            else usericon.setImageResource(R.drawable.ic_topic_place_holder);
+            if (!TextUtils.isEmpty(icon)) Glide.with(getContext()).load(icon).into(userIcon);
+            else userIcon.setImageResource(R.drawable.ic_topic_place_holder);
         } else {
-            username.setText("请登录");
+            userName.setText("请登录");
             hint.setText("");
             hint.setVisibility(View.GONE);
-            usericon.setImageResource(R.drawable.ic_topic_place_holder);
+            userIcon.setImageResource(R.drawable.ic_topic_place_holder);
         }
     }
 }

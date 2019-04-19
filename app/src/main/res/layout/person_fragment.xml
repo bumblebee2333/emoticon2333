@@ -72,7 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
-                android:text="用户名"
+                android:text="@string/userName"
                 android:textColor="#000000"
                 android:textSize="15sp" />
 
@@ -94,46 +94,54 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/colorWhite"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="我的提交" />
+        <LinearLayout
+            android:id="@+id/my_submit"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/right"
-            android:tint="@color/colorGrey" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="我的提交" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/right"
+                android:tint="@color/colorGrey" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/my_collection"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="我的收藏" />
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/right"
+                android:tint="@color/colorGrey" />
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorWhite"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="我的收藏" />
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/right"
-            android:tint="@color/colorGrey" />
-    </LinearLayout>
-
 
 </LinearLayout>
