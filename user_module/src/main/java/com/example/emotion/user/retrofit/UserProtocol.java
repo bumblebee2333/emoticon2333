@@ -1,4 +1,4 @@
-package com.example.emoticon.retrofit;
+package com.example.emotion.user.retrofit;
 
 import com.example.common.bean.User;
 import com.example.common.bean.Emoticon;
