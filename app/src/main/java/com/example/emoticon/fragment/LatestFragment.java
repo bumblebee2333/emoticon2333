@@ -15,9 +15,8 @@ import android.widget.Toast;
 
 import com.example.emoticon.R;
 import com.example.emoticon.RetroClient;
-import com.example.emoticon.activity.SearchActivity;
 import com.example.emoticon.adapter.EmoticonAdapter;
-import com.example.emoticon.model.Emoticon;
+import com.example.common.bean.Emoticon;
 import com.example.emoticon.retrofit.EmoticonProtocol;
 import com.example.emoticon.widget.EmoticonLookDialog;
 
@@ -28,7 +27,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LatestFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private List<Emoticon.DataBean> list = new ArrayList<>();

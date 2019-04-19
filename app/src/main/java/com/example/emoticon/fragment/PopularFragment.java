@@ -16,7 +16,7 @@ import com.example.emoticon.R;
 import com.example.emoticon.RetroClient;
 import com.example.emoticon.activity.EmoticonTypeActivity;
 import com.example.emoticon.adapter.EmoticonTypeAdapter;
-import com.example.emoticon.model.EmoticonType;
+import com.example.common.bean.EmoticonType;
 import com.example.emoticon.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.viewHolder.BannerViewHolder;
 import com.zhouwei.mzbanner.MZBannerView;

@@ -1,4 +1,4 @@
-package com.example.emoticon.model;
+package com.example.common.bean;
 
 import com.google.gson.annotations.SerializedName;
 

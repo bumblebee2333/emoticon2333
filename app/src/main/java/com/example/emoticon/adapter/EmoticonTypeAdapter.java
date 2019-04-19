@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.emoticon.R;
-import com.example.emoticon.model.EmoticonType;
+import com.example.common.bean.EmoticonType;
 import com.example.emoticon.utils.ImageUtils;
 
 import java.util.ArrayList;

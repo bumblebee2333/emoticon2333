@@ -17,7 +17,7 @@ import com.example.emoticon.R;
 import com.example.emoticon.RetroClient;
 import com.example.emoticon.activity.EmoticonAddActivity;
 import com.example.emoticon.adapter.EmoticonAdapter;
-import com.example.emoticon.model.Emoticon;
+import com.example.common.bean.Emoticon;
 import com.example.emoticon.retrofit.EmoticonProtocol;
 import com.example.common.utils.UserManager;
 
