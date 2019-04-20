@@ -1,4 +1,4 @@
-package com.example.emoticon.activity;
+package com.example.emotion.user.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.common.base.BaseActivity;
-import com.example.emoticon.retrofit.UserProtocol;
-import com.example.emoticon.utils.Utils;
+import com.example.common.utils.Utils;
+import com.example.emotion.user.R;
+import com.example.emotion.user.retrofit.UserProtocol;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -42,21 +42,19 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.register:
-                if (TextUtils.isEmpty(email.getText().toString()) | TextUtils.isEmpty(name.getText().toString())
-                        | TextUtils.isEmpty(pwdagain.getText().toString()) | TextUtils.isEmpty(pwd.getText().toString())) {
-                    Toast.makeText(this, "不能有空内容", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (!Utils.isEmail(email.getText().toString())) {
-                    Toast.makeText(this, "邮箱不合法", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (!pwd.getText().toString().equals(pwdagain.getText().toString())) {
-                    Toast.makeText(this, "两次密码不相同", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                register();
-                break;
+        if (v.getId() == R.id.register) {
+            if (TextUtils.isEmpty(email.getText().toString()) | TextUtils.isEmpty(name.getText().toString())
+                    | TextUtils.isEmpty(pwdagain.getText().toString()) | TextUtils.isEmpty(pwd.getText().toString())) {
+                Toast.makeText(this, "不能有空内容", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!Utils.isEmail(email.getText().toString())) {
+                Toast.makeText(this, "邮箱不合法", Toast.LENGTH_SHORT).show();
+                return;
+            } else if (!pwd.getText().toString().equals(pwdagain.getText().toString())) {
+                Toast.makeText(this, "两次密码不相同", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            register();
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.emoticon;
+package com.example.common;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -11,7 +11,7 @@ public class RetroClient {
     public static Retrofit getRetroClient() {
         return new Retrofit.Builder()
                 .baseUrl(ROOT_URL)
-                .addConverterFactory(GsonConverterFactory.create())//gson
+                .addConverterFactory(GsonConverterFactory.create())//Gson
                 .build();
     }
 }

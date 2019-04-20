@@ -1,6 +1,6 @@
 package com.example.emoticon.retrofit;
 
-import com.example.emoticon.model.Upload;
+import com.example.common.bean.Upload;
 
 import okhttp3.MultipartBody;
 import retrofit2.Call;

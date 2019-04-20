@@ -1,6 +1,6 @@
 package com.example.emoticon.retrofit;
 
-import com.example.emoticon.model.Status;
+import com.example.common.bean.Status;
 
 import retrofit2.Call;
 import retrofit2.http.Field;

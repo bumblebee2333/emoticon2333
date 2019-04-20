@@ -1,4 +1,4 @@
-package com.example.emoticon.activity;
+package com.example.emotion.user.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,11 +8,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.common.base.BaseActivity;
 import com.example.common.bean.User;
-import com.example.emoticon.retrofit.UserProtocol;
+import com.example.emotion.user.R;
+import com.example.emotion.user.retrofit.UserProtocol;
 import com.example.common.utils.UserManager;
 
 import retrofit2.Call;
@@ -61,12 +61,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.register:
-                Intent intent = new Intent(this, RegisterActivity.class);
-                startActivity(intent);
-                finish();
-                break;
+        if (v.getId() == R.id.register) {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 }

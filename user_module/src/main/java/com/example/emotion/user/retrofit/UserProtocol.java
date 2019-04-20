@@ -1,7 +1,7 @@
-package com.example.emoticon.retrofit;
+package com.example.emotion.user.retrofit;
 
 import com.example.common.bean.User;
-import com.example.emoticon.model.Emoticon;
+import com.example.common.bean.Emoticon;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;

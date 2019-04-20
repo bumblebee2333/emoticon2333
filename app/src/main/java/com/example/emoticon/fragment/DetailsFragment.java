@@ -13,10 +13,10 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.editmodule.activity.EditActivity;
 import com.example.emoticon.adapter.EmoticonAdapter;
-import com.example.emoticon.model.Emoticon;
+import com.example.common.bean.Emoticon;
 import com.example.emoticon.retrofit.EmoticonProtocol;
 import com.example.emoticon.utils.ImageUtils;
 
