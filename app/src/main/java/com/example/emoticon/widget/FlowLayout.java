@@ -21,7 +21,8 @@ import java.util.List;
 
 import static android.view.ViewGroup.LayoutParams.*;
 
-public class FlowLayout extends ViewGroup{
+public class
+FlowLayout extends ViewGroup{
 
     private OnTabClickListener mOnTabClickListener;
     private OnTabLongClickListener mOnTabLongClickListener;
