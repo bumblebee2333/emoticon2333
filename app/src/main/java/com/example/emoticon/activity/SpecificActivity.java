@@ -19,8 +19,8 @@ import com.example.common.base.BaseActivity;
 import com.example.emoticon.adapter.EmoticonTypeAdapter;
 import com.example.common.bean.Emoticon;
 import com.example.common.bean.EmoticonType;
-import com.example.emoticon.retrofit.EmoticonProtocol;
-import com.example.emoticon.retrofit.EmoticonTypeProtocol;
+import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.utils.IntentUtil;
 import com.example.emoticon.widget.EmoticonLookDialog;
 

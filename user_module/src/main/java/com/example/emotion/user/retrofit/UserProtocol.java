@@ -52,6 +52,6 @@ public interface UserProtocol {
      * @return 返回 Emoticon
      */
     @GET("v1/user/emoticon")
-    Call<Emoticon> getEmoticonList(@Query("id") int id, @Query("limit") int limit, @Query("skip") int skip);
+    Call<Emoticon> getEmoticonList(@Query("uid") int id, @Query("limit") int limit, @Query("skip") int skip);
 
 }

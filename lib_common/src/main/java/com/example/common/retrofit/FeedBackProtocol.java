@@ -1,4 +1,4 @@
-package com.example.emoticon.retrofit;
+package com.example.common.retrofit;
 
 import com.example.common.bean.Status;
 

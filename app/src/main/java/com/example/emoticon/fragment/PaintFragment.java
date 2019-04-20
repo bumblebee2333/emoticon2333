@@ -32,7 +32,7 @@ import com.example.emoticon.editmodule.activity.EditActivity;
 import com.example.emoticon.adapter.MainPageAdapter;
 import com.example.common.bean.Emoticon;
 import com.example.common.bean.EmoticonType;
-import com.example.emoticon.retrofit.EmoticonTypeProtocol;
+import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.utils.ScreenUtils;
 
 import java.io.ByteArrayOutputStream;

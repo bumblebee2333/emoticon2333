@@ -17,8 +17,8 @@ import com.example.common.RetroClient;
 import com.example.emoticon.editmodule.activity.EditActivity;
 import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.common.bean.Emoticon;
-import com.example.emoticon.retrofit.EmoticonProtocol;
-import com.example.emoticon.utils.ImageUtils;
+import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
