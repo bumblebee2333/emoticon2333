@@ -3,6 +3,7 @@ package com.example.emoticon.editmodule.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -29,7 +31,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.common.base.BaseActivity;
+import com.example.emoticon.editmodule.Graffiti.Doodle;
 import com.example.emoticon.editmodule.Graffiti.DoodleView;
+import com.example.emoticon.editmodule.Graffiti.Eraser;
 import com.example.emoticon.editmodule.R;
 import com.example.emoticon.editmodule.widget.TextEditBox;
 import com.example.emoticon.editmodule.widget.TextInputDialog;
@@ -53,7 +57,9 @@ public class EditActivity extends BaseActivity {
     private TextView confirm;
     private TextInputDialog dialog;
 
-    private DoodleView doodleView;
+    private Doodle mDoodle;
+
+    private Eraser mEraser;
 
     @SuppressLint("ResourceType")
     //private XmlPullParser parser=getResources().getXml(R.styleable.DoodleView_paintStrokeWidth);
@@ -87,6 +93,8 @@ public class EditActivity extends BaseActivity {
         mInputText = findViewById(R.id.dialog_text);
         mTextEditBox = findViewById(R.id.text_edit_box);
         confirm = findViewById(R.id.confirm);
+        mDoodle = findViewById(R.id.surfaceview);
+        mEraser = findViewById(R.id.eraser);
     }
 
     private void loadingImage(Activity activity){
@@ -258,10 +266,10 @@ public class EditActivity extends BaseActivity {
 
             } else if (i == R.id.bottom_brush) {
                 item.setIcon(R.drawable.painter_copy);
-                doodleView = new DoodleView(EditActivity.this);
+                createDoodle();
             } else if (i == R.id.bottom_eraser) {
                 item.setIcon(R.drawable.earser_copy);
-
+                mDoodle.clean();
             } else if (i == R.id.bottom_pic) {
                 item.setIcon(R.drawable.pic_copy);
 
@@ -289,7 +297,28 @@ public class EditActivity extends BaseActivity {
 //        Bitmap bitmap = BitmapFactory.decodeByteArray(byteTemp,0,byteTemp.length);
 //        images.setImageBitmap(bitmap);
 //    }
-    public boolean onTouchEvent(MotionEvent event){
-        return doodleView.onTouchEvent(event);
+
+    private void createDoodle(){
+        mDoodle = new Doodle(this);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        mDoodle.setLayoutParams(layoutParams);
+        mRContainer.addView(mDoodle);
     }
+
+    private void createEraser(){
+        mEraser = new Eraser(this);
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
+        mEraser.setLayoutParams(layoutParams);
+        mRContainer.addView(mEraser);
+    }
+
+//    public int getScreenWidth(){
+//        Resources resources = this.getResources();
+//        DisplayMetrics dm = resources.getDisplayMetrics();
+//        float density = dm.density;
+//        int width = dm.widthPixels;
+//        return width;
+//    }
 }
