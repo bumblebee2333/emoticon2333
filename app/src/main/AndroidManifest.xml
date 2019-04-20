@@ -53,5 +53,7 @@
         <activity
             android:name="com.example.emotion.user.activity.UserEmoticonsActivity"
             android:label="@string/my_emoticon" />
+        <activity android:name="com.example.emotion.user.activity.UserInfoActivity"
+            android:label="@string/my_profile"/>
     </application>
 </manifest>

@@ -19,6 +19,7 @@ import com.example.emoticon.activity.SettingActivity;
 import com.example.common.bean.User;
 import com.example.common.utils.UserManager;
 import com.example.emotion.user.activity.UserEmoticonsActivity;
+import com.example.emotion.user.activity.UserInfoActivity;
 
 public class PersonFragment extends Fragment implements View.OnClickListener {
     View rootView;
@@ -57,8 +58,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         int id = v.getId();
         if (id == R.id.useredit) {
             if (new UserManager(getContext()).getUser() != null) {
-                //new UserManager(getContext()).logout();
-                //loginbt.setText("登陆");
+                UserInfoActivity.startActivity(getContext());
             } else {
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);

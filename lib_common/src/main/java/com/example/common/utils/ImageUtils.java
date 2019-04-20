@@ -1,4 +1,4 @@
-package com.example.emoticon.utils;
+package com.example.common.utils;
 
 public class ImageUtils {
     public static final String gifToJpg = "?x-oss-process=image/format,jpg";//Gif转jpg

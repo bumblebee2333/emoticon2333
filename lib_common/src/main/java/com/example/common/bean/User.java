@@ -1,10 +1,12 @@
 package com.example.common.bean;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
 
     /**
      * msg : 登陆成功
-     * data : {"id":12,"name":"skit","email":"2368242633@qq.com","createtime":"2019-01-13","token":"f8519dab9f05a09417f1d373311259c6"}
+     * data : {"id":12,"name":"skit","email":"2368242633@qq.com","createTime":"2019-01-13","token":"f8519dab9f05a09417f1d373311259c6"}
      * status : 200
      */
 
@@ -41,15 +43,18 @@ public class User {
          * id : 12
          * name : skit
          * email : 2368242633@qq.com
-         * createtime : 2019-01-13
+         * createTime : 2019-01-13
          * token : f8519dab9f05a09417f1d373311259c6
          */
 
         private int id;
         private String name;
         private String email;
-        private String createtime;
+        @SerializedName("createtime")
+        private String createTime;
         private String token;
+        
+        @SerializedName("icon")
         private String icon;
 
         public String getIcon() {
@@ -84,12 +89,12 @@ public class User {
             this.email = email;
         }
 
-        public String getCreatetime() {
-            return createtime;
+        public String getCreateTime() {
+            return createTime;
         }
 
-        public void setCreatetime(String createtime) {
-            this.createtime = createtime;
+        public void setCreateTime(String createTime) {
+            this.createTime = createTime;
         }
 
         public String getToken() {

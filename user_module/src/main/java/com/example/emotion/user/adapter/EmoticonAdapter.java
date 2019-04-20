@@ -1,4 +1,4 @@
-package com.example.emoticon.adapter;
+package com.example.emotion.user.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,9 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.emoticon.R;
 import com.example.common.bean.Emoticon;
 import com.example.common.utils.ImageUtils;
+import com.example.emotion.user.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final EmoticonAdapter.ViewHolder viewHolder, int i) {
-        Glide.with(viewHolder.img.getContext()).load(list.get(i).getImg_url()+ImageUtils.gifToJpg).into(viewHolder.img);
+        Glide.with(viewHolder.img.getContext()).load(list.get(i).getImg_url()+ ImageUtils.gifToJpg).into(viewHolder.img);
         viewHolder.tv.setVisibility(View.GONE);
         if (list.get(i).getImg_url().endsWith(".gif")) {
             viewHolder.gif.setVisibility(View.VISIBLE);
@@ -77,7 +77,7 @@ public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHo
     }
 
     public interface OnItemClickListener{
-        void onItemClick(View view,int position);
+        void onItemClick(View view, int position);
     }
     public void setOnItemClickListener(OnItemClickListener mOnItemClickListener){
         this.mOnItemClickListener = mOnItemClickListener;
