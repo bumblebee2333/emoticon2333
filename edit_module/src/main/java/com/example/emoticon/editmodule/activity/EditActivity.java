@@ -3,6 +3,7 @@ package com.example.emoticon.editmodule.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ import com.example.emoticon.editmodule.Graffiti.Doodle;
 import com.example.emoticon.editmodule.Graffiti.DoodleView;
 import com.example.emoticon.editmodule.Graffiti.Eraser;
 import com.example.emoticon.editmodule.R;
+import com.example.emoticon.editmodule.widget.ColorPickerDialog;
+import com.example.emoticon.editmodule.widget.QuitMakeDialog;
 import com.example.emoticon.editmodule.widget.TextEditBox;
 import com.example.emoticon.editmodule.widget.TextInputDialog;
 
@@ -61,9 +64,11 @@ public class EditActivity extends BaseActivity {
 
     private Eraser mEraser;
 
-    @SuppressLint("ResourceType")
-    //private XmlPullParser parser=getResources().getXml(R.styleable.DoodleView_paintStrokeWidth);
-    //private final AttributeSet attrs = Xml.asAttributeSet(parser);
+    private ColorPickerDialog mColorDialg;
+
+    private QuitMakeDialog mQuitMakeDialog;
+
+    private TextView mNext;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,6 +86,14 @@ public class EditActivity extends BaseActivity {
                 showInputDialog(mTextEditBox);
             }
         });
+
+        mNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditActivity.this,FinishActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initView(){
@@ -95,6 +108,7 @@ public class EditActivity extends BaseActivity {
         confirm = findViewById(R.id.confirm);
         mDoodle = findViewById(R.id.surfaceview);
         mEraser = findViewById(R.id.eraser);
+        mNext = findViewById(R.id.next);
     }
 
     private void loadingImage(Activity activity){
@@ -266,6 +280,8 @@ public class EditActivity extends BaseActivity {
 
             } else if (i == R.id.bottom_brush) {
                 item.setIcon(R.drawable.painter_copy);
+                mColorDialg = new ColorPickerDialog(EditActivity.this);
+                mColorDialg.show();
                 createDoodle();
             } else if (i == R.id.bottom_eraser) {
                 item.setIcon(R.drawable.earser_copy);
@@ -321,4 +337,30 @@ public class EditActivity extends BaseActivity {
 //        int width = dm.widthPixels;
 //        return width;
 //    }
+
+    private void showDialog(){
+        mQuitMakeDialog = new QuitMakeDialog(EditActivity.this);
+        mQuitMakeDialog.setClickListenerInterface(new QuitMakeDialog.OnClickListener() {
+            @Override
+            public void doConfirm() {
+                EditActivity.this.finish();
+            }
+
+            @Override
+            public void doCancel() {
+                mQuitMakeDialog.dismiss();
+            }
+        });
+        mQuitMakeDialog.show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if((keyCode == KeyEvent.KEYCODE_BACK)){
+            showDialog();
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 }

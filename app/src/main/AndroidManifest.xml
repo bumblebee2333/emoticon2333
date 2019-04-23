@@ -48,7 +48,8 @@
             android:label="搜索表情包"/>
         <activity android:name=".editmodule.activity.EditActivity"
             android:label="编辑表情包"/>
-
+        <activity android:name=".editmodule.activity.FinishActivity"
+            android:label="保存图片"/>
     </application>
 
 </manifest>
