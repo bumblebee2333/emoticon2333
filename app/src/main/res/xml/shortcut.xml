@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/setting_shortcuts"
+        android:shortcutDisabledMessage="@string/preferences"
+        android:shortcutId="setting"
+        android:shortcutLongLabel="@string/preferences"
+        android:shortcutShortLabel="@string/preferences">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.example.emoticon.activity.SettingActivity"
+            android:targetPackage="com.example.emoticon" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+
+
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/search_shortcuts"
+        android:shortcutDisabledMessage="@string/search_emoticon"
+        android:shortcutId="search"
+        android:shortcutLongLabel="@string/search_emoticon"
+        android:shortcutShortLabel="@string/search_emoticon">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.example.emoticon.activity.SearchActivity"
+            android:targetPackage="com.example.emoticon" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+
+</shortcuts>
