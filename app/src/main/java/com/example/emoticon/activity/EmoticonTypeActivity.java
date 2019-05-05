@@ -50,7 +50,7 @@ public class EmoticonTypeActivity extends BaseActivity {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(title);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
-        recyclerView = findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new EmoticonAdapter(list, gridLayoutManager);
         recyclerView.setAdapter(adapter);

@@ -48,7 +48,7 @@ public class LatestFragment extends Fragment implements SwipeRefreshLayout.OnRef
         View view = inflater.inflate(R.layout.latest_fragment, container, false);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
         adapter = new EmoticonAdapter(list, gridLayoutManager);
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
 

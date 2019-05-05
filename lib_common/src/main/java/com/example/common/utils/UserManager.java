@@ -2,8 +2,13 @@ package com.example.common.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ShortcutManager;
 
 import com.example.common.bean.User;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class UserManager {
     Context context;
     SharedPreferences sharedPreferences;
@@ -51,5 +56,13 @@ public class UserManager {
      */
     public void logout(){
         sharedPreferences.edit().clear().apply();
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N_MR1) {
+            List<String> list = new ArrayList<>();
+            list.add("person");
+            list.add("addIcon");
+            ShortcutManager shortcutsManager = context.getSystemService(ShortcutManager.class);
+            shortcutsManager.removeDynamicShortcuts(list);
+        }
     }
 }

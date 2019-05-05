@@ -27,7 +27,7 @@
                 android:layout_height="80dp"
                 android:layout_gravity="center"
                 android:layout_margin="20dp"
-                android:src="@drawable/ic_launcher_background"
+                android:src="@mipmap/app_logo"
                 app:round_corner="5dp" />
 
             <EditText

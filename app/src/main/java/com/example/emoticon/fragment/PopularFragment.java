@@ -53,7 +53,7 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
         adapter = new EmoticonTypeAdapter(list, gridLayoutManager);
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         //解决数据加载完成后, 没有停留在顶部的问题

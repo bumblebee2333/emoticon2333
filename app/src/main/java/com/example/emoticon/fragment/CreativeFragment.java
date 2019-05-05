@@ -52,7 +52,7 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
         adapter = new EmoticonAdapter(list, gridLayoutManager);
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
 
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);

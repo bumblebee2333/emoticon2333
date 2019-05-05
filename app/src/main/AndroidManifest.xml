@@ -13,10 +13,10 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
@@ -25,6 +25,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcut"
+                />
         </activity>
         <activity
             android:name=".activity.SearchActivity"
@@ -46,7 +50,7 @@
             android:label="@string/register" />
         <activity
             android:name=".activity.SpecificActivity"
-            android:label="@string/search_emotion" />
+            android:label="@string/search_emoticons" />
         <activity
             android:name=".editmodule.activity.EditActivity"
             android:label="@string/add_emoticon" />

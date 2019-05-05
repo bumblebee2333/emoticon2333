@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -16,7 +17,7 @@ import com.example.emoticon.MainActivity;
 import com.example.emoticon.R;
 import com.example.common.base.BaseActivity;
 
-public class GuideActivity extends BaseActivity {
+public class GuideActivity extends AppCompatActivity {
     ViewPager viewPager;
     int[] imgs = {R.drawable.guide_1, R.drawable.guide_1};
 
