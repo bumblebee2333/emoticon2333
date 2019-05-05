@@ -47,7 +47,7 @@ public class EmoticonFragment extends Fragment {
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SearchActivity.startActivity(getContext(),SearchActivity.EMOTICON);
+                SearchActivity.startActivity(getContext(), SearchActivity.EMOTICON);
 
             }
         });

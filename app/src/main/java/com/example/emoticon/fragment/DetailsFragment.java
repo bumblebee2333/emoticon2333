@@ -22,6 +22,7 @@ import com.example.common.utils.ImageUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -32,11 +33,11 @@ public class DetailsFragment extends Fragment {
     private EmoticonAdapter adapter;
     public RecyclerView recyclerView;
 
-    public static DetailsFragment newInstance(String title, int id){
+    public static DetailsFragment newInstance(String title, int id) {
         DetailsFragment detailsFragment = new DetailsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("title",title);
-        bundle.putInt("id",id);
+        bundle.putString("title", title);
+        bundle.putInt("id", id);
         detailsFragment.setArguments(bundle);
         return detailsFragment;
     }
@@ -44,12 +45,12 @@ public class DetailsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_garfield,container,false);
+        View view = inflater.inflate(R.layout.fragment_garfield, container, false);
 
-        recyclerView = view.findViewById(R.id.recy_garfield);
+        recyclerView = view.findViewById(R.id.recyclerView);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(),4);
-        adapter = new EmoticonAdapter(list,gridLayoutManager);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
+        adapter = new EmoticonAdapter(list, gridLayoutManager);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -98,9 +99,9 @@ public class DetailsFragment extends Fragment {
         adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-               Intent intent = new Intent(getActivity(),EditActivity.class);
-                String image = list.get(position).getImg_url()+ImageUtils.gifToJpg;
-                intent.putExtra("picture",image);
+                Intent intent = new Intent(getActivity(), EditActivity.class);
+                String image = list.get(position).getImg_url() + ImageUtils.gifToJpg;
+                intent.putExtra("picture", image);
                 startActivity(intent);
             }
         });
