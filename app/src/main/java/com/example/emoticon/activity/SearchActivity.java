@@ -176,10 +176,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 }
             }
         }
-        if (flag == true)
-            return false;
-        else
-            return true;
+        return !flag;
     }
 
     //初始化历史记录里流式布局里的textview

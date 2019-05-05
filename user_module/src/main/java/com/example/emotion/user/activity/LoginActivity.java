@@ -1,6 +1,11 @@
 package com.example.emotion.user.activity;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Icon;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +19,9 @@ import com.example.common.bean.User;
 import com.example.emotion.user.R;
 import com.example.emotion.user.retrofit.UserProtocol;
 import com.example.common.utils.UserManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,6 +50,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             if (response.body().getStatus() == 200){
                                 new UserManager(LoginActivity.this).saveUser(response.body().getData());
                                 Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_SHORT).show();
+                                shortcuts();
                                 finish();
                             }else {
                                 Toast.makeText(LoginActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
@@ -65,6 +74,37 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             Intent intent = new Intent(this, RegisterActivity.class);
             startActivity(intent);
             finish();
+        }
+    }
+    private void shortcuts(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            Intent intent1 = new Intent(LoginActivity.this, UserEmoticonsActivity.class);
+            intent1.setAction(Intent.ACTION_VIEW);
+
+            Intent intent2 = new Intent();
+            intent2.setComponent(new ComponentName("com.example.emoticon", "com.example.emoticon.activity.EmoticonAddActivity"));
+            intent2.setAction(Intent.ACTION_VIEW);
+
+
+
+            String[] titles = {"我的表情", "添加表情"};
+            String[] ids = {"person", "addIcon"};
+            int[] icons = {R.drawable.person_shortcuts, R.drawable.add_shortcuts};
+            Intent[] intents = {intent1, intent2};
+            List<ShortcutInfo> list = new ArrayList<>();
+            ShortcutManager shortcutsManager = getSystemService(ShortcutManager.class);
+
+            for (int i = 0; i<titles.length; i++) {
+
+                ShortcutInfo.Builder infoBuild = new ShortcutInfo.Builder(LoginActivity.this, ids[i]);
+                infoBuild.setShortLabel(titles[i]);
+                infoBuild.setLongLabel(titles[i]);
+                infoBuild.setIcon(Icon.createWithResource(LoginActivity.this, icons[i]));
+                infoBuild.setIntent(intents[i]);
+                ShortcutInfo shortcutInfo = infoBuild.build();
+                list.add(shortcutInfo);
+            }
+            shortcutsManager.setDynamicShortcuts(list);
         }
     }
 }
