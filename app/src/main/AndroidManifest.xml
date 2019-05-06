@@ -18,9 +18,11 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/app_logo_round"
         android:supportsRtl="true"
-        android:theme="@style/NoActionBar"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".activity.SplashActivity">
+        android:theme="@style/AppBaseTheme"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:targetApi="n">
+        <activity android:name=".activity.SplashActivity"
+            android:theme="@style/AppBaseThemeMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,7 +39,9 @@
             android:name=".activity.SettingActivity"
             android:label="@string/preferences" />
         <activity android:name=".activity.EmoticonTypeActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppBaseThemeMain"
+            />
         <activity android:name=".activity.GuideActivity" />
         <activity
             android:name=".activity.EmoticonAddActivity"

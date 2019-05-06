@@ -2,6 +2,7 @@ package com.example.common.widget;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -17,39 +18,42 @@ import com.example.common.R;
 
 public class Toolbar extends LinearLayout implements View.OnClickListener {
     TextView title;
-    ImageView back;
-    public ImageView right1, right2;
+    public ImageView right1, right2, back;
 
     public Toolbar(Context context) {
         super(context);
-        initViews();
+        initViews(context,null);
     }
 
     public Toolbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initViews();
-
+        initViews(context, attrs);
     }
 
     public Toolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initViews();
-
+        initViews(context, attrs);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public Toolbar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        initViews();
+        initViews(context, attrs);
     }
 
-    private void initViews() {
+    private void initViews(Context context, AttributeSet attrs) {
+
+        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.Toolbar);
+        boolean line = array.getBoolean(R.styleable.Toolbar_line, true);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.widget_toolbar, this, false);
         addView(view);
+        View lineView = findViewById(R.id.line);
+        lineView.setVisibility(line?VISIBLE:GONE);
         title = findViewById(R.id.title);
         right1 = findViewById(R.id.right1);
         right2 = findViewById(R.id.right2);
-        findViewById(R.id.back).setOnClickListener(this);
+        back = findViewById(R.id.back);
+        back.setOnClickListener(this);
         if (((Activity) getContext()).getTitle() != null) {//判断该Activity标题是否为空，不为空设置到标题
             title.setText(((Activity) getContext()).getTitle());
         }

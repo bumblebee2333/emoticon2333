@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import com.example.common.RetroClient;
 import com.example.common.base.BaseActivity;
 import com.example.common.bean.User;
+import com.example.common.widget.Toolbar;
 import com.example.emotion.user.R;
 import com.example.emotion.user.retrofit.UserProtocol;
 import com.example.common.utils.UserManager;
@@ -34,8 +36,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        setTitle(" ");
         email = findViewById(R.id.email);
         pwd = findViewById(R.id.pwd);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        toolbar.back.setImageResource(R.drawable.left_back);
+
+        Drawable drawable1 = getResources().getDrawable(R.drawable.login_person);
+        drawable1.setBounds(0, 0, 50, 50);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
+        Drawable drawable2 = getResources().getDrawable(R.drawable.login_pass);
+        drawable2.setBounds(0, 0, 50, 50);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
+
+        email.setCompoundDrawables(drawable1, null, null, null);//只放左边
+        pwd.setCompoundDrawables(drawable2, null, null, null);//只放左边
 
         findViewById(R.id.login).setOnClickListener(new View.OnClickListener() {
             @Override
