@@ -102,7 +102,7 @@
                     android:text="忘记密码?"
                     android:textColor="@color/colorBlue" />
 
-                <RadioButton
+                <CheckBox
                     android:id="@+id/rememberPass"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
