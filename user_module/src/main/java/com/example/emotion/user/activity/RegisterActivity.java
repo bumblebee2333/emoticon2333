@@ -1,6 +1,7 @@
 package com.example.emotion.user.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.common.RetroClient;
 import com.example.common.base.BaseActivity;
 import com.example.common.utils.Utils;
+import com.example.common.widget.Toolbar;
 import com.example.emotion.user.R;
 import com.example.emotion.user.retrofit.UserProtocol;
 import com.google.gson.JsonObject;
@@ -32,12 +34,29 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initViews() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        toolbar.back.setImageResource(R.drawable.close);
+
         pwd = findViewById(R.id.pwd);
         pwdagain = findViewById(R.id.pwd2);
         name = findViewById(R.id.username);
         email = findViewById(R.id.email);
         register = findViewById(R.id.register);
         register.setOnClickListener(this);
+
+        Drawable drawable1 = getResources().getDrawable(R.drawable.account_outline);
+        drawable1.setBounds(0, 0, 80, 80);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
+        Drawable drawable2 = getResources().getDrawable(R.drawable.lock_outline);
+        drawable2.setBounds(0, 0, 80, 80);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
+        Drawable drawable3 = getResources().getDrawable(R.drawable.email_outline);
+        drawable3.setBounds(0, 0, 80, 80);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
+
+        name.setCompoundDrawables(drawable1, null, null, null);//只放左边
+        email.setCompoundDrawables(drawable3, null, null, null);//只放左边
+        pwd.setCompoundDrawables(drawable2, null, null, null);//只放左边
+        pwdagain.setCompoundDrawables(drawable2, null, null, null);//只放左边
+
     }
 
     @Override
@@ -55,6 +74,11 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 return;
             }
             register();
+        }
+        if (v.getId() == R.id.login) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 
