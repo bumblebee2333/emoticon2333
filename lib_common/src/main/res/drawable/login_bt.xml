@@ -6,7 +6,4 @@
 
     <!--<solid android:color="@android:color/white"/>-->
     <solid android:color="@color/colorAccent" />
-   <!-- <gradient
-        android:endColor="@color/colorPrimary"
-        android:startColor="#f5edc2" />-->
 </shape>
