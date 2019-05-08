@@ -149,9 +149,10 @@ public class EditActivity extends BaseActivity {
     }
 
     private void loadingImage(Activity activity){
-        String img = activity.getIntent().getStringExtra("picture");
+        mBitmap = activity.getIntent().getParcelableExtra("bitmap");
         //Glide.with(this).load(img).into(images);
-        mBitmap=getBitmap(img);
+        images.setImageBitmap(mBitmap);
+//        mBitmap=getBitmap(img);
         if(mBitmap == null){
             Log.e("null","null");
         }
