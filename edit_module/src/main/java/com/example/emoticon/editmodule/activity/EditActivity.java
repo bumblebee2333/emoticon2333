@@ -3,9 +3,14 @@ package com.example.emoticon.editmodule.activity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -15,6 +20,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -35,11 +41,22 @@ import com.example.emoticon.editmodule.Graffiti.Doodle;
 import com.example.emoticon.editmodule.Graffiti.DoodleView;
 import com.example.emoticon.editmodule.Graffiti.Eraser;
 import com.example.emoticon.editmodule.R;
+import com.example.emoticon.editmodule.widget.ColorPickerDialog;
+import com.example.emoticon.editmodule.widget.DrawBitmap;
+import com.example.emoticon.editmodule.widget.QuitMakeDialog;
 import com.example.emoticon.editmodule.widget.TextEditBox;
 import com.example.emoticon.editmodule.widget.TextInputDialog;
 
 import org.xmlpull.v1.XmlPullParser;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,9 +78,33 @@ public class EditActivity extends BaseActivity {
 
     private Eraser mEraser;
 
-    @SuppressLint("ResourceType")
-    //private XmlPullParser parser=getResources().getXml(R.styleable.DoodleView_paintStrokeWidth);
-    //private final AttributeSet attrs = Xml.asAttributeSet(parser);
+    private ColorPickerDialog mColorDialg;
+
+    private QuitMakeDialog mQuitMakeDialog;
+
+    private TextView mNext;
+
+    private DrawBitmap mDrawBitmap;
+
+    private Bitmap mBitmap;
+
+    public static final int MSG_BITMAP = 1;
+
+    private Handler mHandler;
+
+    class Mhandler extends Handler{
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case MSG_BITMAP:
+                    //mDrawBitmap = new DrawBitmap(EditActivity.this,mBitmap);
+                    //String img = EditActivity.this.getIntent().getStringExtra("picture");
+                    images.setImageBitmap(mBitmap);
+                    //mDrawBitmap = new DrawBitmap(EditActivity.this,getBitmap(img));
+                    break;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,14 +112,22 @@ public class EditActivity extends BaseActivity {
         setContentView(R.layout.activity_edit);
         getSupportActionBar();
         initView();
+        mHandler = new Mhandler();
         loadingImage(this);
-        //localImage(this);
         setToolBarListener();
 
         new TextEditBox(this).setOnEditClickListener(new TextEditBox.OnTextEditClickListener() {
             @Override
             public void onTextEditClick(TextEditBox textEditBox) {
                 showInputDialog(mTextEditBox);
+            }
+        });
+
+        mNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EditActivity.this,FinishActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -95,17 +144,55 @@ public class EditActivity extends BaseActivity {
         confirm = findViewById(R.id.confirm);
         mDoodle = findViewById(R.id.surfaceview);
         mEraser = findViewById(R.id.eraser);
+        mNext = findViewById(R.id.next);
+        //mDrawBitmap = findViewById(R.id.bitmap);
     }
 
     private void loadingImage(Activity activity){
         String img = activity.getIntent().getStringExtra("picture");
-        Glide.with(this).load(img).into(images);
+        //Glide.with(this).load(img).into(images);
+        mBitmap=getBitmap(img);
+        if(mBitmap == null){
+            Log.e("null","null");
+        }
     }
 
-    private void localImage(Activity activity){
-        String imageUri = activity.getIntent().getStringExtra("imageUri");
-        Uri uri = Uri.parse(imageUri);
-        images.setImageURI(uri);
+    /**
+     * 将图片url转换为Bitmap
+     */
+    public Bitmap getBitmap(final String url){
+        //Log.e("bitmap_ccc",bitmap[0].toString());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    URL urlPath = new URL(url);
+                    InputStream in = urlPath.openConnection().getInputStream();
+                    Log.e("lixinyi",in.toString());
+                    BufferedInputStream bis = new BufferedInputStream(in,1024*8);
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+                    int len = 0;
+                    byte[] buffer = new byte[1024];
+                    while ((len = bis.read(buffer)) != -1){
+                        out.write(buffer,0,len);
+                    }
+                    out.close();
+                    bis.close();
+
+                    byte[] data = out.toByteArray();
+                    Log.e("data_ccc", String.valueOf(data.length));
+                    mBitmap = BitmapFactory.decodeByteArray(data,0,data.length);
+                    Log.e("bitmap_ccc", String.valueOf(mBitmap.getWidth()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Message msg = new Message();
+                msg.what = MSG_BITMAP;
+                mHandler.sendMessage(msg);
+            }
+        }).start();
+        return mBitmap;
     }
 
    @SuppressLint("NewApi")
@@ -266,6 +353,8 @@ public class EditActivity extends BaseActivity {
 
             } else if (i == R.id.bottom_brush) {
                 item.setIcon(R.drawable.painter_copy);
+                mColorDialg = new ColorPickerDialog(EditActivity.this);
+                mColorDialg.show();
                 createDoodle();
             } else if (i == R.id.bottom_eraser) {
                 item.setIcon(R.drawable.earser_copy);
@@ -321,4 +410,30 @@ public class EditActivity extends BaseActivity {
 //        int width = dm.widthPixels;
 //        return width;
 //    }
+
+    private void showDialog(){
+        mQuitMakeDialog = new QuitMakeDialog(EditActivity.this);
+        mQuitMakeDialog.setClickListenerInterface(new QuitMakeDialog.OnClickListener() {
+            @Override
+            public void doConfirm() {
+                EditActivity.this.finish();
+            }
+
+            @Override
+            public void doCancel() {
+                mQuitMakeDialog.dismiss();
+            }
+        });
+        mQuitMakeDialog.show();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if((keyCode == KeyEvent.KEYCODE_BACK)){
+            showDialog();
+            return false;
+        }else {
+            return super.onKeyDown(keyCode, event);
+        }
+    }
 }

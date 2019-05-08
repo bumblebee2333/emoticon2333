@@ -51,6 +51,8 @@ public class TextInputDialog extends Dialog implements View.OnClickListener {
         setCancelable(true);
         getWindow().setGravity(Gravity.BOTTOM);
 
+
+
         WindowManager wm = getWindow().getWindowManager();
         //Display display = wm.getDefaultDisplay();
         //diaplay类 提供关于屏幕尺寸和分辨率的信息

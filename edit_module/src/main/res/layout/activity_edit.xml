@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearlayout_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/linearlayout_container"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar_edit"
@@ -17,52 +17,77 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="编辑"
             android:layout_gravity="center"
             android:gravity="center"
             android:paddingLeft="10dp"
+            android:text="编辑"
             android:textColor="@color/colorBlack"
-            android:textSize="20sp"/>
+            android:textSize="20sp" />
 
         <TextView
+            android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="下一步"
+            android:layout_gravity="right"
             android:gravity="center|left"
             android:paddingLeft="10dp"
+            android:text="下一步"
             android:textColor="@color/colorBlack"
-            android:textSize="20sp"
-            android:layout_gravity="right"/>
+            android:textSize="20sp" />
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
+        android:id="@+id/relative_layout_img"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_marginTop="80dp"
         android:layout_marginBottom="80dp"
-        android:id="@+id/relative_layout_img"
+        android:layout_weight="1"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/photo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop" />
+
+        <!--<com.example.emoticon.editmodule.widget.DrawBitmap-->
+        <!--android:id="@+id/bitmap"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"/>-->
 
     </RelativeLayout>
 
+    <!--<HorizontalScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:scrollbars="none">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal">-->
+
+            <!--<View-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:background="@color/colorBlack" />-->
+
+        <!--</LinearLayout>-->
+    <!--</HorizontalScrollView>-->
+
     <android.support.design.widget.BottomNavigationView
-    android:id="@+id/bottomNavigation_paint"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
-    android:background="@color/colorPrimary"
-    app:menu="@menu/bottom"
-    app:itemHorizontalTranslationEnabled="false"
-    app:labelVisibilityMode="labeled"
+        android:id="@+id/bottomNavigation_paint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimary"
+        app:itemHorizontalTranslationEnabled="false"
+        app:itemTextAppearanceActive="@color/colorAccent"
         app:itemTextColor="@drawable/bottom_editactivity"
-        app:itemTextAppearanceActive="@color/colorAccent">
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom">
 
     </android.support.design.widget.BottomNavigationView>
 
