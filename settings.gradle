@@ -1,1 +1,1 @@
-include ':app', ':lib_common', ':edit_module', ':user_module', 'swipeback'
+include ':app', ':lib_common', ':edit_module', ':user_module', ':cam_module', 'swipeback'
