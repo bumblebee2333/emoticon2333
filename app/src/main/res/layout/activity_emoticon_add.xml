@@ -35,10 +35,9 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/typeselect_bg"
                 android:padding="5dp"
-                android:text="选择分类"
+                android:text="@string/select_type"
                 android:textColor="@color/typeselect_color"
                 android:textSize="12sp" />
-
 
             <com.cy.cyflowlayoutlibrary.FlowLayout
                 android:id="@+id/flowlayout"

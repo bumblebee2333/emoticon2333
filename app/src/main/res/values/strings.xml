@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Emoticon</string>
+    <string name="app_name">表情工坊</string>
 
     <string name="search_toast">哦嚯，完蛋~\n什么都没找到（理不直气也壮）</string>
     <string name="connection_fail">2333，服务器去外太空探索了</string>
@@ -11,4 +11,16 @@
     <string name="logout">退出登录</string>
     <string name="topic_toast_hint">标签可帮助他人快速搜索找到此表情，标签长按可删除</string>
     <string name="upload_img">正在上传图片</string>
+    <string name="select_type">选择分类</string>
+    <string name="preferences">设置</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="search_emoticons">搜索表情包</string>
+    <string name="add_emoticon">编辑表情包</string>
+    <string name="my_emoticon">我的表情包</string>
+    <string name="userName">用户名</string>
+    <string name="my_profile">我的资料</string>
+    <string name="search_emoticon">搜索表情</string>
+    <string name="label">标签</string>
+
 </resources>

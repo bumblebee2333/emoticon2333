@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/typeselect_unselect"
         android:padding="5dp"
-        android:text="选择分类"
+        android:text="@string/select_type"
         android:textColor="@color/colorBlue"
         android:textSize="12sp" />
 </LinearLayout>

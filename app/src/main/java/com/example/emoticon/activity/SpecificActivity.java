@@ -13,15 +13,16 @@ import android.widget.Toast;
 
 import com.example.common.widget.Toolbar;
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.common.base.BaseActivity;
 import com.example.emoticon.adapter.EmoticonTypeAdapter;
-import com.example.emoticon.model.Emoticon;
-import com.example.emoticon.model.EmoticonType;
-import com.example.emoticon.retrofit.EmoticonProtocol;
-import com.example.emoticon.retrofit.EmoticonTypeProtocol;
+import com.example.common.bean.Emoticon;
+import com.example.common.bean.EmoticonType;
+import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.utils.IntentUtil;
+import com.example.emoticon.widget.EmoticonLookDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,9 @@ public class SpecificActivity extends BaseActivity {
         getData();
     }
 
+    /**
+     * 获取Intent
+     */
     private void initIntent() {
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
@@ -73,7 +77,12 @@ public class SpecificActivity extends BaseActivity {
         if (type == SearchActivity.EMOTICON) {
             adapter = new EmoticonAdapter(list, gridLayoutManager);
             recyclerView.setAdapter(adapter);
-
+            adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+                    EmoticonLookDialog.newInstance(list.get(position).getImg_url()).show(getSupportFragmentManager(), "emoticon_look");
+                }
+            });
         }else {
             typeAdapter = new EmoticonTypeAdapter(typeList, gridLayoutManager);
             recyclerView.setAdapter(typeAdapter);
@@ -83,7 +92,7 @@ public class SpecificActivity extends BaseActivity {
                     Intent intent = new Intent(SpecificActivity.this,EmoticonAddActivity.class);
                     intent.putExtra("title",typeList.get(position).getTitle());
                     intent.putExtra("id",typeList.get(position).getId());
-                    intent.putExtra("addtype",addType);
+                    intent.putExtra("addType",addType);
                     setResult(Activity.RESULT_OK,intent);
                     finish();
                 }
@@ -134,7 +143,7 @@ public class SpecificActivity extends BaseActivity {
             }
 
             @Override
-            public void onFailure(Call<EmoticonType.EmoticonTypeList> call, Throwable t) {
+            public void onFailure(@NonNull Call<EmoticonType.EmoticonTypeList> call, @NonNull Throwable t) {
                 typeList.clear();
                 typeAdapter.notifyDataSetChanged();
 //                toastView.setText(R.string.connection_fail);
@@ -149,21 +158,21 @@ public class SpecificActivity extends BaseActivity {
         final Call<Emoticon> emoticonCall = emoticonProtocol.getEmoticonList(title, 30, 0);
         emoticonCall.enqueue(new Callback<Emoticon>() {
             @Override
-            public void onResponse(Call<Emoticon> call, Response<Emoticon> response) {
-                for (Emoticon.DataBean dataBean : response.body().getData()) {
-                    //System.out.println(dataBean.getImg_url());
-                    list.add(dataBean);
+            public void onResponse(@NonNull Call<Emoticon> call, @NonNull Response<Emoticon> response) {
+                //System.out.println(dataBean.getImg_url());
+                if (response.body() != null) {
+                    list.addAll(response.body().getData());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        adapter.notifyDataSetChanged();
-                    }
-                });
             }
 
             @Override
-            public void onFailure(Call<Emoticon> call, Throwable t) {
+            public void onFailure(@NonNull Call<Emoticon> call, @NonNull Throwable t) {
                 Toast.makeText(SpecificActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

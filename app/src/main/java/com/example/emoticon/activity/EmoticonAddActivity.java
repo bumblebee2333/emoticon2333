@@ -27,17 +27,17 @@ import com.cy.cyflowlayoutlibrary.FlowLayoutAdapter;
 import com.example.common.particlesmaster.ParticleSmasher;
 import com.example.common.particlesmaster.SmashAnimator;
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.adapter.LabelAdapter;
 import com.example.emoticon.app.Config;
 import com.example.common.base.BaseActivity;
-import com.example.emoticon.model.EmoticonType;
-import com.example.emoticon.model.Status;
-import com.example.emoticon.retrofit.EmoticonProtocol;
-import com.example.emoticon.retrofit.EmoticonTypeProtocol;
+import com.example.common.bean.EmoticonType;
+import com.example.common.bean.Status;
+import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.service.OssService;
 import com.example.emoticon.utils.HttpUtils;
-import com.example.emoticon.utils.UserManager;
+import com.example.common.utils.UserManager;
 import com.example.common.widget.Toolbar;
 
 import java.io.File;
@@ -89,29 +89,16 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
         smasher = new ParticleSmasher(this);
     }
 
+    /**
+     * FlowLayoutAdapter
+     * @return FlowLayoutAdapter
+     */
     private FlowLayoutAdapter<String> flowLayoutAdapter() {
        return new FlowLayoutAdapter<String>(list) {
             @Override
             public void bindDataToView(ViewHolder viewHolder, final int i, String s) {
                 viewHolder.setText(R.id.tv, "# "+s+" #");
-                viewHolder.setOnLongClickListener(R.id.tv, new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        if (i != 0) {
-                            smasher.with(v).setStyle(SmashAnimator.STYLE_DROP).addAnimatorListener(new SmashAnimator.OnAnimatorListener() {
-                                @Override
-                                public void onAnimatorEnd() {
-                                    super.onAnimatorEnd();
-                                    list.remove(i);
-                                    flowLayoutAdapter.notifyDataSetChanged();
-                                }
-                            }).start();
-                        }else {
-                            Toast.makeText(EmoticonAddActivity.this, getString(R.string.topic_toast_hint), Toast.LENGTH_SHORT).show();
-                        }
-                        return true;
-                    }
-                });
+                viewHolder.setOnLongClickListener(R.id.tv, flowLayoutOnLongClick(i));
                 viewHolder.setOnClickListener(R.id.tv, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -131,7 +118,29 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
             public int getItemLayoutID(int i, String s) {
                 return R.layout.flowlayout_item;
             }
+
+           private View.OnLongClickListener flowLayoutOnLongClick(final int i) {
+               return new View.OnLongClickListener() {
+                   @Override
+                   public boolean onLongClick(View v) {
+                       if (i != 0) {
+                           smasher.with(v).setStyle(SmashAnimator.STYLE_DROP).addAnimatorListener(new SmashAnimator.OnAnimatorListener() {
+                               @Override
+                               public void onAnimatorEnd() {
+                                   super.onAnimatorEnd();
+                                   list.remove(i);
+                                   flowLayoutAdapter.notifyDataSetChanged();
+                               }
+                           }).start();
+                       }else {
+                           Toast.makeText(EmoticonAddActivity.this, getString(R.string.topic_toast_hint), Toast.LENGTH_SHORT).show();
+                       }
+                       return true;
+                   }
+               };
+           }
         };
+
     }
 
     @Override
@@ -159,7 +168,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
     private void setType(Intent data) {
         type_title = data.getStringExtra("title");
         type_id = data.getIntExtra("id", 0);
-        addType = data.getBooleanExtra("addtype",false);
+        addType = data.getBooleanExtra("addType",false);
         type.setText(type_title);
         type.setTextColor(Color.WHITE);
         type.setBackgroundResource(R.drawable.typeselect_select);
@@ -244,11 +253,15 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
                     }
                 }
             });*/
-        } else if (null == imgPath) {
+        } else {
             Toast.makeText(this, "图片不能为空", Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * 创建分类
+     * @param url 图片链接
+     */
     private void addType(final String url) {
         progressDialog.setMessage("正在创建分类");
         Retrofit retrofit = RetroClient.getRetroClient();

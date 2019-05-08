@@ -27,12 +27,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.editmodule.activity.EditActivity;
 import com.example.emoticon.adapter.MainPageAdapter;
-import com.example.emoticon.model.Emoticon;
-import com.example.emoticon.model.EmoticonType;
-import com.example.emoticon.retrofit.EmoticonTypeProtocol;
+import com.example.common.bean.Emoticon;
+import com.example.common.bean.EmoticonType;
+import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.utils.ScreenUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -75,13 +75,13 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
         //mViewPager.setOffscreenPageLimit(4);//设置页面缓存的个数
         adapter = new MainPageAdapter(getChildFragmentManager());
 
-//        adapter.addFragment(GarfieldFragment.newInstance("加菲猫"));
-//        adapter.addFragment(GarfieldFragment.newInstance("权律二"));
-//        adapter.addFragment(GarfieldFragment.newInstance("皮卡丘"));
-//        adapter.addFragment(GarfieldFragment.newInstance("猫咪"));
-//        adapter.addFragment(GarfieldFragment.newInstance("假笑男孩"));
-//        adapter.addFragment(GarfieldFragment.newInstance("蜡笔小新"));
-//        adapter.addFragment(GarfieldFragment.newInstance("金馆长"));
+//        adapter.addFragment(DetailsFragment.newInstance("加菲猫"));
+//        adapter.addFragment(DetailsFragment.newInstance("权律二"));
+//        adapter.addFragment(DetailsFragment.newInstance("皮卡丘"));
+//        adapter.addFragment(DetailsFragment.newInstance("猫咪"));
+//        adapter.addFragment(DetailsFragment.newInstance("假笑男孩"));
+//        adapter.addFragment(DetailsFragment.newInstance("蜡笔小新"));
+//        adapter.addFragment(DetailsFragment.newInstance("金馆长"));
         getType();
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
@@ -106,7 +106,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
             public void onResponse(Call<EmoticonType.EmoticonTypeList> call, Response<EmoticonType.EmoticonTypeList> response) {
                 list.clear();
                 for (EmoticonType.DataBean dataBean : response.body().getDataList()) {
-                    adapter.addFragment(GarfieldFragment.newInstance(dataBean.getTitle(),dataBean.getId()));
+                    adapter.addFragment(DetailsFragment.newInstance(dataBean.getTitle(),dataBean.getId()));
                 }
                 adapter.notifyDataSetChanged();
             }

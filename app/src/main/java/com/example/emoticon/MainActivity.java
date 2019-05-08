@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -12,7 +13,11 @@ import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.example.common.base.BaseActivity;
@@ -26,12 +31,12 @@ import java.util.List;
 
 /**
  * Author: shuike,
- * Email: shuike007@126.com, 
+ * Email: shuike007@126.com,
  * Date: 2019/3/24.
- * PS: 
+ * PS:
  */
 
-public class MainActivity extends BaseActivity implements BottomNavigationView.
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.
         OnNavigationItemSelectedListener {
     private static final int PERMISSION_REQUEST_CODE = 1; //权限请求码
     private List<Fragment> fragments = new ArrayList<>();//fragment数组
@@ -42,7 +47,25 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//23表示5.0
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && Build.VERSION.SDK_INT <= 22) {
+            getWindow().setStatusBarColor(getResources().getColor(com.example.common.R.color.colorBlack));
+            //getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+        View view = LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+        //顶部添加状态栏高度的padding
+        setTopPadding(view);
+        //设置布局
+        setContentView(view);
         /*if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             getWindow().setStatusBarColor(Color.parseColor("#FFFF00"));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -53,6 +76,15 @@ public class MainActivity extends BaseActivity implements BottomNavigationView.
         initPermission();
         initFragments();//初始化Fragment数组
         setFragmentPosition(0);//显示第一个Fragment
+    }
+
+    private void setTopPadding(View view) {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+            view.setPadding(0, result, 0, 0);
+        }
     }
 
     //权限

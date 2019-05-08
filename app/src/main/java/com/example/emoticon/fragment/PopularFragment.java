@@ -13,11 +13,11 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.emoticon.R;
-import com.example.emoticon.RetroClient;
+import com.example.common.RetroClient;
 import com.example.emoticon.activity.EmoticonTypeActivity;
 import com.example.emoticon.adapter.EmoticonTypeAdapter;
-import com.example.emoticon.model.EmoticonType;
-import com.example.emoticon.retrofit.EmoticonTypeProtocol;
+import com.example.common.bean.EmoticonType;
+import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.emoticon.viewHolder.BannerViewHolder;
 import com.zhouwei.mzbanner.MZBannerView;
 import com.zhouwei.mzbanner.holder.MZHolderCreator;
@@ -53,14 +53,14 @@ public class PopularFragment extends Fragment implements SwipeRefreshLayout.OnRe
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
         adapter = new EmoticonTypeAdapter(list, gridLayoutManager);
-        final RecyclerView recyclerView = view.findViewById(R.id.recyclerview);
+        final RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         //解决数据加载完成后, 没有停留在顶部的问题
         recyclerView.setFocusable(false);
 
 
-        swipeRefreshLayout = view.findViewById(R.id.swiperefreshlayout);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlue));
