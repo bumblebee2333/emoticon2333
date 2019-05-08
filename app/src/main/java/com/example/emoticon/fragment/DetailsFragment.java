@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.emoticon.R;
@@ -60,15 +61,13 @@ public class DetailsFragment extends Fragment {
         final Call<Emoticon> emoticonCall = emoticonProtocol.getEmoticonList(getArguments().getInt("id"), 30, 0);
         emoticonCall.enqueue(new Callback<Emoticon>() {
             @Override
-            public void onResponse(Call<Emoticon> call, Response<Emoticon> response) {
-                for (Emoticon.DataBean dataBean : response.body().getData()) {
-                    list.add(dataBean);
-                }
+            public void onResponse(@NonNull Call<Emoticon> call, @NonNull Response<Emoticon> response) {
+                list.addAll(response.body().getData());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<Emoticon> call, Throwable t) {
+            public void onFailure(@NonNull Call<Emoticon> call, @NonNull Throwable t) {
                 Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -102,6 +101,7 @@ public class DetailsFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), EditActivity.class);
                 String image = list.get(position).getImg_url() + ImageUtils.gifToJpg;
                 intent.putExtra("picture", image);
+                intent.putExtra("bitmap", adapter.getBitMap(position));
                 startActivity(intent);
             }
         });
