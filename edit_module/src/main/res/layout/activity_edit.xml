@@ -58,24 +58,24 @@
 
     </RelativeLayout>
 
-    <HorizontalScrollView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:scrollbars="none">
+    <!--<HorizontalScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="50dp"-->
+        <!--android:scrollbars="none">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:orientation="horizontal">-->
 
-            <View
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="10dp"
-                android:background="@color/colorBlack" />
+            <!--<View-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_marginRight="10dp"-->
+                <!--android:background="@color/colorBlack" />-->
 
-        </LinearLayout>
-    </HorizontalScrollView>
+        <!--</LinearLayout>-->
+    <!--</HorizontalScrollView>-->
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottomNavigation_paint"
