@@ -7,4 +7,22 @@
         <!--背景透明 突然dialog没有了padding 不知道为啥 神奇-->
         <item name="android:backgroundDimEnabled">false</item> <!--模糊 黑色背景消失-->
     </style>
+
+    <style name="dialog_colorpicker" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--背景透明 突然dialog没有了padding 不知道为啥 神奇-->
+        <item name="android:backgroundDimEnabled">false</item> <!--模糊 黑色背景消失-->
+    </style>
+
+    <style name="dialog_cancle" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowFrame">@null</item><!--边框-->
+        <item name="android:windowIsFloating">true</item><!--是否浮现在activity之上-->
+        <item name="android:windowIsTranslucent">false</item><!--半透明-->
+        <item name="android:windowBackground">@android:color/white</item>
+        <!--背景透明 突然dialog没有了padding 不知道为啥 神奇-->
+        <!--<item name="android:backgroundDimEnabled">true</item> &lt;!&ndash;模糊 黑色背景消失&ndash;&gt;-->
+    </style>
 </resources>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="200dp">
+
+    <TextView
+        android:id="@+id/tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:text="提示"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"/>
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="是否放弃制作表情"
+        android:layout_below="@+id/tip"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/abandon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="放弃"
+        android:layout_below="@+id/text"
+        android:layout_marginTop="34dp"
+        android:layout_marginLeft="140dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
+
+    <TextView
+        android:id="@+id/make"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="继续制作"
+        android:layout_below="@+id/text"
+        android:layout_toRightOf="@+id/abandon"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="34dp"
+        android:textSize="16sp"
+        android:textColor="@color/colorAccent"/>
+
+</RelativeLayout>
