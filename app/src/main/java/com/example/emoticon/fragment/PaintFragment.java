@@ -2,8 +2,6 @@ package com.example.emoticon.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
-
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -21,18 +19,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.emoticon.R;
 import com.example.common.RetroClient;
-import com.example.emoticon.editmodule.activity.EditActivity;
-import com.example.emoticon.adapter.MainPageAdapter;
 import com.example.common.bean.Emoticon;
 import com.example.common.bean.EmoticonType;
 import com.example.common.retrofit.EmoticonTypeProtocol;
+import com.example.common.utils.ToastUtils;
+import com.example.common.widget.Toolbar;
+import com.example.emoticon.R;
+import com.example.emoticon.adapter.MainPageAdapter;
+import com.example.emoticon.editmodule.activity.EditActivity;
 import com.example.emoticon.utils.ScreenUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -42,12 +40,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class PaintFragment extends Fragment implements View.OnClickListener {
-    private List<Emoticon.DataBean> list = new ArrayList<>();
-    private PopupWindow mPopuWindow;
-    private ImageView camera;
+    private List<Emoticon> list = new ArrayList<>();
     private static final int PHOTO_REQUEST_CAREMA = 1;// 拍照
     private static final int PHOTO_REQUEST_GALLERY = 2;// 从相册中选择
 
@@ -70,40 +65,37 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.paint_fragment,container,false);
 
-        mTabLayout = view.findViewById(R.id.tablayout_paint);
+        mTabLayout = view.findViewById(R.id.tabLayout);
         mViewPager = view.findViewById(R.id.viewPager_paint);
         //mViewPager.setOffscreenPageLimit(4);//设置页面缓存的个数
         adapter = new MainPageAdapter(getChildFragmentManager());
 
-//        adapter.addFragment(DetailsFragment.newInstance("加菲猫"));
-//        adapter.addFragment(DetailsFragment.newInstance("权律二"));
-//        adapter.addFragment(DetailsFragment.newInstance("皮卡丘"));
-//        adapter.addFragment(DetailsFragment.newInstance("猫咪"));
-//        adapter.addFragment(DetailsFragment.newInstance("假笑男孩"));
-//        adapter.addFragment(DetailsFragment.newInstance("蜡笔小新"));
-//        adapter.addFragment(DetailsFragment.newInstance("金馆长"));
         getType();
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        camera = view.findViewById(R.id.camera);
-        camera.setOnClickListener(new View.OnClickListener() {
+        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        toolbar.right1.setVisibility(View.VISIBLE);
+        toolbar.right1.setImageResource(R.drawable.cam);
+        toolbar.right1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 showPopuWindow();
             }
         });
+        toolbar.setTitle("涂鸦");
+
         return view;
     }
 
     private void getType() {
 
-        Retrofit retrofit = RetroClient.getRetroClient();
-        EmoticonTypeProtocol emoticonProtocol = retrofit.create(EmoticonTypeProtocol.class);
+
+        EmoticonTypeProtocol emoticonProtocol = RetroClient.getServices(EmoticonTypeProtocol.class);
         final Call<EmoticonType.EmoticonTypeList> emoticonCall = emoticonProtocol.getEmoticonTypeList(30, 0);
         emoticonCall.enqueue(new Callback<EmoticonType.EmoticonTypeList>() {
             @Override
-            public void onResponse(Call<EmoticonType.EmoticonTypeList> call, Response<EmoticonType.EmoticonTypeList> response) {
+            public void onResponse(@NonNull Call<EmoticonType.EmoticonTypeList> call, @NonNull Response<EmoticonType.EmoticonTypeList> response) {
                 list.clear();
                 for (EmoticonType.DataBean dataBean : response.body().getDataList()) {
                     adapter.addFragment(DetailsFragment.newInstance(dataBean.getTitle(),dataBean.getId()));
@@ -113,7 +105,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFailure(Call<EmoticonType.EmoticonTypeList> call, Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(t.getMessage());
 //                swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -121,8 +113,8 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
 
     private void showPopuWindow(){
         View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.layout_populsindow,null);
-        mPopuWindow = new PopupWindow(contentView,ViewGroup.LayoutParams.WRAP_CONTENT,
-                RecyclerView.LayoutParams.WRAP_CONTENT,true);
+        PopupWindow mPopuWindow = new PopupWindow(contentView, ViewGroup.LayoutParams.WRAP_CONTENT,
+                RecyclerView.LayoutParams.WRAP_CONTENT, true);
         mPopuWindow.setContentView(contentView);
         backgroundAlpha(0.3f);
 
@@ -184,7 +176,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
             startActivityForResult(intent,PHOTO_REQUEST_CAREMA);
         }
         else {
-            Toast.makeText(getActivity(),"内存不可用",Toast.LENGTH_LONG).show();
+            ToastUtils.showToast("内存不可用");
         }
     }
 
@@ -252,7 +244,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
             intent.putExtra("bitmap",bitmapByte);
             startActivity(intent);
         }else {
-            Toast.makeText(getActivity(),"图片加载失败！！！",Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast("图片加载失败！！！");
         }
     }
 

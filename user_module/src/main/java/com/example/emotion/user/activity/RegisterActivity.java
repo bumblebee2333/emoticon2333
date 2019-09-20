@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.common.RetroClient;
 import com.example.common.base.BaseActivity;
+import com.example.common.utils.ToastUtils;
 import com.example.common.utils.Utils;
 import com.example.common.widget.Toolbar;
 import com.example.emotion.user.R;
@@ -64,13 +65,13 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         if (v.getId() == R.id.register) {
             if (TextUtils.isEmpty(email.getText().toString()) | TextUtils.isEmpty(name.getText().toString())
                     | TextUtils.isEmpty(pwdagain.getText().toString()) | TextUtils.isEmpty(pwd.getText().toString())) {
-                Toast.makeText(this, "不能有空内容", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast("不能有空内容");
                 return;
             } else if (!Utils.isEmail(email.getText().toString())) {
-                Toast.makeText(this, "邮箱不合法", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast("邮箱不合法");
                 return;
             } else if (!pwd.getText().toString().equals(pwdagain.getText().toString())) {
-                Toast.makeText(this, "两次密码不相同", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast("两次密码不相同");
                 return;
             }
             register();
@@ -91,7 +92,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 if (response.body() != null) {
                     JsonObject jsonObject = response.body();
                     String s = jsonObject.get("msg").getAsString();
-                    Toast.makeText(RegisterActivity.this, s, Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast(s);
                     if (jsonObject.get("status").getAsInt() == 200) {
 
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
@@ -103,7 +104,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast(t.getMessage());
             }
         });
     }

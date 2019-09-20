@@ -3,26 +3,20 @@ package com.example.emoticon.widget;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.emoticon.R;
-import com.example.emoticon.activity.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.view.ViewGroup.LayoutParams.*;
-
-public class
-FlowLayout extends ViewGroup{
+public class FlowLayout extends LinearLayout {
 
     private OnTabClickListener mOnTabClickListener;
     private OnTabLongClickListener mOnTabLongClickListener;
@@ -159,7 +153,7 @@ FlowLayout extends ViewGroup{
     // 与当前ViewGroup对应的LayoutParams
     @Override
     public LayoutParams generateLayoutParams(AttributeSet attrs) {
-        return new MarginLayoutParams(getContext(), attrs);
+        return (LayoutParams) new MarginLayoutParams(getContext(), attrs);
     }
 
     @SuppressLint("NewApi")

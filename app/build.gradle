@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     defaultConfig {
@@ -23,6 +25,7 @@ dependencies {
     implementation project(':lib_common')
     implementation project(':edit_module')
     implementation project(':user_module')
-
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation project(path: ':imagepicker')
 }

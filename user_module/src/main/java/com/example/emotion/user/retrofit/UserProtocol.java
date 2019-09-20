@@ -1,8 +1,11 @@
 package com.example.emotion.user.retrofit;
 
+import com.example.common.bean.StatusResult;
 import com.example.common.bean.User;
 import com.example.common.bean.Emoticon;
 import com.google.gson.JsonObject;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -29,8 +32,7 @@ public interface UserProtocol {
     @POST("v1/user/login")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
     @FormUrlEncoded
-    Call<User> login(@Field("email") String email, @Field("pwd") String pwd);
-
+    Call<StatusResult<User>> login(@Field("account") String email, @Field("sessionKey") String pwd, @Field("device") String device);
 
     /**
      * 注册请求
@@ -52,6 +54,15 @@ public interface UserProtocol {
      * @return 返回 Emoticon
      */
     @GET("v1/user/emoticon")
-    Call<Emoticon> getEmoticonList(@Query("uid") int id, @Query("limit") int limit, @Query("skip") int skip);
+    Call<StatusResult<List<Emoticon>>> getEmoticonList(@Query("uid") int id, @Query("limit") int limit, @Query("skip") int skip);
+
+    /**
+     * 用ID和Token获取用户信息
+     * @param id
+     * @param token
+     * @return
+     */
+    @GET("v1/user/info")
+    Call<StatusResult<User>> getUserInfo(@Query("id") int id, @Query("token") String token);
 
 }

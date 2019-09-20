@@ -2,7 +2,9 @@ package com.example.common.retrofit;
 
 
 import com.example.common.bean.Emoticon;
-import com.example.common.bean.Status;
+import com.example.common.bean.StatusResult;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -28,7 +30,7 @@ public interface EmoticonProtocol {
      * @return 返回 Emoticon
      */
     @GET("v1/emoticon/type")
-    Call<Emoticon> getEmoticonList(@Query("id") int id, @Query("limit") int limit, @Query("skip") int skip);
+    Call<StatusResult<List<Emoticon>>> getEmoticonList(@Query("id") int id, @Query("limit") int limit, @Query("skip") int skip);
 
 
     /**
@@ -39,7 +41,7 @@ public interface EmoticonProtocol {
      * @return 返回 Emoticon
      */
     @GET("v1/emoticon/label")
-    Call<Emoticon> getEmoticonList(@Query("key") String key, @Query("limit") int limit, @Query("skip") int skip);
+    Call<StatusResult<List<Emoticon>>> getEmoticonList(@Query("key") String key, @Query("limit") int limit, @Query("skip") int skip);
 
 
     /**
@@ -49,20 +51,29 @@ public interface EmoticonProtocol {
      * @return 返回 Emoticon
      */
     @GET("v1/emoticon/all")
-    Call<Emoticon> getEmoticonList(@Query("limit") int limit, @Query("skip") int skip);
+    Call<StatusResult<List<Emoticon>>> getEmoticonList(@Query("limit") int limit, @Query("skip") int skip);
 
 
     /**
      * 提交表情
      * @param token 用户Token
-     * @param typeId 分类Id
-     * @param url 图片地址
-     * @param label 标签
-     * @return 返回 Status
+     * @param data 提交的数据
+     * @return 返回
      */
     @POST("v1/emoticon/add")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8") //添加
     @FormUrlEncoded
-    Call<Status> addEmoticon(@Field("token") String token, @Field("typeId") int typeId, @Field("url") String url, @Field("label") String label);
+    Call<StatusResult<String>> addEmoticon(@Field("token") String token, @Field("data") String data);
+
+    /**
+     *
+     * @param token 用户Token
+     * @param id 表情ID
+     * @return　状态
+     */
+    @POST("v1/emoticon/delete")
+    @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8") //添加
+    @FormUrlEncoded
+    Call<StatusResult> deleteEmoticon(@Field("token") String token, @Field("id") int id);
 
 }

@@ -144,6 +144,8 @@ public class EmoticonType implements Serializable {
         private String icon;
         private int emoticon_num;
         private int follow_num;
+        private List<Emoticon> emoticons;
+
 
         public int getId() {
             return id;
@@ -183,6 +185,14 @@ public class EmoticonType implements Serializable {
 
         public void setFollow_num(int follow_num) {
             this.follow_num = follow_num;
+        }
+
+        public List<Emoticon> getEmoticons() {
+            return emoticons;
+        }
+
+        public void setEmoticons(List<Emoticon> emoticons) {
+            this.emoticons = emoticons;
         }
     }
 }

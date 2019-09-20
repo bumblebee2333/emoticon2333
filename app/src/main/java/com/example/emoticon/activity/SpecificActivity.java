@@ -9,18 +9,21 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.common.widget.Toolbar;
-import com.example.emoticon.R;
 import com.example.common.RetroClient;
-import com.example.emoticon.adapter.EmoticonAdapter;
+import com.example.common.app.ResourcesManager;
 import com.example.common.base.BaseActivity;
-import com.example.emoticon.adapter.EmoticonTypeAdapter;
 import com.example.common.bean.Emoticon;
 import com.example.common.bean.EmoticonType;
+import com.example.common.bean.StatusResult;
 import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.retrofit.EmoticonTypeProtocol;
+import com.example.common.utils.HttpUtils;
+import com.example.common.utils.ToastUtils;
+import com.example.common.widget.Toolbar;
+import com.example.emoticon.R;
+import com.example.emoticon.adapter.EmoticonAdapter;
+import com.example.emoticon.adapter.EmoticonTypeAdapter;
 import com.example.emoticon.utils.IntentUtil;
 import com.example.emoticon.widget.EmoticonLookDialog;
 
@@ -32,18 +35,17 @@ import butterknife.ButterKnife;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class SpecificActivity extends BaseActivity {
     private String title;//SearchActivity传递的表情标类型名称
     private int type;//SearchActivity传递的搜索类型
-    @BindView(R.id.toolBar)
+    @BindView(R.id.toolbar)
     public Toolbar toolbar;
 
     @BindView(R.id.recyclerview_specific)
     public RecyclerView recyclerView;
 
-    private List<Emoticon.DataBean> list = new ArrayList<>();
+    private List<Emoticon> list = new ArrayList<>();
     private List<EmoticonType.DataBean> typeList = new ArrayList<>();
 
     private EmoticonAdapter adapter;
@@ -80,7 +82,7 @@ public class SpecificActivity extends BaseActivity {
             adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    EmoticonLookDialog.newInstance(list.get(position).getImg_url()).show(getSupportFragmentManager(), "emoticon_look");
+                    EmoticonLookDialog.newInstance(list.get(position).getImgUrl()).show(getSupportFragmentManager(), "emoticon_look");
                 }
             });
         }else {
@@ -110,8 +112,8 @@ public class SpecificActivity extends BaseActivity {
     }
 
     private void getEmoticonType() {
-        Retrofit retrofit = RetroClient.getRetroClient();
-        EmoticonTypeProtocol emoticonTypeProtocol = retrofit.create(EmoticonTypeProtocol.class);
+
+        EmoticonTypeProtocol emoticonTypeProtocol = RetroClient.getServices(EmoticonTypeProtocol.class);
         Call<EmoticonType.EmoticonTypeList> l = emoticonTypeProtocol.getEmoticonTypeList(title, 10, 0);
         l.enqueue(new Callback<EmoticonType.EmoticonTypeList>() {
             @Override
@@ -153,13 +155,29 @@ public class SpecificActivity extends BaseActivity {
     }
 
     private void getEmoticon() {
-        Retrofit retrofit = RetroClient.getRetroClient();
-        EmoticonProtocol emoticonProtocol = retrofit.create(EmoticonProtocol.class);
-        final Call<Emoticon> emoticonCall = emoticonProtocol.getEmoticonList(title, 30, 0);
-        emoticonCall.enqueue(new Callback<Emoticon>() {
+
+        EmoticonProtocol emoticonProtocol = RetroClient.getServices(EmoticonProtocol.class);
+        final Call<StatusResult<List<Emoticon>>> emoticonCall = emoticonProtocol.getEmoticonList(title, 30, 0);
+
+        HttpUtils.doRequest(emoticonCall, new HttpUtils.RequestFinishCallback<List<Emoticon>>() {
+            @Override
+            public void getRequest(StatusResult<List<Emoticon>> result) {
+                if (result == null) return;
+                if (!result.isSuccess()) {
+                    String str = ResourcesManager.getRes().getString(com.example.emotion.user.R.string.request_error, result.getMsg());
+                    ToastUtils.showToast(str);
+                    return;
+                }
+                if (result.getData() != null) {
+                    list.addAll(result.getData());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+/*        emoticonCall.enqueue(new Callback<Emoticon>() {
             @Override
             public void onResponse(@NonNull Call<Emoticon> call, @NonNull Response<Emoticon> response) {
-                //System.out.println(dataBean.getImg_url());
+                //System.out.println(dataBean.getImgUrl());
                 if (response.body() != null) {
                     list.addAll(response.body().getData());
                     runOnUiThread(new Runnable() {
@@ -175,7 +193,7 @@ public class SpecificActivity extends BaseActivity {
             public void onFailure(@NonNull Call<Emoticon> call, @NonNull Throwable t) {
                 Toast.makeText(SpecificActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     public static void startActivity(Context context, String title, int type){

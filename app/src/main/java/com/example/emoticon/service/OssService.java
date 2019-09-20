@@ -1,7 +1,6 @@
 package com.example.emoticon.service;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -15,7 +14,10 @@ import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
-import com.example.emoticon.app.Config;
+import com.example.common.app.Config;
+import com.example.common.utils.ToastUtils;
+
+import java.util.List;
 
 public class OssService {
 
@@ -33,7 +35,7 @@ public class OssService {
 
     public void initOSSClient() {
         //OSSAuthCredentialsProvider类的值为服务端链接
-        OSSCredentialProvider credentialProvider = new OSSAuthCredentialsProvider(Config.stsServer);
+        OSSCredentialProvider credentialProvider = new OSSAuthCredentialsProvider(Config.STS_SERVER);
         ClientConfiguration conf = new ClientConfiguration();
         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
         conf.setSocketTimeout(15 * 1000); // socket超时，默认15秒
@@ -44,17 +46,17 @@ public class OssService {
     }
 
     public void imageUpload(Context context, String filename, String path) {
-        final String url = Config.IMGHOST +filename;//拼接图片链接，之后提交时会用到
+        final String url = Config.IMG_HOST +filename;//拼接图片链接，之后提交时会用到
         //objectName为oss对象名
         String objectName = filename;
         if (objectName == null || objectName.equals("")) {
-            Toast.makeText(context, "文件名不能为空", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast("文件名不能为空");
             return;
         }
         //下面3个参数依次为bucket名，Object名，上传文件路径
         PutObjectRequest put = new PutObjectRequest(bucketName, objectName, path);
         if (path == null || path.equals("")) {
-            Toast.makeText(context, "请选择图片....", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast("请选择图片....");
             return;
         }
 
@@ -103,6 +105,10 @@ public class OssService {
 
     public interface ProgressCallback {
         void onProgressCallback(double progress,String url);
+    }
+    public interface FinishCallback {
+        void onFinish(List<String> urls);
+        void onProgressCallback(double progress,int position);
     }
 
 }

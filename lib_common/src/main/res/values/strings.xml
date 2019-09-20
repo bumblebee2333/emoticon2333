@@ -2,4 +2,6 @@
     <string name="cancel">取消</string>
     <string name="search">搜索</string>
     <string name="emoticon_search">表情包搜索</string>
+    <string name="server_error">啊哦，你的网络好像出问题了。。。</string>
+    <string name="request_error">请求错误: %s</string>
 </resources>

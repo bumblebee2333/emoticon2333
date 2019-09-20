@@ -5,29 +5,38 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
-import com.example.common.base.BaseActivity;
+import com.example.common.RetroClient;
+import com.example.common.bean.StatusResult;
+import com.example.common.bean.User;
+import com.example.common.fragment.MAlertDialog;
+import com.example.common.utils.ToastUtils;
+import com.example.common.utils.UserManager;
+import com.example.emoticon.activity.EmoticonAddActivity;
 import com.example.emoticon.fragment.CreativeFragment;
 import com.example.emoticon.fragment.EmoticonFragment;
-import com.example.emoticon.fragment.PersonFragment;
 import com.example.emoticon.fragment.PaintFragment;
+import com.example.emoticon.fragment.PersonFragment;
+import com.example.emotion.user.retrofit.UserProtocol;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Author: shuike,
@@ -43,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private int lastShowFragment;//表示最后一个显示的Fragment
     int lastIndex = 0;
     private long pressTime = 0;
+    private boolean userHintIsShow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +71,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
-        View view = LayoutInflater.from(this).inflate(R.layout.activity_main, null);
+//        View view = LayoutInflater.from(this).inflate(R.layout.activity_main, null);
         //顶部添加状态栏高度的padding
-        setTopPadding(view);
+//        setTopPadding(view);
         //设置布局
-        setContentView(view);
+        setContentView(R.layout.activity_main);
         /*if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
             getWindow().setStatusBarColor(Color.parseColor("#FFFF00"));
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }*/
+        View addView = findViewById(R.id.add_view);
+        addView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EmoticonAddActivity.startActivity(MainActivity.this);
+            }
+        });
         BottomNavigationView navigation = findViewById(R.id.bottomNavigation);
         //底部导航栏的点击事件
         navigation.setOnNavigationItemSelectedListener(this);
@@ -119,18 +136,66 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (menuItem.getItemId()) {
             case R.id.navigation_emoticon:
                 setFragmentPosition(0);
+//                findViewById(R.id.bg).setFitsSystemWindows(true);
                 return true;
             case R.id.navigation_diy:
+//                findViewById(R.id.bg).setFitsSystemWindows(true);
                 setFragmentPosition(1);
                 return true;
             case R.id.navigation_paint:
+//                findViewById(R.id.bg).setFitsSystemWindows(true);
                 setFragmentPosition(2);
                 return true;
             case R.id.navigation_my:
+//                findViewById(R.id.bg).setFitsSystemWindows(false);
                 setFragmentPosition(3);
                 return true;
         }
         return false;
+    }
+
+    @Override
+    protected void onResume() {
+        final User user = UserManager.getUser();
+        if (user != null) {
+
+            UserProtocol userProtocol = RetroClient.getServices(UserProtocol.class);
+            Call<StatusResult<User>> userInfo = userProtocol.getUserInfo(user.getId(), user.getToken());
+            userInfo.enqueue(new Callback<StatusResult<User>>() {
+                @Override
+                public void onResponse(Call<StatusResult<User>> call, Response<StatusResult<User>> response) {
+                    if (response.body() != null) {
+                        if (response.body().getStatus() == 200) {
+//                            Toast.makeText(MainActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            if (userHintIsShow) return;
+                            String device = response.body().getData().getDevice();
+                            String time = response.body().getData().getUpdateTime();
+                            MAlertDialog mAlertDialog = MAlertDialog.newInstance();
+                            mAlertDialog.setMessage("你的账号于("+time+")在另一台设备("+device+")登录。如非本人操作，则密码可能已泄露，请尽快修改密码");
+                            mAlertDialog.setCancelable(false);
+//                            mAlertDialog.setNegativeButton("取消", null);
+                            mAlertDialog.setPositiveButton("确认", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    UserManager.logout();
+                                    userHintIsShow = false;
+                                }
+                            });
+                            mAlertDialog.show(getSupportFragmentManager(), "logoutHint");
+                            userHintIsShow = true;
+                            //Toast.makeText(MainActivity.this, "该账户已在其他设备登录", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<StatusResult<User>> call, Throwable t) {
+
+                }
+            });
+        }
+        super.onResume();
     }
 
     //双击返回键退出
@@ -138,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public void onBackPressed() {
         long time = System.currentTimeMillis();
         if ((time - pressTime) > 2000) {
-            Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast("再按一次退出程序");
             pressTime = time;
         } else {
             finish();
@@ -162,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 //                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
 //                    PERMISSION_REQUEST_CODE);
             if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                Toast.makeText(this, "需要开启存储权限", Toast.LENGTH_SHORT).show();
+                ToastUtils.showToast("需要开启存储权限");
                 showRequestPermissionDialog(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 
             } else {
@@ -204,10 +269,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 if (grantResults.length > 0 &&
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //得到了授权
-                    Toast.makeText(this, "授权成功", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast("授权成功");
                 } else {
                     //未授权
-                    Toast.makeText(this, "授权失败", Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast("授权失败");
                 }
                 break;
             default:

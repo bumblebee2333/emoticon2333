@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.common.R;
+import com.example.common.utils.DensityUtil;
 
 
 public class Toolbar extends LinearLayout implements View.OnClickListener {
@@ -45,15 +46,22 @@ public class Toolbar extends LinearLayout implements View.OnClickListener {
 
         TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.Toolbar);
         boolean line = array.getBoolean(R.styleable.Toolbar_line, true);
+        boolean back_visibility = array.getBoolean(R.styleable.Toolbar_back_visibility, true);
         View view = LayoutInflater.from(getContext()).inflate(R.layout.widget_toolbar, this, false);
         addView(view);
-        View lineView = findViewById(R.id.line);
-        lineView.setVisibility(line?VISIBLE:GONE);
         title = findViewById(R.id.title);
         right1 = findViewById(R.id.right1);
         right2 = findViewById(R.id.right2);
         back = findViewById(R.id.back);
         back.setOnClickListener(this);
+
+
+        View lineView = findViewById(R.id.line);
+        lineView.setVisibility(line?VISIBLE:GONE);
+        back.setVisibility(back_visibility?VISIBLE:GONE);
+        int left = line?0: DensityUtil.dp2px(10);
+        title.setPadding(left,0,0,0);
+
         if (((Activity) getContext()).getTitle() != null) {//判断该Activity标题是否为空，不为空设置到标题
             title.setText(((Activity) getContext()).getTitle());
         }

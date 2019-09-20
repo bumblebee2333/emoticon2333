@@ -10,27 +10,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.example.emoticon.R;
 import com.example.common.RetroClient;
-import com.example.emoticon.editmodule.activity.EditActivity;
-import com.example.emoticon.adapter.EmoticonAdapter;
+import com.example.common.app.ResourcesManager;
 import com.example.common.bean.Emoticon;
+import com.example.common.bean.StatusResult;
 import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ImageUtils;
+import com.example.common.utils.ToastUtils;
+import com.example.emoticon.R;
+import com.example.emoticon.adapter.EmoticonAdapter;
+import com.example.emoticon.editmodule.activity.EditActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class DetailsFragment extends Fragment {
-    private List<Emoticon.DataBean> list = new ArrayList<>();
+    private List<Emoticon> list = new ArrayList<>();
     private EmoticonAdapter adapter;
     public RecyclerView recyclerView;
 
@@ -56,29 +55,44 @@ public class DetailsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        Retrofit retrofit = RetroClient.getRetroClient();
-        EmoticonProtocol emoticonProtocol = retrofit.create(EmoticonProtocol.class);
-        final Call<Emoticon> emoticonCall = emoticonProtocol.getEmoticonList(getArguments().getInt("id"), 30, 0);
-        emoticonCall.enqueue(new Callback<Emoticon>() {
-            @Override
-            public void onResponse(@NonNull Call<Emoticon> call, @NonNull Response<Emoticon> response) {
-                list.addAll(response.body().getData());
-                adapter.notifyDataSetChanged();
-            }
 
+        EmoticonProtocol emoticonProtocol = RetroClient.getServices(EmoticonProtocol.class);
+        final Call<StatusResult<List<Emoticon>>> emoticonCall = emoticonProtocol.getEmoticonList(getArguments().getInt("id"), 30, 0);
+        HttpUtils.doRequest(emoticonCall, new HttpUtils.RequestFinishCallback<List<Emoticon>>() {
             @Override
-            public void onFailure(@NonNull Call<Emoticon> call, @NonNull Throwable t) {
-                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void getRequest(StatusResult<List<Emoticon>> result) {
+                if (result == null) return;
+                if (!result.isSuccess()) {
+                    String str = ResourcesManager.getRes().getString(com.example.emotion.user.R.string.request_error, result.getMsg());
+                    ToastUtils.showToast(str);
+                    return;
+                }
+                if (result.getData() != null) {
+                    list.addAll(result.getData());
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
+//        emoticonCall.enqueue(new Callback<Emoticon>() {
+//            @Override
+//            public void onResponse(@NonNull Call<Emoticon> call, @NonNull Response<Emoticon> response) {
+//                list.addAll(response.body().getData());
+//                adapter.notifyDataSetChanged();
+//            }
 //
-//        Retrofit retrofit = RetroClient.getRetroClient();
-//        EmoticonTypeProtocol emoticonProtocol = retrofit.create(EmoticonTypeProtocol.class);
+//            @Override
+//            public void onFailure(@NonNull Call<Emoticon> call, @NonNull Throwable t) {
+//                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//
+//
+//        EmoticonTypeProtocol emoticonProtocol = RetroClient.getServices(EmoticonTypeProtocol.class);
 //        final Call<Emoticon> emoticonCall = emoticonProtocol.getEmoticonList(getArguments().getInt("id"),30, 0);
 //        emoticonCall.enqueue(new Callback<Emoticon>() {
 //            @Override
 //            public void onResponse(Call<Emoticon> call, Response<Emoticon> response) {
-//                for (Emoticon.DataBean dataBean : response.body().getData()) {
+//                for (Emoticon dataBean : response.body().getData()) {
 //                    list.add(dataBean);
 //                }
 //                getActivity().runOnUiThread(new Runnable() {
@@ -99,7 +113,7 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), EditActivity.class);
-                String image = list.get(position).getImg_url() + ImageUtils.gifToJpg;
+                String image = list.get(position).getImgUrl() + ImageUtils.gifToJpg;
                 intent.putExtra("picture", image);
                 intent.putExtra("bitmap", adapter.getBitMap(position));
                 startActivity(intent);
