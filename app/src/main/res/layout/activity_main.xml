@@ -2,28 +2,59 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bg"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:fitsSystemWindows="true"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <FrameLayout
+    <com.example.common.widget.WindowInsetsFrameLayout
         android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:background="@color/colorPrimary" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom"
-        android:background="?android:attr/windowBackground"
-        app:itemHorizontalTranslationEnabled="false"
-        app:itemIconTint="@drawable/bottom_navigation"
-        app:itemTextColor="@drawable/bottom_navigation"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/navigation" />
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.BottomNavigationView
+                android:id="@+id/bottomNavigation"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                app:elevation="10dp"
+                app:itemBackground="?android:attr/windowBackground"
+                app:itemHorizontalTranslationEnabled="false"
+                app:itemIconTint="@drawable/bottom_navigation"
+                app:itemTextColor="@drawable/bottom_navigation"
+                app:labelVisibilityMode="labeled"
+                app:menu="@menu/navigation" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/add_view"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:background="@drawable/bt_bg"
+                android:gravity="center">
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/add" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

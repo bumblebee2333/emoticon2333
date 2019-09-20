@@ -5,8 +5,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.example.emoticon.MainActivity;
 import com.example.common.base.BaseActivity;
+import com.example.emoticon.MainActivity;
 
 public class SplashActivity extends BaseActivity {
     @Override

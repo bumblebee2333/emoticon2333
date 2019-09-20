@@ -1,12 +1,13 @@
 
 buildscript {
-
+    ext.kotlin_version = '1.3.50'
     repositories {
         google()
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0'
+        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
 
@@ -16,6 +17,9 @@ allprojects {
         maven{ url 'https://maven.aliyun.com/repository/jcenter'}
         maven { url "http://lib.gcssloop.com/repository/gcssloop-central/" }
         maven {url"https://jitpack.io"}
+
+        google()
+        jcenter()
     }
 }
 ext {

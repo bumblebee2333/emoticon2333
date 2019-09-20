@@ -10,16 +10,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.emoticon.R;
 import com.example.common.bean.EmoticonType;
 import com.example.common.utils.ImageUtils;
+import com.example.emoticon.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmoticonTypeAdapter extends RecyclerView.Adapter<EmoticonTypeAdapter.ViewHolder> {
-    private List<EmoticonType.DataBean> list = new ArrayList<>();
-    GridLayoutManager gridLayoutManager;
+    private List<EmoticonType.DataBean> list;
+    private GridLayoutManager gridLayoutManager;
 
     public EmoticonTypeAdapter(List<EmoticonType.DataBean> list, GridLayoutManager gridLayoutManager) {
         this.list = list;
@@ -68,11 +67,11 @@ public class EmoticonTypeAdapter extends RecyclerView.Adapter<EmoticonTypeAdapte
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv, gif;
         ImageView img;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv = itemView.findViewById(R.id.tv);
             gif = itemView.findViewById(R.id.gif);

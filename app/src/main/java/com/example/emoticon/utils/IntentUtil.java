@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 //Intent跳转封装
 public class IntentUtil {
     public static final String OPEN_ACTIVITY_KEY = "open_activity";//intent跳转传递参数

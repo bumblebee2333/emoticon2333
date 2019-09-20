@@ -4,13 +4,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.common.R;
+import com.example.common.app.ResourcesManager;
 
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity;
 
@@ -38,11 +38,11 @@ public abstract class BaseActivity extends SwipeBackActivity {
     public void setContentView(int layoutResID) {
         View view  = LayoutInflater.from(this).inflate(layoutResID, null);
         setTopPadding(view);
-        view.setBackgroundColor(Color.WHITE);
+        view.setBackgroundColor(ResourcesManager.getRes().getColor(R.color.colorWhite));
         super.setContentView(view);
     }
     private void setTopPadding(View view){
-        int result = 0;
+        int result;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0)
         {

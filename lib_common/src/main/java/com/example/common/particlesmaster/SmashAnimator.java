@@ -15,11 +15,10 @@ import android.view.animation.Interpolator;
 
 import com.example.common.particlesmaster.particle.DropParticle;
 import com.example.common.particlesmaster.particle.ExplosionParticle;
+import com.example.common.particlesmaster.particle.Particle;
 import com.example.common.utils.Utils;
 
 import java.util.Random;
-
-import com.example.common.particlesmaster.particle.Particle;
 
 /**
  * <pre>

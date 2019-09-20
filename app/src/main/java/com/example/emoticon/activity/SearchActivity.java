@@ -12,13 +12,13 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.common.base.BaseActivity;
 import com.example.common.particlesmaster.ParticleSmasher;
 import com.example.common.particlesmaster.SmashAnimator;
+import com.example.common.utils.ToastUtils;
 import com.example.common.widget.SearchTopView;
 import com.example.emoticon.R;
-import com.example.common.base.BaseActivity;
 import com.example.emoticon.utils.SharedPreferencesUtil;
 import com.example.emoticon.widget.FlowLayout;
 
@@ -37,7 +37,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private SearchTopView searchView;
     private String title = null;
 
-    public static final String SEARCH_HISTORY = "search_hisroty";
+    public static final String SEARCH_HISTORY = "search_history";
     private int type;
 
     @Override
@@ -59,16 +59,16 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     //初始化热门搜索的集合
     private void setHotWords() {
-        hotWords.add("加菲猫");
-        hotWords.add("权律二");
-        hotWords.add("金馆长");
-        hotWords.add("皮卡丘");
-        hotWords.add("徐锦江");
-        hotWords.add("三国演义");
-        hotWords.add("猫咪");
-        hotWords.add("假笑男孩");
-        hotWords.add("盘他");
-        hotWords.add("蜡笔小新");
+//        hotWords.add("加菲猫");
+//        hotWords.add("权律二");
+//        hotWords.add("金馆长");
+//        hotWords.add("皮卡丘");
+//        hotWords.add("徐锦江");
+//        hotWords.add("三国演义");
+//        hotWords.add("猫咪");
+//        hotWords.add("假笑男孩");
+//        hotWords.add("盘他");
+//        hotWords.add("蜡笔小新");
     }
 
     //初始化SearchTopView
@@ -108,7 +108,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     private void search(String text) {
         if (TextUtils.isEmpty(text)) {
-            Toast.makeText(this, "关键词不能为空", Toast.LENGTH_SHORT).show();
+            ToastUtils.showToast("关键词不能为空");
             return;
         }
         if (type == EMOTICON_TYPE){
@@ -183,7 +183,11 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @SuppressLint("NewApi")
     private void initHistoryWordViews() {
         historyFlowLayout = findViewById(R.id.flowlayout_history_record);
-        historyWords = SharedPreferencesUtil.getListData(SEARCH_HISTORY, String.class);
+        List<String> list = SharedPreferencesUtil.getListData(SEARCH_HISTORY, String.class);
+//        for (int i = tagList.size()-1; i > 0; i--) {
+//            historyWords.add(tagList.get(i));
+//        }
+        historyWords.addAll(list);
         historyFlowLayout.initData(historyWords);
         historyFlowLayout.setOnTabClickListener(new FlowLayout.OnTabClickListener() {
             @Override

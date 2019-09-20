@@ -1,6 +1,5 @@
 package com.example.emoticon.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,11 +9,10 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.example.emoticon.R;
 import com.example.emoticon.activity.SearchActivity;
 import com.example.emoticon.adapter.MainPageAdapter;
-import com.example.emoticon.R;
 
 public class EmoticonFragment extends Fragment {
     private TabLayout mTabLayout;
@@ -33,7 +31,7 @@ public class EmoticonFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.emoticon_fragment, container, false);
 
-        mTabLayout = view.findViewById(R.id.tabLayout_1);
+        mTabLayout = view.findViewById(R.id.tabLayout);
         mViewPager = view.findViewById(R.id.viewPager);
 
         MainPageAdapter adapter = new MainPageAdapter(getChildFragmentManager());

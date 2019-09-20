@@ -1,6 +1,6 @@
 package com.example.common.retrofit;
 
-import com.example.common.bean.Status;
+import com.example.common.bean.StatusResult;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -24,5 +24,5 @@ public interface FeedBackProtocol {
     @POST("v1/feedback")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
     @FormUrlEncoded
-    Call<Status> feedBack(@Field("contactNum") String contactNum, @Field("contactNum") String content);
+    Call<StatusResult> feedBack(@Field("contactNum") String contactNum, @Field("contactNum") String content);
 }

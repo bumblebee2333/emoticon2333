@@ -10,6 +10,8 @@
         android:id="@+id/navigation_diy"
         android:icon="@drawable/nav_diy_icon"
         android:title="@string/nav_creative" />
+    <item
+        android:title="" />
 
     <item
         android:id="@+id/navigation_paint"

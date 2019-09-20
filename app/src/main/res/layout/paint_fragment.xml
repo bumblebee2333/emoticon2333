@@ -1,55 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
-    <RelativeLayout
+    <com.example.common.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50sp"
-        android:background="@color/colorPrimary">
+        android:layout_height="wrap_content"
+        app:back_visibility="false"
+        app:line="false"/>
+<!--
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50sp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="DIY表情包"
-            android:textStyle="bold"
             android:gravity="center|left"
-            android:paddingLeft="10dp"
+            android:paddingLeft="20dp"
+            android:text="DIY表情包"
             android:textColor="@color/colorBlack"
-            android:textSize="22sp"/>
+            android:textSize="22sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/camera"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:background="?attr/selectableItemBackground"
             android:padding="12dp"
             android:src="@drawable/camera"
             android:tint="@color/colorBlack" />
 
     </RelativeLayout>
+-->
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tablayout_paint"
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary"
-        app:tabTextColor="@color/colorBlack"
-        app:tabMode="scrollable"
         app:tabGravity="center"
         app:tabIndicatorHeight="0dp"
-        app:tabSelectedTextColor="@color/tabTextColor">
-    </android.support.design.widget.TabLayout>
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/tabTextColor"
+        app:tabTextColor="@color/colorBlack"/>
 
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager_paint"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-    </android.support.v4.view.ViewPager>
+        android:layout_weight="1"/>
 
 </LinearLayout>

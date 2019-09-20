@@ -8,31 +8,31 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.common.widget.Toolbar;
-import com.example.emoticon.R;
 import com.example.common.RetroClient;
-import com.example.emoticon.adapter.EmoticonAdapter;
+import com.example.common.app.ResourcesManager;
 import com.example.common.base.BaseActivity;
 import com.example.common.bean.Emoticon;
+import com.example.common.bean.StatusResult;
 import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.utils.HttpUtils;
+import com.example.common.utils.ToastUtils;
+import com.example.common.widget.Toolbar;
+import com.example.emoticon.R;
+import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.emoticon.widget.EmoticonLookDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class EmoticonTypeActivity extends BaseActivity {
     Toolbar toolbar;
     RecyclerView recyclerView;
     int id;
     String title;
-    List<Emoticon.DataBean> list = new ArrayList<>();
+    List<Emoticon> list = new ArrayList<>();
     EmoticonAdapter adapter;
 
     @Override
@@ -57,30 +57,43 @@ public class EmoticonTypeActivity extends BaseActivity {
         adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                EmoticonLookDialog.newInstance(list.get(position).getImg_url()).show(getSupportFragmentManager(), "emoticon_look");
+                EmoticonLookDialog.newInstance(list.get(position).getImgUrl()).show(getSupportFragmentManager(), "emoticon_look");
             }
         });
     }
 
     private void getData() {
-        Retrofit retrofit = RetroClient.getRetroClient();
-        EmoticonProtocol emoticonProtocol = retrofit.create(EmoticonProtocol.class);
-        final Call<Emoticon> emoticonCall = emoticonProtocol.getEmoticonList(id, 30, 0);
-        emoticonCall.enqueue(new Callback<Emoticon>() {
+
+        EmoticonProtocol emoticonProtocol = RetroClient.getServices(EmoticonProtocol.class);
+        Call<StatusResult<List<Emoticon>>> emoticonCall = emoticonProtocol.getEmoticonList(id, 30, 0);
+        HttpUtils.doRequest(emoticonCall, new HttpUtils.RequestFinishCallback<List<Emoticon>>() {
             @Override
-            public void onResponse(Call<Emoticon> call, Response<Emoticon> response) {
-                for (Emoticon.DataBean dataBean : response.body().getData()) {
-                    list.add(dataBean);
+            public void getRequest(StatusResult<List<Emoticon>> result) {
+                if (result == null) return;
+                if (!result.isSuccess()) {
+                    String str = ResourcesManager.getRes().getString(com.example.emotion.user.R.string.request_error, result.getMsg());
+                    ToastUtils.showToast(str);
+                    return;
                 }
+                if (result.getData() != null) {
+                    list.addAll(result.getData());
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+        /*emoticonCall.enqueue(new Callback<StatusResult<List<Emoticon>>>() {
+            @Override
+            public void onResponse(Call<StatusResult<List<Emoticon>>> call, Response<StatusResult<List<Emoticon>>> response) {
+                list.addAll(response.body().getData());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onFailure(Call<Emoticon> call, Throwable t) {
+            public void onFailure(Call<StatusResult<List<Emoticon>>> call, Throwable t) {
                 Toast.makeText(EmoticonTypeActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
     }
 
     @Override

@@ -4,13 +4,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="50dp"
-    android:background="@color/colorPrimary"
     android:gravity="center_vertical">
 
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:layout_margin="5dp"
+        android:layout_margin="10dp"
         android:background="?attr/selectableItemBackground"
         android:tint="#ababab"
         android:src="@drawable/edit_search" />
@@ -34,14 +33,13 @@
             android:lines="1"
             android:inputType="text"
             android:ellipsize="end"
-            android:textStyle="bold"
-            android:textSize="15sp" />
+            android:textSize="13sp" />
         <ImageView
             android:id="@+id/edit_clear"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="?attr/selectableItemBackground"
-            android:src="@drawable/close"
+            android:src="@drawable/textclear"
             android:tint="#ababab"
             android:padding="8dp"/>
     </LinearLayout>

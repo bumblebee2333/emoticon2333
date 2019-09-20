@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 public abstract class BaseFragment extends Fragment {
     private boolean isFragmentVisible;//Fragment是否可见
@@ -72,4 +73,24 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
         isPrepared = false;
     }
+    private void setTopPadding(View view) {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+            view.setPadding(0, result, 0, 0);
+        }
+    }
+
+    private void setTopMargin(View view) {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+            RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(view.getLayoutParams());
+            lp.setMargins(0, result, 0, 0);
+            view.setLayoutParams(lp);
+        }
+    }
+
 }

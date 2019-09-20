@@ -15,7 +15,6 @@ import android.widget.ImageView;
 
 import com.example.emoticon.MainActivity;
 import com.example.emoticon.R;
-import com.example.common.base.BaseActivity;
 
 public class GuideActivity extends AppCompatActivity {
     ViewPager viewPager;
