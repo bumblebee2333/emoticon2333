@@ -26,7 +26,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.common.base.BaseActivity;
-import com.example.common.utils.ToastUtils;
 import com.example.emoticon.editmodule.R;
 import com.example.emoticon.editmodule.widget.TextEditBox;
 import com.example.emoticon.editmodule.widget.TextInputDialog;
@@ -195,7 +194,7 @@ public class EditActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(mInputText.getText())){
-                    ToastUtils.showToast("输入不能为空");
+                    Toast.makeText(EditActivity.this,"输入不能为空",Toast.LENGTH_SHORT).show();
                 }else {
                     dialog.dismiss();
                 }
