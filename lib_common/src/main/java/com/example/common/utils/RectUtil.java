@@ -1,7 +1,6 @@
 package com.example.common.utils;
 
 import android.graphics.RectF;
-import android.view.View;
 
 public class RectUtil {
 

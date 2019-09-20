@@ -47,7 +47,7 @@ class EmoticonAddImageAdapter(private val imageList: List<String?>, private val 
         } else {
             p0.image.setImageResource(R.drawable.add_the_pic)
             p0.delete.visibility = View.GONE
-            p0.image.setOnClickListener { v ->
+            p0.image.setOnClickListener {
                 val maxSelectableCount = 10 - imageList.size
                 if (maxSelectableCount == 0) {
                     ToastUtils.showToast("不能选更多图片")

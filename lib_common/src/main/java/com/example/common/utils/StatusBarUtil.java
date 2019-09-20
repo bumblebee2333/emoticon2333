@@ -2,7 +2,6 @@ package com.example.common.utils;
 
 import android.content.Context;
 import android.os.Build;
-import android.view.Window;
 import android.view.WindowManager;
 
 public class StatusBarUtil {

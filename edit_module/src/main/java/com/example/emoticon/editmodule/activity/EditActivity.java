@@ -4,10 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,14 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.Xml;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -33,12 +27,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.example.common.base.BaseActivity;
+import com.example.common.utils.ToastUtils;
 import com.example.emoticon.editmodule.Graffiti.Doodle;
-import com.example.emoticon.editmodule.Graffiti.DoodleView;
 import com.example.emoticon.editmodule.Graffiti.Eraser;
 import com.example.emoticon.editmodule.R;
 import com.example.emoticon.editmodule.widget.ColorPickerDialog;
@@ -47,16 +39,10 @@ import com.example.emoticon.editmodule.widget.QuitMakeDialog;
 import com.example.emoticon.editmodule.widget.TextEditBox;
 import com.example.emoticon.editmodule.widget.TextInputDialog;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -302,7 +288,7 @@ public class EditActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 if(TextUtils.isEmpty(mInputText.getText())){
-                    Toast.makeText(EditActivity.this,"输入不能为空",Toast.LENGTH_SHORT).show();
+                    ToastUtils.showToast("输入不能为空");
                 }else {
                     dialog.dismiss();
                 }
