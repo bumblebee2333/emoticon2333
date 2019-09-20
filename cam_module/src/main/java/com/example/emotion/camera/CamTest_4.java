@@ -6,25 +6,7 @@ package com.example.emotion.camera;
  * Date: 2019/5/10.
  * PS:
  */
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import android.app.Activity;
-import android.content.pm.ActivityInfo;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.PixelFormat;
-import android.hardware.Camera;
-import android.hardware.Camera.AutoFocusCallback;
-import android.hardware.Camera.PictureCallback;
-import android.os.Bundle;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.Window;
-import android.view.SurfaceHolder.Callback;
-import android.view.View.OnClickListener;
 public class CamTest_4 extends Activity {
 //    implements
 //}

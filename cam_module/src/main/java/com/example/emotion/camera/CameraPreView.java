@@ -3,13 +3,8 @@ package com.example.emotion.camera;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.util.AttributeSet;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 
 import java.io.IOException;
 
