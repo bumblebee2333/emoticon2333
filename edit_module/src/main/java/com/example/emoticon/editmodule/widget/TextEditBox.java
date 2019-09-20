@@ -21,11 +21,11 @@ import android.widget.EditText;
 import com.example.common.utils.RectUtil;
 import com.example.emoticon.editmodule.R;
 
-
 public class TextEditBox extends View{
     //字体的大小
     public final int TEXT_SIZE_DEFAULT = getResources().getDimensionPixelSize(R.dimen.fontsize_default);
-    public final int PADDING = 36;
+    public final int PADDING = 20;
+    public final int PADDING_TOP = 30;
     public final int STICKER_BIN_HALF_SIZE = 40;
     //为文本赋初值
     private String mText = getResources().getString(R.string.input_hint);
@@ -69,11 +69,10 @@ public class TextEditBox extends View{
     public static final int SCALE_MODE = 3;//缩放
     public static final int MOVE_MODE = 4;//移动
     public static final int DELETE_MODE = 5;//删除
+    public static final int TWO_FINGER = 6;//双指移动
 
     public int last_x = 0;//点击屏幕时 相对Android坐标
     public int last_y = 0;
-    //缩放
-    private Matrix scaleMatrix = new Matrix();
 
     public float last_X = 0;
     public float last_Y = 0;
@@ -89,6 +88,17 @@ public class TextEditBox extends View{
     private boolean isScaled = false;
 
     private long currentTime;//移动消费时间
+
+    /*多点触碰的变量定义*/
+    private final static int INVALID_ID = -1;
+    private int mActivePointerId = INVALID_ID;
+    private int mSecondaryPointerId = INVALID_ID;
+    private float mPrimaryLastX = -1;
+    private float mPrimaryLastY = -1;
+    private float mSecondaryLastX = -1;
+    private float mSecondaryLastY = -1;
+    private float newDis = 0;
+    private float oldDis = 0;
 
     public TextEditBox(Context context) {
         super(context, null);
@@ -179,7 +189,6 @@ public class TextEditBox extends View{
         mScaleDsRect.offsetTo(mTextEditBox.right-offsetValue,mTextEditBox.bottom-offsetValue);
         mRotateDsRect.offsetTo(mTextEditBox.left - offsetValue,mTextEditBox.bottom-offsetValue);
 
-
         RectUtil.rotateRect(mRotateDsRect,mTextEditBox.centerX(),mTextEditBox.centerY(),mRotateAngle);
         RectUtil.rotateRect(mDeleteDsRect,mTextEditBox.centerX(),mTextEditBox.centerY(),mRotateAngle);
         RectUtil.rotateRect(mScaleDsRect,mTextEditBox.centerX(),mTextEditBox.centerY(),mRotateAngle);
@@ -206,12 +215,12 @@ public class TextEditBox extends View{
         canvas.drawBitmap(mRotateBitmap,mRotateRect,mRotateDsRect,null);
         canvas.drawBitmap(mScaleBitmap,mScaleRect,mScaleDsRect,null);
     }
-
+    //绘制出文字的位置 固定处TextEditBox的边框的存在位置
     private void drawText(Canvas canvas){
         drawText(canvas,layout_x,layout_y,mScale,mRotateAngle);
     }
 
-    public void drawText(Canvas canvas,int _x,int _y,float scale,float rotate){
+    public void drawText(Canvas canvas,int _x,int _y,float  scale,float rotate){
         if(TextUtils.isEmpty(mText))
             return;
 
@@ -221,14 +230,16 @@ public class TextEditBox extends View{
         mTextPaint.getTextBounds(mText,0,mText.length(),mTextRect);
         mTextRect.offset(x-(mTextRect.width() >> 1),y);
 
-        mTextEditBox.set(mTextRect.left-PADDING,mTextRect.top-PADDING,
-                mTextRect.right+PADDING,mTextRect.bottom+PADDING);
+        mTextEditBox.set(mTextRect.left-PADDING,mTextRect.top-PADDING_TOP,
+                mTextRect.right+PADDING,mTextRect.bottom+PADDING_TOP);
 
-        canvas.save();//保存当前画布状态
-        canvas.scale(scale,scale,mTextEditBox.centerX(),mTextEditBox.centerY());
+        RectUtil.scaleRect(mTextEditBox,scale);
+
+        canvas.save();//保存当前画布状态 快照
+        canvas.scale(scale,scale,mTextEditBox.centerX(),mTextEditBox.centerY());//对画布进行缩放
         canvas.rotate(rotate,mTextEditBox.centerX(),mTextEditBox.centerY());
         canvas.drawText(mText,x,y,mTextPaint);
-        canvas.restore();
+        canvas.restore();//回滚 调用后恢复到调用之前的坐标状态
     }
 
     @Override
@@ -237,7 +248,7 @@ public class TextEditBox extends View{
         float x = event.getX();
         float y = event.getY();
 
-        switch (action){
+        switch (action & MotionEvent.ACTION_MASK){
             case MotionEvent.ACTION_DOWN:
                 if(mRotateDsRect.contains(x,y)){//旋转模式
                     isShowEditBox = true;
@@ -261,6 +272,12 @@ public class TextEditBox extends View{
                     last_X = x;
                     last_Y = y;
 
+                    //一个手指触碰
+                    //获得第一个point id
+                    mActivePointerId = event.getPointerId(event.getActionIndex());
+                    mPrimaryLastX = x;
+                    mPrimaryLastY = y;
+
                     currentTime = System.currentTimeMillis();
                     //invalidate();
                 }else if(mDeleteDsRect.contains(x,y)){//删除模式
@@ -278,6 +295,19 @@ public class TextEditBox extends View{
                     invalidate();
                 }
                 break;
+
+            case MotionEvent.ACTION_POINTER_DOWN:
+                mCurrentMode = TWO_FINGER;
+                mSecondaryPointerId = event.getPointerId(event.getActionIndex());
+                try{
+                    mSecondaryLastX = x;
+                    mSecondaryLastY = y;
+                    oldDis = spacing(mPrimaryLastX,mPrimaryLastY,mSecondaryLastX,mSecondaryLastY);
+                }catch (IllegalArgumentException e){
+                    e.printStackTrace();
+                }
+                break;
+
             case MotionEvent.ACTION_MOVE:
                 if(mCurrentMode == ROTATE_MODE){
                     float width = mTextEditBox.right - mTextEditBox.left;
@@ -295,29 +325,24 @@ public class TextEditBox extends View{
                     last_x = (int)event.getRawX();
                     last_y = (int)event.getRawY();
                 }else if(mCurrentMode == SCALE_MODE){
-                    //matrix.set(scaleMatrix);
-                    //Point first = new Point(last_x,last_y);
+                    dx = x - last_X;
+                    dy = y - last_Y;
 
-                    //Point second = new Point((int)event.getX(),(int)event.getY());
+                    if(dx > 0 && dy > 0){
+                        mScale = calculateScaling(dx,dy);
+                        isScaled = true;
 
-                    dx = event.getX() - last_X;
-                    dy = event.getY() - last_Y;
+                        //scaleMatrix.setScale(scale,scale,mTextEditBox.centerX(),mTextEditBox.centerY());
 
-                    float scale = calculateScaling(dx,dy);
-                    isScaled = true;
-
-                    //scaleMatrix.setScale(scale,scale,mTextEditBox.centerX(),mTextEditBox.centerY());
-                    RectUtil.scaleRect(mTextEditBox,scale);
-
-                    invalidate();
-
+                        invalidate();
+                    }
                     last_x = (int)event.getRawX();
                     last_y = (int)event.getRawY();
                 }else if(mCurrentMode == MOVE_MODE){
                     float _dx = event.getX() - last_X;
                     float _dy = event.getY() - last_Y;
 
-                   //scaleMatrix.postTranslate(dx, dy);
+                    //scaleMatrix.postTranslate(dx, dy);
 
                     layout_x += _dx;
                     layout_y += _dy;
@@ -327,7 +352,25 @@ public class TextEditBox extends View{
                     last_X = x;
                     last_Y = y;
                 }
+                else if(mCurrentMode == TWO_FINGER){
+                    float first_x,first_y,sec_x,sec_y;
+                    try{
+                        int firstIndex = event.findPointerIndex(mActivePointerId);
+                        int secondIndex = event.findPointerIndex(mSecondaryPointerId);
+                        first_x = event.getX(firstIndex);
+                        first_y = event.getY(firstIndex);
+                        sec_x = event.getX(secondIndex);
+                        sec_y = event.getY(secondIndex);
+                        newDis = spacing(first_x,first_y,sec_x,sec_y);
+                    }catch (IllegalArgumentException e){
+                        e.printStackTrace();
+                    }
+                    mScale = newDis / oldDis;
+                    isScaled = true;
+                    invalidate();
+                }
                 break;
+
             case MotionEvent.ACTION_UP:
                 //判断是否单机编辑框
                 long elapsedTime = System.currentTimeMillis() - currentTime;//移动等事件
@@ -340,6 +383,13 @@ public class TextEditBox extends View{
                     return true;
                 }
                 mCurrentMode = NORMAL_MODE;
+                break;
+
+            case MotionEvent.ACTION_POINTER_UP:
+            case MotionEvent.ACTION_CANCEL:
+                mActivePointerId = INVALID_ID;
+                mPrimaryLastX = -1;
+                mPrimaryLastY = -1;
                 break;
         }
         return super.onTouchEvent(event);
@@ -379,13 +429,12 @@ public class TextEditBox extends View{
         return (float)(isClockwise ? Math.toDegrees(radian) : -Math.toDegrees(radian));
     }
 
-//    public float calculateScaling(Point prePoint,Point lastPoint){
-//        int pointX1 = prePoint.x;
-//        int pointY1 = prePoint.y;
-//        int pointX2 = lastPoint.x;
-//        int pointY2 = lastPoint.y;
-//        return (float)Math.sqrt(Math.pow(pointX2 - pointX1,2) + Math.pow(pointY2 - pointY1,2));
-//    }
+    public float spacing(float First_X,float First_Y,float Sec_X,float Sec_Y){
+        float dx = First_X - Sec_X;
+        float dy = First_Y - Sec_Y;
+        float distance = (float)Math.sqrt(dx * dx + dy *dy);
+        return distance;
+    }
 
     public float calculateScaling(final float dx , final  float dy){
         float box_x = mTextEditBox.centerX();
