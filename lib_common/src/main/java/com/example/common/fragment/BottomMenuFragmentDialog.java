@@ -84,9 +84,8 @@ public class BottomMenuFragmentDialog extends DialogFragment {
     private void initViews(View rootView) {
         LinearLayout horizontalScrollView1 = rootView.findViewById(R.id.horizontalScrollView1);
         LinearLayout horizontalScrollView2 = rootView.findViewById(R.id.horizontalScrollView2);
-
-
-        horizontalScrollView1.addView(setItemView("QQ", R.drawable.qq, "#63B8FF", new View.OnClickListener() {
+        
+        horizontalScrollView1.addView(setItemView("QQ", R.drawable.qq_white, "#63B8FF", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
