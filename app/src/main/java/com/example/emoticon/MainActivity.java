@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.HapticFeedbackConstants;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +26,7 @@ import com.example.common.fragment.MAlertDialog;
 import com.example.common.utils.ToastUtils;
 import com.example.common.utils.UserManager;
 import com.example.emoticon.activity.EmoticonAddActivity;
+import com.example.emoticon.activity.SearchActivity;
 import com.example.emoticon.fragment.CreativeFragment;
 import com.example.emoticon.fragment.EmoticonFragment;
 import com.example.emoticon.fragment.PaintFragment;
@@ -85,6 +87,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onClick(View v) {
                 EmoticonAddActivity.startActivity(MainActivity.this);
+            }
+        });
+        addView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                SearchActivity.startActivity(MainActivity.this,SearchActivity.EMOTICON);
+                return false;
             }
         });
         BottomNavigationView navigation = findViewById(R.id.bottomNavigation);
