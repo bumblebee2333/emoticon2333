@@ -48,7 +48,7 @@ public interface UserProtocol {
 
     /**
      * 按分类id获取
-     * @param id 分类Id
+     * @param id 分类ID
      * @param limit 获取几条数据
      * @param skip 跳过几条数据
      * @return 返回 Emoticon
@@ -58,9 +58,9 @@ public interface UserProtocol {
 
     /**
      * 用ID和Token获取用户信息
-     * @param id
-     * @param token
-     * @return
+     * @param id 用户ID
+     * @param token　用户token
+     * @return 返回User
      */
     @GET("v1/user/info")
     Call<StatusResult<User>> getUserInfo(@Query("id") int id, @Query("token") String token);
