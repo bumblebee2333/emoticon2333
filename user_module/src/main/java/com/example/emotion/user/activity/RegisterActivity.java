@@ -1,14 +1,13 @@
 package com.example.emotion.user.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.common.RetroClient;
 import com.example.common.base.BaseActivity;
@@ -84,11 +83,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void register() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("正在注册。。");
+        progressDialog.setCancelable(false);
+        progressDialog.show();
         UserProtocol userProtocol = RetroClient.getRetroClient().create(UserProtocol.class);
         Call<JsonObject> call = userProtocol.register(email.getText().toString(), name.getText().toString(), pwd.getText().toString());
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                progressDialog.dismiss();
                 if (response.body() != null) {
                     JsonObject jsonObject = response.body();
                     String s = jsonObject.get("msg").getAsString();
@@ -105,6 +109,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 ToastUtils.showToast(t.getMessage());
+                progressDialog.setMessage(getResources().getString(R.string.server_error));
+                progressDialog.setCancelable(false);
             }
         });
     }
