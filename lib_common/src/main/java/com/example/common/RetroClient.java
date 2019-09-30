@@ -27,7 +27,7 @@ public class RetroClient {
     }
 
     public static <T> T getServices(Class<T> cls){
-        Retrofit rretrofit = RetroClient.getRetroClient();
-        return rretrofit.create(cls);
+        Retrofit retrofit = RetroClient.getRetroClient();
+        return retrofit.create(cls);
     }
 }
