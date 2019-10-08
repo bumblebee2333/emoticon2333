@@ -46,7 +46,7 @@ public class ReportActivity extends BaseActivity {
         imageView = findViewById(R.id.image);
         toolbar = findViewById(R.id.toolbar);
         editText = findViewById(R.id.edit_text);
-        toolbar.right1.setVisibility(View.VISIBLE);
+        toolbar.setRightButtonOneShow(true);
         toolbar.right1.setImageResource(R.drawable.right_ok);
 
     }

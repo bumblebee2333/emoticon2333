@@ -35,7 +35,6 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
     private SwipeRefreshLayout swipeRefreshLayout;
     int skip = 0;
     EmoticonAdapter adapter;
-    private View view;
     private Toolbar toolbar;
 
     public static CreativeFragment newInstance(String title) {
@@ -49,7 +48,7 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.creative_fragment, container, false);
+        View view = inflater.inflate(R.layout.creative_fragment, container, false);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 4);
         adapter = new EmoticonAdapter(list, gridLayoutManager);
@@ -71,9 +70,10 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
 
             @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager == null) return;
                 int firstCompletelyVisibleItemPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
                 if (firstCompletelyVisibleItemPosition == 0) {
                     //Log.i(TAG, "滑动到顶部");
@@ -144,10 +144,8 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.right1:
-                EmoticonAddActivity.startActivity(getActivity());
-                break;
+        if (v.getId() == R.id.right1) {
+            EmoticonAddActivity.startActivity(getActivity());
         }
     }
 
@@ -155,9 +153,9 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
     public void onResume() {
         super.onResume();
         if (UserManager.getUser() == null) {
-            toolbar.right1.setVisibility(View.GONE);
+            toolbar.setRightButtonOneShow(false);
         } else {
-            toolbar.right1.setVisibility(View.VISIBLE);
+            toolbar.setRightButtonOneShow(true);
         }
     }
 

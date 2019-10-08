@@ -3,7 +3,8 @@ package com.example.common.app;
 public class Config {
     public static final String CALLBACK_ADDRESS = "http://oss-demo.aliyuncs.com:23450";//回调链接
     public static final String END_POINT = "http://oss-cn-beijing.aliyuncs.com";//oss区域链接
-    public static final String BASE_HOST = "http://10.101.0.175:8080";//oss区域链接
+//    public static final String BASE_HOST = "http://10.102.2.62:8080";//oss区域链接
+    public static final String BASE_HOST = "http://192.168.1.178:8080";//oss区域链接
     public static final String STS_SERVER = BASE_HOST +"/sts";//oss Token获取链接（服务端）
     public static final String ROOT_URL = BASE_HOST ;//服务器地址
     public static final String BUCKET_NAME = "shuike";//oss Token获取链接（服务端）
