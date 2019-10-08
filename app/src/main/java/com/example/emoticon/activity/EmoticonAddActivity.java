@@ -182,25 +182,13 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
                     setType(data);
                     break;
                 case 2:
-//                    Uri selectImg = data.getData();
-//                    String[] filepath = {MediaStore.Images.Media.DATA};
-//                    Cursor c = getContentResolver().query(selectImg, filepath, null, null, null);
-//                    c.moveToFirst();
-//                    int cul = c.getColumnIndex(filepath[0]);
-//                    String imgPath = c.getString(cul);
-//                    this.imgPath = imgPath;
-//                    Glide.with(this).load(imgPath).into(imageSelect);
-
                     List<String> mSelected = Matisse.obtainPathResult(data);
                     imgList.addAll(mSelected);
                     //添加按钮清除，条件为有十个数据并且第一个是空的
                     if(imgList.size() == 10 && TextUtils.isEmpty(imgList.get(0))){
                         imgList.remove(0);
                     }
-//                    this.imgPath = mSelected.get(0);
-//                    Glide.with(this).load(imgPath).into(imageSelect);
                     addImageAdapter.notifyDataSetChanged();
-
                     break;
             }
         }
@@ -253,7 +241,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
 
     //上传到Oss
     private void uploadToOss() {
-        if (imgList.size()>=1) {
+        if (imgList.size()>1) {
             if (typeId == 0) {
                 ToastUtils.showToast("分类不能为空");
                 return;
@@ -262,7 +250,6 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
                 ToastUtils.showToast("标签不能为空");
                 return;
             }
-//            File file = new File(imgPath);
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage(getString(R.string.upload_img));
             progressDialog.setCancelable(false);
@@ -271,7 +258,8 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
             //图片上传
             OSSHttpUtils.upLoadImages(this, Config.OssFolder.EMOTICONS,imgList,new OssService.FinishCallback()  {
                 @Override
-                public void onFinish(List<String> urls) {
+                public void onFinish(List<String> imgUrls) {
+                    List<String> urls = new ArrayList<>(imgUrls);
                     if(urls.isEmpty()) {
                         progressDialog.dismiss();
                         ToastUtils.showToast("图片不能为空");
