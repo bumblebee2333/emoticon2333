@@ -80,7 +80,9 @@ public class UserEmoticonsActivity extends BaseActivity {
                     if (!next) list.clear();
                     List<Emoticon> data = result.getData();
                     list.addAll(data);
-                    adapter.notifyDataSetChanged();
+//                    adapter.notifyDataSetChanged();
+
+                    adapter.notifyItemRangeInserted(adapter.getItemCount(), data.size());
                     if (result.getData().size() == 0) {
                         skip = skip - 40;
                     } else {
