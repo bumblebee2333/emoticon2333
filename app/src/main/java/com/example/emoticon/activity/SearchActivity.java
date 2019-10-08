@@ -153,7 +153,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.delete:
                 SharedPreferencesUtil.clear();
-                historyFlowLayout.setVisibility(View.GONE);
+                historyWords.clear();
+                if (historyFlowLayout != null) {
+                    historyFlowLayout.initData(historyWords);
+                }
                 break;
         }
     }
