@@ -54,6 +54,9 @@
             android:name="com.example.emotion.user.activity.RegisterActivity"
             android:label="@string/register" />
         <activity
+            android:name=".activity.ReportActivity"
+            android:label="举报" />
+        <activity
             android:name=".activity.SpecificActivity"
             android:label="@string/search_emoticons" />
         <activity
