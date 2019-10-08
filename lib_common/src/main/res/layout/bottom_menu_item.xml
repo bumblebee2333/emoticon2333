@@ -36,6 +36,7 @@
             android:gravity="center"
             android:textColor="#808080"
             android:textSize="10sp"
-            android:textStyle="bold" />
+            android:textStyle="normal"
+            tools:ignore="SmallSp" />
     </LinearLayout>
 </LinearLayout>

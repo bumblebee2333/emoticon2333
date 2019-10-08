@@ -6,5 +6,5 @@
     <solid
         android:color="@color/colorWhite"/>
     <padding
-        android:top="50dp"/>
+        android:top="20dp"/>
 </shape>
