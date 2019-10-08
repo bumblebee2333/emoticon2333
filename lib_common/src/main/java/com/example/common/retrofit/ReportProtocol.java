@@ -15,14 +15,18 @@ import retrofit2.http.POST;
  * PS: 举报提交相关
  */
 public interface ReportProtocol {
+    enum TYPE {EMOTICON, EMOTICONTYPE, USER}
+
     /**
      * 举报表情
-     * @param id 表情ID
+     *
+     * @param id      ID
+     * @param type    举报分类 0：表情 1：表情包 2：用户
      * @param content 举报原因
      * @return 请求状态
      */
     @POST("v1/report")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
     @FormUrlEncoded
-    Call<StatusResult> reportEmoticonSubmit(@Field("emoticonId") int id,@Field("content") CharSequence content);
+    Call<StatusResult> reportSubmit(@Field("id") int id, @Field("type") TYPE type, @Field("content") CharSequence content);
 }

@@ -48,14 +48,14 @@ public class ReportActivity extends BaseActivity {
         editText = findViewById(R.id.edit_text);
         toolbar.setRightButtonOneShow(true);
         toolbar.right1.setImageResource(R.drawable.right_ok);
-
     }
 
     private void initData() {
         Intent intent = getIntent();
         final Emoticon emoticon = (Emoticon) intent.getSerializableExtra("emoticon");
+        final ReportProtocol.TYPE reportType = (ReportProtocol.TYPE) intent.getSerializableExtra("type");
         Glide.with(this).load(emoticon.getImgUrl()).into(imageView);
-        
+
         toolbar.right1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,13 +64,13 @@ public class ReportActivity extends BaseActivity {
                     return;
                 }
                 ReportProtocol reportProtocol = RetroClient.getServices(ReportProtocol.class);
-                Call<StatusResult> call = reportProtocol.reportEmoticonSubmit(emoticon.getId(), editText.getText().toString());
+                Call<StatusResult> call = reportProtocol.reportSubmit(emoticon.getId(), reportType, editText.getText().toString());
                 call.enqueue(new Callback<StatusResult>() {
                     @Override
                     public void onResponse(@NonNull Call<StatusResult> call, @NonNull Response<StatusResult> response) {
                         if (response.body() != null) {
                             ToastUtils.showToast(response.body().getMsg());
-                            if (response.body().isSuccess()){
+                            if (response.body().isSuccess()) {
                                 finish();
                             }
                         }
@@ -85,9 +85,10 @@ public class ReportActivity extends BaseActivity {
         });
     }
 
-    public static void startActivity(Context context, Emoticon emoticon){
+    public static void startActivity(Context context, Emoticon emoticon, ReportProtocol.TYPE type) {
         Intent intent = new Intent(context, ReportActivity.class);
         intent.putExtra("emoticon", emoticon);
+        intent.putExtra("type", type);
         context.startActivity(intent);
     }
 }

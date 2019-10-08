@@ -29,6 +29,7 @@ import com.example.common.bean.Emoticon;
 import com.example.common.bean.StatusResult;
 import com.example.common.bean.User;
 import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.retrofit.ReportProtocol;
 import com.example.common.utils.ToastUtils;
 import com.example.common.utils.UserManager;
 
@@ -111,9 +112,11 @@ public class BottomMenuFragmentDialog extends DialogFragment {
             horizontalScrollView2.addView(setItemView("举报", R.drawable.report, "#E0E0E0", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (getArguments() == null) return;
                     Intent intent = new Intent();
                     intent.setClassName(mContext, "com.example.emoticon.activity.ReportActivity");
                     intent.putExtra("emoticon", getArguments().getSerializable("emoticon"));
+                    intent.putExtra("type", ReportProtocol.TYPE.EMOTICON);
                     mContext.startActivity(intent);
                 }
             }));
