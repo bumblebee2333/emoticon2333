@@ -33,7 +33,6 @@ import com.example.emoticon.fragment.EmoticonFragment;
 import com.example.emoticon.fragment.PaintFragment;
 import com.example.emoticon.fragment.PersonFragment;
 import com.example.emotion.user.retrofit.UserProtocol;
-import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -173,7 +172,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             HttpUtils.doRequest(userInfo, new HttpUtils.RequestFinishCallback<User>() {
                 @Override
                 public void getRequest(StatusResult<User> result) {
-                    System.out.println(new Gson().toJson(result));
+//                    System.out.println(new Gson().toJson(result));
                     if (result == null) return;
                     if (result.isSuccess()) return;
                     if(result.getData()!=null){
