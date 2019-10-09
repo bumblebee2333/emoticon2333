@@ -8,7 +8,6 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
@@ -107,6 +106,7 @@ public class HeadZoomScrollView extends ScrollView {
 
     private boolean mScrolling;
     private float touchDownX;
+    //返回True的话不往下传递事件，截获触摸事件
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -115,8 +115,10 @@ public class HeadZoomScrollView extends ScrollView {
                 mScrolling = false;
                 break;
             case MotionEvent.ACTION_MOVE:
-                mScrolling = Math.abs(touchDownX - event.getX()) >= ViewConfiguration.get(
-                        getContext()).getScaledTouchSlop();
+//                mScrolling = Math.abs(touchDownX - event.getX()) >= ViewConfiguration.get(
+//                        getContext()).getScaledTouchSlop();
+//                System.out.println(mScrolling);
+                mScrolling = true;
                 break;
             case MotionEvent.ACTION_UP:
                 mScrolling = false;
@@ -124,6 +126,13 @@ public class HeadZoomScrollView extends ScrollView {
         }
         return mScrolling;
     }
+
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (zoomViewWidth <= 0 || zoomViewHeight <= 0) {
@@ -151,6 +160,9 @@ public class HeadZoomScrollView extends ScrollView {
                 mScaling = false;
                 replyView();
                 break;
+            case MotionEvent.ACTION_DOWN:
+                performClick();
+                break;
         }
         return super.onTouchEvent(ev);
     }
@@ -162,7 +174,7 @@ public class HeadZoomScrollView extends ScrollView {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                setZoom((float) animation.getAnimatedValue());
+                setZoom((Float) animation.getAnimatedValue());
             }
         });
         animator.start();
@@ -185,9 +197,11 @@ public class HeadZoomScrollView extends ScrollView {
         super.onScrollChanged(l, t, oldl, oldt);
         if (onScrollListener != null) onScrollListener.onScroll(l, t, oldl, oldt);
     }
+
     public void setOnScrollListener(OnScrollListener onScrollListener) {
         this.onScrollListener = onScrollListener;
     }
+
     public interface OnScrollListener {
         void onScroll(int x, int y, int ox, int oy);
     }
