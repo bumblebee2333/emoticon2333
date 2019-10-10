@@ -38,7 +38,7 @@ public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final EmoticonAdapter.ViewHolder viewHolder, int i) {
-        Glide.with(viewHolder.img.getContext()).load(list.get(i).getImgUrl()+ ImageUtils.gifToJpg).into(viewHolder.img);
+        Glide.with(viewHolder.img.getContext()).load(list.get(i).getImgUrl() + ImageUtils.gifToJpg).into(viewHolder.img);
         viewHolder.tv.setVisibility(View.GONE);
         if (list.get(i).getImgUrl().endsWith(".gif")) {
             viewHolder.gif.setVisibility(View.VISIBLE);
@@ -49,23 +49,23 @@ public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHo
         params.height = gridLayoutManager.getWidth() / gridLayoutManager.getSpanCount()
                 - 2 * viewHolder.img.getPaddingLeft() - 2 * ((ViewGroup.MarginLayoutParams) params).leftMargin;//设置图片高度等于宽度
 
-        if (mOnItemClickListener!=null){
+        if (mOnItemClickListener != null) {
             viewHolder.img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int pos = viewHolder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(viewHolder.img,pos);
+                    mOnItemClickListener.onItemClick(viewHolder.img, pos);
                 }
             });
         }
 
-        if (mOnItemLongClickListener!=null){
+        if (mOnItemLongClickListener != null) {
             viewHolder.img.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
                     int pos = viewHolder.getLayoutPosition();
                     v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                    mOnItemLongClickListener.onItemLongClick(viewHolder.img,pos);
+                    mOnItemLongClickListener.onItemLongClick(viewHolder.img, pos);
                     return false;
                 }
             });
@@ -89,16 +89,19 @@ public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHo
         }
     }
 
-    public interface OnItemClickListener{
+    public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
-    public interface OnItemLongClickListener{
+
+    public interface OnItemLongClickListener {
         void onItemLongClick(View view, int position);
     }
-    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener){
+
+    public void setOnItemClickListener(OnItemClickListener mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
-    public void setOnItemLongClickListener(OnItemLongClickListener mOnItemLongClickListener){
+
+    public void setOnItemLongClickListener(OnItemLongClickListener mOnItemLongClickListener) {
         this.mOnItemLongClickListener = mOnItemLongClickListener;
     }
 }

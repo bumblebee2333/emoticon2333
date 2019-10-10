@@ -73,39 +73,9 @@ public class HeadZoomScrollView extends ScrollView {
         }
     }
 
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        if (zoomViewWidth <= 0 || zoomViewHeight <= 0) {
-//            zoomViewWidth = zoomView.getMeasuredWidth();
-//            zoomViewHeight = zoomView.getMeasuredHeight();
-//        }
-//        if (zoomView == null || zoomViewWidth <= 0 || zoomViewHeight <= 0) {
-//            return super.onInterceptTouchEvent(ev);
-//        }
-//        switch (ev.getAction()) {
-//            case MotionEvent.ACTION_MOVE:
-//                if (!mScaling) {
-//                    if (getScrollY() == 0) {
-//                        y = ev.getY();
-//                    } else {
-//                        break;
-//                    }
-//                }
-//                int distance = (int) ((ev.getY() - y) * mScaleRatio);
-//                if (distance < 0) break;
-//                mScaling = true;
-//                setZoom(distance);
-//                return true;
-//            case MotionEvent.ACTION_UP:
-//                mScaling = false;
-//                replyView();
-//                break;
-//        }
-//        return super.onInterceptTouchEvent(ev);
-//    }
-
     private boolean mScrolling;
     private float touchDownX;
+
     //返回True的话不往下传递事件，截获触摸事件
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
@@ -115,10 +85,7 @@ public class HeadZoomScrollView extends ScrollView {
                 mScrolling = false;
                 break;
             case MotionEvent.ACTION_MOVE:
-//                mScrolling = Math.abs(touchDownX - event.getX()) >= ViewConfiguration.get(
-//                        getContext()).getScaledTouchSlop();
-//                System.out.println(mScrolling);
-                mScrolling = true;
+                mScrolling = Math.abs(touchDownX - event.getX()) >= 1.5;
                 break;
             case MotionEvent.ACTION_UP:
                 mScrolling = false;

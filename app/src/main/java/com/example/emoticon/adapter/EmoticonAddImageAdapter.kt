@@ -25,7 +25,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy
 
 class EmoticonAddImageAdapter(private val imageList: List<String?>, private val gridLayoutManager: GridLayoutManager) : RecyclerView.Adapter<EmoticonAddImageAdapter.ViewHolder>() {
     //    val imageList: List<String?> = ArrayList()
-    var onDeleteOnClickListener: OnDeleteOnClickListener ?=null
+    var onDeleteOnClickListener: OnDeleteOnClickListener? = null
 
     override fun onCreateViewHolder(p0: ViewGroup, p1: Int): ViewHolder {
         val view: View = LayoutInflater.from(p0.context).inflate(R.layout.emoticon_add_item, p0, false)
@@ -35,13 +35,13 @@ class EmoticonAddImageAdapter(private val imageList: List<String?>, private val 
     override fun getItemCount(): Int {
         return imageList.size
     }
-    
+
     override fun onBindViewHolder(p0: ViewHolder, p1: Int) {
         if (!TextUtils.isEmpty(imageList[p1])) {
             Glide.with(p0.image.context).load(imageList[p1]).into(p0.image)
             p0.delete.visibility = View.VISIBLE
             p0.image.setOnClickListener {
-//                ToastUtils.showToast("$p1")
+
             }
             p0.delete.setOnClickListener { v -> onDeleteOnClickListener?.onClick(v, p1) }
         } else {
