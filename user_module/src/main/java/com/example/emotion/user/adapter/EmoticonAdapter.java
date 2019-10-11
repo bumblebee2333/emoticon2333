@@ -15,12 +15,11 @@ import com.example.common.bean.Emoticon;
 import com.example.common.utils.ImageUtils;
 import com.example.emotion.user.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHolder> {
-    private List<Emoticon> list = new ArrayList<>();
-    GridLayoutManager gridLayoutManager;
+    private List<Emoticon> list;
+    private GridLayoutManager gridLayoutManager;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
 
@@ -77,11 +76,11 @@ public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHo
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         TextView tv, gif;
         ImageView img;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
             tv = itemView.findViewById(R.id.tv);
             gif = itemView.findViewById(R.id.gif);
