@@ -1,6 +1,7 @@
 package com.example.common.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -28,6 +29,7 @@ import com.example.common.bean.Emoticon;
 import com.example.common.bean.StatusResult;
 import com.example.common.bean.User;
 import com.example.common.retrofit.EmoticonProtocol;
+import com.example.common.retrofit.ReportProtocol;
 import com.example.common.utils.ToastUtils;
 import com.example.common.utils.UserManager;
 
@@ -85,8 +87,7 @@ public class BottomMenuFragmentDialog extends DialogFragment {
         LinearLayout horizontalScrollView1 = rootView.findViewById(R.id.horizontalScrollView1);
         LinearLayout horizontalScrollView2 = rootView.findViewById(R.id.horizontalScrollView2);
 
-
-        horizontalScrollView1.addView(setItemView("QQ", R.drawable.qq, "#63B8FF", new View.OnClickListener() {
+        horizontalScrollView1.addView(setItemView("QQ", R.drawable.qq_white, "#63B8FF", new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(), "1", Toast.LENGTH_SHORT).show();
@@ -111,14 +112,18 @@ public class BottomMenuFragmentDialog extends DialogFragment {
             horizontalScrollView2.addView(setItemView("举报", R.drawable.report, "#E0E0E0", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "123", Toast.LENGTH_SHORT).show();
+                    if (getArguments() == null) return;
+                    Intent intent = new Intent();
+                    intent.setClassName(mContext, "com.example.emoticon.activity.ReportActivity");
+                    intent.putExtra("emoticon", getArguments().getSerializable("emoticon"));
+                    intent.putExtra("type", ReportProtocol.TYPE.EMOTICON);
+                    mContext.startActivity(intent);
                 }
             }));
         } else {
             horizontalScrollView2.addView(setItemView("删除", R.drawable.delete_line, "#E0E0E0", new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    dismiss();
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -152,25 +157,39 @@ public class BottomMenuFragmentDialog extends DialogFragment {
     public void setCallbackListener(CallbackListener callbackListener) {
         this.callbackListener = callbackListener;
     }
-    public void setContext(Context context){
+
+    public void setContext(Context context) {
         this.mContext = context;
     }
+
     private void emoticonDelete(final Context context) {
+        if (getArguments() == null) return;
         User user = UserManager.getUser();
+        if (user == null) return;
         EmoticonProtocol emoticonProtocol = RetroClient.getServices(EmoticonProtocol.class);
         Emoticon emoticon = (Emoticon) getArguments().getSerializable("emoticon");
+        if (emoticon == null) return;
         Call<StatusResult> call = emoticonProtocol.deleteEmoticon(user.getToken(), emoticon.getId());
+/*        HttpUtils.doRequest(call, new HttpUtils.RequestFinishCallback() {
+            @Override
+            public void getRequest(StatusResult result) {
+                if (result == null) return;
+                if (!result.isSuccess()) {
+                    String str = ResourcesManager.getRes().getString(R.string.request_error, result.getMsg());
+                    ToastUtils.showToast(str);
+                    return;
+                }
+                ToastUtils.showToast(result.getMsg());
+                if (callbackListener != null) callbackListener.onDelete(true);
+            }
+        });*/
         call.enqueue(new Callback<StatusResult>() {
             @Override
             public void onResponse(Call<StatusResult> call, Response<StatusResult> response) {
-//                ToastUtils.showToast(response.body().getStatus()+" ");
                 if (response.body() != null) {
                     ToastUtils.showToast(response.body().getMsg());
                     if (response.body().isSuccess()) {
-                        ToastUtils.showToast(response.body().getMsg());
                         if (callbackListener != null) callbackListener.onDelete(true);
-                    } else {
-                        ToastUtils.showToast(response.body().getMsg());
                     }
                 }
                 dismiss();
@@ -184,7 +203,7 @@ public class BottomMenuFragmentDialog extends DialogFragment {
         });
     }
 
-    private View setItemView(String title, int icon, String color, View.OnClickListener onClickListener) {
+    private View setItemView(String title, int icon, String color, final View.OnClickListener onClickListener) {
         View v = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_menu_item, null);
         LinearLayout iconBg = v.findViewById(R.id.icon_bg);
         ImageView imageView = v.findViewById(R.id.icon);
@@ -192,7 +211,13 @@ public class BottomMenuFragmentDialog extends DialogFragment {
         textView.setText(title);
         imageView.setImageResource(icon);
         iconBg.setBackground(getIconDrawable(Color.parseColor(color), 100));
-        v.setOnClickListener(onClickListener);
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+                onClickListener.onClick(v);
+            }
+        });
         return v;
     }
 

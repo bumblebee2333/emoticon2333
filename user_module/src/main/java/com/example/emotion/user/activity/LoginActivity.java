@@ -1,5 +1,6 @@
 package com.example.emotion.user.activity;
 
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -38,23 +39,7 @@ import retrofit2.Call;
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     EditText email, pwd;
 
-    private HttpUtils.RequestFinishCallback<User> mLoginCallback = new HttpUtils.RequestFinishCallback<User>() {
-        @Override
-        public void getRequest(StatusResult<User> result) {
-            if (result == null) return;
-            if (!result.isSuccess()) {
-                String str = ResourcesManager.getRes().getString(R.string.request_error, result.getMsg());
-                ToastUtils.showToast(str);
-                return;
-            }
-            if (result.getData() != null) {
-                UserManager.saveUser(result.getData());
-                ToastUtils.showToast("登录成功");
-                shortcuts();
-                finish();
-            }
-        }
-    };
+    private HttpUtils.RequestFinishCallback<User> mLoginCallback;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,7 +47,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setContentView(R.layout.activity_login);
         initViews();
     }
-
 
     private void initViews() {
         setTitle("");
@@ -101,11 +85,36 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             startActivity(intent);
             finish();
         } else if (id == R.id.login) {
+            if(pwd.getText().toString().isEmpty() || email.getText().toString().isEmpty()){
+                ToastUtils.showToast("不能以空的内容");
+                return;
+            }
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("正在登陆。。");
+            progressDialog.show();
+
             String device = Build.MODEL;
             String sessionKey = getSessionKey(pwd.getText().toString());
             UserProtocol userProtocol = RetroClient.getServices(UserProtocol.class);
             Call<StatusResult<User>> call = userProtocol.login(email.getText().toString(), sessionKey, device);
-            HttpUtils.doRequest(call, mLoginCallback);
+            HttpUtils.doRequest(call, new HttpUtils.RequestFinishCallback<User>() {
+                @Override
+                public void getRequest(StatusResult<User> result) {
+                    progressDialog.dismiss();
+                    if (result == null) return;
+                    if (!result.isSuccess()) {
+                        String str = ResourcesManager.getRes().getString(R.string.request_error, result.getMsg());
+                        ToastUtils.showToast(str);
+                        return;
+                    }
+                    if (result.getData() != null) {
+                        UserManager.saveUser(result.getData());
+                        ToastUtils.showToast("登录成功");
+                        shortcuts();
+                        finish();
+                    }
+                }
+            });
         }
 
     }

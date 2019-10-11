@@ -43,10 +43,10 @@ public class Toolbar extends LinearLayout implements View.OnClickListener {
     }
 
     private void initViews(Context context, AttributeSet attrs) {
-
-        TypedArray array = getContext().obtainStyledAttributes(attrs, R.styleable.Toolbar);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Toolbar);
         boolean line = array.getBoolean(R.styleable.Toolbar_line, true);
         boolean back_visibility = array.getBoolean(R.styleable.Toolbar_back_visibility, true);
+        array.recycle();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.widget_toolbar, this, false);
         addView(view);
         title = findViewById(R.id.title);
@@ -54,7 +54,6 @@ public class Toolbar extends LinearLayout implements View.OnClickListener {
         right2 = findViewById(R.id.right2);
         back = findViewById(R.id.back);
         back.setOnClickListener(this);
-
 
         View lineView = findViewById(R.id.line);
         lineView.setVisibility(line?VISIBLE:GONE);
@@ -75,12 +74,11 @@ public class Toolbar extends LinearLayout implements View.OnClickListener {
     }
 
     //设置分享按钮是否显示
-    private void setRightButtonOneShow(boolean visibility) {
+    public void setRightButtonOneShow(boolean visibility) {
         int i = visibility ? View.VISIBLE : View.GONE;
         right1.setVisibility(i);
     }
-
-    private void setRightButtonTwoShow(boolean visibility) {
+    public void setRightButtonTwoShow(boolean visibility) {
         int i = visibility ? View.VISIBLE : View.GONE;
         right2.setVisibility(i);
     }

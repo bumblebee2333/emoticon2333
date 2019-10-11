@@ -14,6 +14,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -71,9 +72,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
     String type_title;
     ProgressDialog progressDialog;
     boolean addType = false;
-    private FlowLayout flowLayout;
     private ParticleSmasher smasher;
-    private RecyclerView recyclerView;
     EmoticonAddImageAdapter addImageAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,9 +87,9 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
         type = findViewById(R.id.type);
         toolbar = findViewById(R.id.toolbar);
         imageSelect = findViewById(R.id.image);
-        flowLayout = findViewById(R.id.flowlayout);
+        FlowLayout flowLayout = findViewById(R.id.flowlayout);
         imageSelect.setOnClickListener(this);
-        toolbar.right1.setVisibility(View.VISIBLE);
+        toolbar.setRightButtonOneShow(true);
         toolbar.right1.setImageResource(R.drawable.right_ok);
         toolbar.right1.setOnClickListener(this);
         type.setOnClickListener(this);
@@ -103,7 +102,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 3);
         addImageAdapter = new EmoticonAddImageAdapter(imgList, gridLayoutManager);
 
-        recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setAdapter(addImageAdapter);
         recyclerView.setLayoutManager(gridLayoutManager);
         recyclerView.setNestedScrollingEnabled(false);
@@ -182,25 +181,13 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
                     setType(data);
                     break;
                 case 2:
-//                    Uri selectImg = data.getData();
-//                    String[] filepath = {MediaStore.Images.Media.DATA};
-//                    Cursor c = getContentResolver().query(selectImg, filepath, null, null, null);
-//                    c.moveToFirst();
-//                    int cul = c.getColumnIndex(filepath[0]);
-//                    String imgPath = c.getString(cul);
-//                    this.imgPath = imgPath;
-//                    Glide.with(this).load(imgPath).into(imageSelect);
-
                     List<String> mSelected = Matisse.obtainPathResult(data);
                     imgList.addAll(mSelected);
                     //添加按钮清除，条件为有十个数据并且第一个是空的
                     if(imgList.size() == 10 && TextUtils.isEmpty(imgList.get(0))){
                         imgList.remove(0);
                     }
-//                    this.imgPath = mSelected.get(0);
-//                    Glide.with(this).load(imgPath).into(imageSelect);
                     addImageAdapter.notifyDataSetChanged();
-
                     break;
             }
         }
@@ -253,7 +240,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
 
     //上传到Oss
     private void uploadToOss() {
-        if (imgList.size()>=1) {
+        if (imgList.size()>1) {
             if (typeId == 0) {
                 ToastUtils.showToast("分类不能为空");
                 return;
@@ -262,7 +249,6 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
                 ToastUtils.showToast("标签不能为空");
                 return;
             }
-//            File file = new File(imgPath);
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage(getString(R.string.upload_img));
             progressDialog.setCancelable(false);
@@ -271,7 +257,8 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
             //图片上传
             OSSHttpUtils.upLoadImages(this, Config.OssFolder.EMOTICONS,imgList,new OssService.FinishCallback()  {
                 @Override
-                public void onFinish(List<String> urls) {
+                public void onFinish(List<String> imgUrls) {
+                    List<String> urls = new ArrayList<>(imgUrls);
                     if(urls.isEmpty()) {
                         progressDialog.dismiss();
                         ToastUtils.showToast("图片不能为空");
@@ -311,6 +298,9 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
         });
 
         EmoticonTypeProtocol emoticonTypeProtocol = RetroClient.getServices(EmoticonTypeProtocol.class);
+        if (UserManager.getUser() == null) {
+            return;
+        }
         Call<EmoticonType.Data> call = emoticonTypeProtocol.addEmoticonType(UserManager.getUser().getToken(), type_title, urls.get(0));
         call.enqueue(new Callback<EmoticonType.Data>() {
             @Override
@@ -322,7 +312,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
             }
 
             @Override
-            public void onFailure(Call<EmoticonType.Data> call, Throwable t) {
+            public void onFailure(@NonNull Call<EmoticonType.Data> call, @NonNull Throwable t) {
                 ToastUtils.showToast("创建分类失败");
                 progressDialog.dismiss();
             }
@@ -332,7 +322,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
     //添加标签
     private void addLabel() {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        View view = getLayoutInflater().inflate(R.layout.edittext, null);
+        View view = LayoutInflater.from(this).inflate(R.layout.edittext, null);
         final EditText edittext = view.findViewById(R.id.edit_text);
         edittext.setHint("请输入标签");
         edittext.setLines(1);
@@ -424,8 +414,9 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
         map.put("label",stringBuilder.toString());
 
         EmoticonProtocol emoticonProtocol = RetroClient.getServices(EmoticonProtocol.class);
-
-        System.out.println(new Gson().toJson(map));
+        if (UserManager.getUser() == null) {
+            return;
+        }
         Call<StatusResult<String>> call = emoticonProtocol.addEmoticon(UserManager.getUser().getToken(), new Gson().toJson(map));
         HttpUtils.doRequest(call, new HttpUtils.RequestFinishCallback<String>() {
             @Override

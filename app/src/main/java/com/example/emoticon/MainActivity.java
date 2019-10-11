@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.HapticFeedbackConstants;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,9 +23,11 @@ import com.example.common.RetroClient;
 import com.example.common.bean.StatusResult;
 import com.example.common.bean.User;
 import com.example.common.fragment.MAlertDialog;
+import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
 import com.example.common.utils.UserManager;
 import com.example.emoticon.activity.EmoticonAddActivity;
+import com.example.emoticon.activity.SearchActivity;
 import com.example.emoticon.fragment.CreativeFragment;
 import com.example.emoticon.fragment.EmoticonFragment;
 import com.example.emoticon.fragment.PaintFragment;
@@ -35,8 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Author: shuike,
@@ -85,6 +86,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public void onClick(View v) {
                 EmoticonAddActivity.startActivity(MainActivity.this);
+            }
+        });
+        addView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                SearchActivity.startActivity(MainActivity.this,SearchActivity.EMOTICON);
+                return false;
             }
         });
         BottomNavigationView navigation = findViewById(R.id.bottomNavigation);
@@ -158,12 +167,36 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onResume() {
         final User user = UserManager.getUser();
         if (user != null) {
-
             UserProtocol userProtocol = RetroClient.getServices(UserProtocol.class);
             Call<StatusResult<User>> userInfo = userProtocol.getUserInfo(user.getId(), user.getToken());
-            userInfo.enqueue(new Callback<StatusResult<User>>() {
+            HttpUtils.doRequest(userInfo, new HttpUtils.RequestFinishCallback<User>() {
                 @Override
-                public void onResponse(Call<StatusResult<User>> call, Response<StatusResult<User>> response) {
+                public void getRequest(StatusResult<User> result) {
+//                    System.out.println(new Gson().toJson(result));
+                    if (result == null) return;
+                    if (result.isSuccess()) return;
+                    if(result.getData()!=null){
+                        if (userHintIsShow) return;
+                        String device = result.getData().getDevice();
+                        String time = result.getData().getUpdateTime();
+                        MAlertDialog mAlertDialog = MAlertDialog.newInstance();
+                        mAlertDialog.setMessage("你的账号于("+time+")在另一台设备("+device+")登录。如非本人操作，则密码可能已泄露，请尽快修改密码");
+                        mAlertDialog.setCancelable(false);
+                        mAlertDialog.setPositiveButton("确认", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                UserManager.logout();
+                                userHintIsShow = false;
+                            }
+                        });
+                        mAlertDialog.show(getSupportFragmentManager(), "logoutHint");
+                        userHintIsShow = true;
+                    }
+                }
+            });
+/*            userInfo.enqueue(new Callback<StatusResult<User>>() {
+                @Override
+                public void onResponse(@NonNull Call<StatusResult<User>> call, @NonNull Response<StatusResult<User>> response) {
                     if (response.body() != null) {
                         if (response.body().getStatus() == 200) {
 //                            Toast.makeText(MainActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
@@ -193,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 public void onFailure(Call<StatusResult<User>> call, Throwable t) {
 
                 }
-            });
+            });*/
         }
         super.onResume();
     }

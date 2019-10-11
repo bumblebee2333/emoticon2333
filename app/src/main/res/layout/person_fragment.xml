@@ -16,8 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            tools:ignore="UselessParent">
-
+            tools:ignore="UselessParent|HardcodedText">
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -27,9 +26,7 @@
                     android:id="@+id/bgImg"
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:scaleType="centerCrop"
-
-                    />
+                    android:scaleType="centerCrop" />
 
                 <LinearLayout
                     android:id="@+id/useredit"
@@ -38,6 +35,7 @@
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/shadow_btt"
                     android:orientation="vertical">
+
                     <com.gcssloop.widget.RCImageView
                         android:id="@+id/usericon"
                         android:layout_width="55dp"
@@ -48,48 +46,49 @@
                         app:stroke_color="@color/colorWhite"
                         app:stroke_width="1dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|left"
-                    android:orientation="horizontal"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="20dp">
-
-
                     <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="55dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_weight="1"
-                        android:gravity="center|left"
-                        android:orientation="vertical">
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center|start"
+                        android:orientation="horizontal"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="20dp">
 
-                        <TextView
-                            android:id="@+id/username"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:text="@string/userName"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="18sp" />
 
-                        <TextView
-                            android:id="@+id/hint"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="查看主页或编辑资料"
-                            android:textColor="@color/colorWhite"
-                            android:textSize="13sp" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="55dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:gravity="center|start"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:id="@+id/username"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:text="@string/userName"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/hint"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="查看主页或编辑资料"
+                                android:textColor="@color/colorWhite"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/right"
+                            android:tint="@color/lightGrey" />
                     </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/right"
-                        android:tint="@color/lightGrey" />
-                </LinearLayout></LinearLayout>
+                </LinearLayout>
             </RelativeLayout>
 
             <LinearLayout
@@ -97,8 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="vertical">
-            </LinearLayout>
+                android:orientation="vertical"/>
         </LinearLayout>
     </com.example.common.widget.HeadZoomScrollView>
 
@@ -112,21 +110,22 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="left|center"
             android:layout_alignParentTop="true"
-            android:paddingLeft="20dp"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="start|center"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
             android:text="我的"
             android:textColor="@color/colorBlack"
             android:textSize="22sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
         <ImageView
             android:id="@+id/setting"
             android:layout_width="50dp"
             android:layout_height="match_parent"
-            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
             android:background="?attr/selectableItemBackground"
             android:padding="12dp"
             android:src="@drawable/setting"

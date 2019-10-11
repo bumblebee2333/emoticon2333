@@ -75,7 +75,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
         mTabLayout.setupWithViewPager(mViewPager);
 
         Toolbar toolbar = view.findViewById(R.id.toolbar);
-        toolbar.right1.setVisibility(View.VISIBLE);
+        toolbar.setRightButtonOneShow(true);
         toolbar.right1.setImageResource(R.drawable.cam);
         toolbar.right1.setOnClickListener(new View.OnClickListener() {
             @Override

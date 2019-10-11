@@ -31,6 +31,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     TextView userName, hint, title;
     ImageView userIcon;
     private ImageView bgImg;
+    private LinearLayout personMenu;
 
     public static PersonFragment newInstance(String title) {
         PersonFragment fragment = new PersonFragment();
@@ -58,7 +59,7 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
         HeadZoomScrollView headZoomScrollView = rootView.findViewById(R.id.headZoomView);
         headZoomScrollView.setZoomView(bgImg);
         rootView.findViewById(R.id.useredit).setOnClickListener(this);
-        LinearLayout personMenu = rootView.findViewById(R.id.person_menu);
+        personMenu = rootView.findViewById(R.id.person_menu);
         personMenu.addView(personMenuItem("我的提交", R.drawable.content, getResources().getColor(R.color.colorBlue), new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,14 +74,13 @@ public class PersonFragment extends Fragment implements View.OnClickListener {
     }
 
     private View personMenuItem(String title, int icon, int color, View.OnClickListener onClickListener) {
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.person_menu, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.person_menu, personMenu, false);
         TextView tvTitle = view.findViewById(R.id.item_title);
         ImageView imgIcon = view.findViewById(R.id.item_icon);
         tvTitle.setText(title);
         Drawable originBitmap = ContextCompat.getDrawable(this.title.getContext(), icon);
-
-        imgIcon.setImageDrawable(DrawableTintUtil.tintDrawable(originBitmap, color));
-        if (onClickListener != null) {
+        if(originBitmap != null) imgIcon.setImageDrawable(DrawableTintUtil.tintDrawable(originBitmap, color));
+        if (onClickListener != null) { 
             view.findViewById(R.id.bg).setOnClickListener(onClickListener);
         }
         return view;

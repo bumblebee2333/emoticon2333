@@ -13,9 +13,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.common.RetroClient;
+import com.example.common.app.ResourcesManager;
 import com.example.common.base.BaseActivity;
+import com.example.common.bean.StatusResult;
 import com.example.common.particlesmaster.ParticleSmasher;
 import com.example.common.particlesmaster.SmashAnimator;
+import com.example.common.retrofit.HotWordProtocol;
+import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
 import com.example.common.widget.SearchTopView;
 import com.example.emoticon.R;
@@ -23,7 +28,10 @@ import com.example.emoticon.utils.SharedPreferencesUtil;
 import com.example.emoticon.widget.FlowLayout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import retrofit2.Call;
 
 
 public class SearchActivity extends BaseActivity implements View.OnClickListener, TextView.OnEditorActionListener {
@@ -48,7 +56,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         initIntent();
         setHotWords();
         initSearchView();
-        initHotWordViews();
         initHistoryWordViews();
     }
 
@@ -57,18 +64,25 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         type = intent.getIntExtra("type", EMOTICON);
     }
 
-    //初始化热门搜索的集合
+    //获取并初始化热门搜索的集合
     private void setHotWords() {
-//        hotWords.add("加菲猫");
-//        hotWords.add("权律二");
-//        hotWords.add("金馆长");
-//        hotWords.add("皮卡丘");
-//        hotWords.add("徐锦江");
-//        hotWords.add("三国演义");
-//        hotWords.add("猫咪");
-//        hotWords.add("假笑男孩");
-//        hotWords.add("盘他");
-//        hotWords.add("蜡笔小新");
+        HotWordProtocol hotWordProtocol = RetroClient.getServices(HotWordProtocol.class);
+        Call<StatusResult<String[]>> hotSearchWord = hotWordProtocol.getHotSearchWord();
+        HttpUtils.doRequest(hotSearchWord, new HttpUtils.RequestFinishCallback<String[]>() {
+            @Override
+            public void getRequest(StatusResult<String[]> result) {
+                if (result == null) return;
+                if (!result.isSuccess()) {
+                    String str = ResourcesManager.getRes().getString(R.string.request_error, result.getMsg());
+                    ToastUtils.showToast(str);
+                    return;
+                }
+                if (result.getData() != null) {
+                    hotWords.addAll(Arrays.asList(result.getData()));
+                    initHotWordViews();//初始化
+                }
+            }
+        });
     }
 
     //初始化SearchTopView
@@ -78,12 +92,12 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         imageView.setOnClickListener(this);
         searchView.cancel.setOnClickListener(this);
         searchView.editText.setOnEditorActionListener(this);
-        if(type == EMOTICON_TYPE){
+        if (type == EMOTICON_TYPE) {
             searchView.editText.setHint("请输入分类名：");
         }
     }
 
-    //初始化流式布局里的textview
+    //初始化流式布局里的TextView
     @SuppressLint("NewApi")
     private void initHotWordViews() {
         //初始化FlowLayout
@@ -111,10 +125,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
             ToastUtils.showToast("关键词不能为空");
             return;
         }
-        if (type == EMOTICON_TYPE){
+        if (type == EMOTICON_TYPE) {
             SpecificActivity.startActivity(this, text, EMOTICON_TYPE);
             //finish();
-        }else {
+        } else {
             SpecificActivity.startActivity(this, text, EMOTICON);
         }
     }
@@ -139,7 +153,10 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 break;
             case R.id.delete:
                 SharedPreferencesUtil.clear();
-                historyFlowLayout.setVisibility(View.GONE);
+                historyWords.clear();
+                if (historyFlowLayout != null) {
+                    historyFlowLayout.initData(historyWords);
+                }
                 break;
         }
     }
@@ -184,9 +201,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void initHistoryWordViews() {
         historyFlowLayout = findViewById(R.id.flowlayout_history_record);
         List<String> list = SharedPreferencesUtil.getListData(SEARCH_HISTORY, String.class);
-//        for (int i = tagList.size()-1; i > 0; i--) {
-//            historyWords.add(tagList.get(i));
-//        }
         historyWords.addAll(list);
         historyFlowLayout.initData(historyWords);
         historyFlowLayout.setOnTabClickListener(new FlowLayout.OnTabClickListener() {
@@ -195,7 +209,6 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
                 title = textView.getText().toString();
                 saveList(title);
                 search(title);
-                //IntentUtil.get().goActivityPassing(SearchActivity.this, SpecificActivity.class, title);
             }
         });
         historyFlowLayout.setOnTabLongClickListener(new FlowLayout.OnTabLongClickListener() {
@@ -248,19 +261,18 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
         super.onResume();
         historyWords.clear();
         historyWords = SharedPreferencesUtil.getListData(SEARCH_HISTORY, String.class);
-        historyFlowLayout.initData(historyWords);
+        if (historyFlowLayout != null) {
+            historyFlowLayout.initData(historyWords);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data != null) {
-            switch (requestCode) {
-                case 1:
-                    setResult(-1,data);
-                    finish();
-                    break;
-
+            if (requestCode == 1) {
+                setResult(-1, data);
+                finish();
             }
         }
     }

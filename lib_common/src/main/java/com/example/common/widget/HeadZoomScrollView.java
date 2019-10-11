@@ -8,7 +8,6 @@ import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
 
@@ -74,39 +73,10 @@ public class HeadZoomScrollView extends ScrollView {
         }
     }
 
-//    @Override
-//    public boolean onInterceptTouchEvent(MotionEvent ev) {
-//        if (zoomViewWidth <= 0 || zoomViewHeight <= 0) {
-//            zoomViewWidth = zoomView.getMeasuredWidth();
-//            zoomViewHeight = zoomView.getMeasuredHeight();
-//        }
-//        if (zoomView == null || zoomViewWidth <= 0 || zoomViewHeight <= 0) {
-//            return super.onInterceptTouchEvent(ev);
-//        }
-//        switch (ev.getAction()) {
-//            case MotionEvent.ACTION_MOVE:
-//                if (!mScaling) {
-//                    if (getScrollY() == 0) {
-//                        y = ev.getY();
-//                    } else {
-//                        break;
-//                    }
-//                }
-//                int distance = (int) ((ev.getY() - y) * mScaleRatio);
-//                if (distance < 0) break;
-//                mScaling = true;
-//                setZoom(distance);
-//                return true;
-//            case MotionEvent.ACTION_UP:
-//                mScaling = false;
-//                replyView();
-//                break;
-//        }
-//        return super.onInterceptTouchEvent(ev);
-//    }
-
     private boolean mScrolling;
     private float touchDownX;
+
+    //返回True的话不往下传递事件，截获触摸事件
     @Override
     public boolean onInterceptTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
@@ -115,8 +85,7 @@ public class HeadZoomScrollView extends ScrollView {
                 mScrolling = false;
                 break;
             case MotionEvent.ACTION_MOVE:
-                mScrolling = Math.abs(touchDownX - event.getX()) >= ViewConfiguration.get(
-                        getContext()).getScaledTouchSlop();
+                mScrolling = Math.abs(touchDownX - event.getX()) >= 1.5;
                 break;
             case MotionEvent.ACTION_UP:
                 mScrolling = false;
@@ -124,6 +93,13 @@ public class HeadZoomScrollView extends ScrollView {
         }
         return mScrolling;
     }
+
+
+    @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if (zoomViewWidth <= 0 || zoomViewHeight <= 0) {
@@ -151,6 +127,9 @@ public class HeadZoomScrollView extends ScrollView {
                 mScaling = false;
                 replyView();
                 break;
+            case MotionEvent.ACTION_DOWN:
+                performClick();
+                break;
         }
         return super.onTouchEvent(ev);
     }
@@ -162,7 +141,7 @@ public class HeadZoomScrollView extends ScrollView {
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                setZoom((float) animation.getAnimatedValue());
+                setZoom((Float) animation.getAnimatedValue());
             }
         });
         animator.start();
@@ -185,9 +164,11 @@ public class HeadZoomScrollView extends ScrollView {
         super.onScrollChanged(l, t, oldl, oldt);
         if (onScrollListener != null) onScrollListener.onScroll(l, t, oldl, oldt);
     }
+
     public void setOnScrollListener(OnScrollListener onScrollListener) {
         this.onScrollListener = onScrollListener;
     }
+
     public interface OnScrollListener {
         void onScroll(int x, int y, int ox, int oy);
     }

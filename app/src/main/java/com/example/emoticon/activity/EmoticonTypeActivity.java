@@ -49,6 +49,7 @@ public class EmoticonTypeActivity extends BaseActivity {
         title = getIntent().getStringExtra("title");
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(title);
+        toolbar.setRightButtonOneShow(true);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 4);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -58,6 +59,13 @@ public class EmoticonTypeActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 EmoticonLookDialog.newInstance(list.get(position).getImgUrl()).show(getSupportFragmentManager(), "emoticon_look");
+            }
+        });
+
+        toolbar.right1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }

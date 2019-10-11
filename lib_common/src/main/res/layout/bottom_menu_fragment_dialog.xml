@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorWhite"
-    android:orientation="vertical"
-    android:paddingTop="5dp">
+    android:background="@drawable/bottom_menu_fragment_dialog_bg"
+    android:orientation="vertical">
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:padding="5dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/horizontalScrollView1"
@@ -21,14 +22,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.3dp"
+        android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
         android:background="#E9E9E9" />
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:padding="5dp">
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:scrollbars="none">
 
         <LinearLayout
             android:id="@+id/horizontalScrollView2"
@@ -39,15 +44,17 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="#E9E9E9" />
+        android:layout_height="0.5dp"
+        android:background="#E9E9E9"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/close"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="50dp"
         android:background="?attr/selectableItemBackground"
         android:gravity="center"
         android:text="取消"
-        android:textColor="@color/colorBlack" />
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold" />
 </LinearLayout>
