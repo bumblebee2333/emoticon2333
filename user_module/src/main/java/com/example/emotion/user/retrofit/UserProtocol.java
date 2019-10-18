@@ -25,14 +25,14 @@ public interface UserProtocol {
 
     /**
      * 登录请求
-     * @param email 邮箱
+     * @param account 账号或邮箱
      * @param pwd 密码
      * @return 返回User
      */
     @POST("v1/user/login")
     @Headers("Content-Type:application/x-www-form-urlencoded; charset=utf-8")
     @FormUrlEncoded
-    Call<StatusResult<User>> login(@Field("account") String email, @Field("sessionKey") String pwd, @Field("device") String device);
+    Call<StatusResult<User>> login(@Field("account") String account, @Field("sessionKey") String pwd, @Field("device") String device);
 
     /**
      * 注册请求

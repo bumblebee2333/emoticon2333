@@ -15,7 +15,7 @@ import com.example.common.app.ResourcesManager;
 import com.example.common.base.BaseActivity;
 import com.example.common.bean.User;
 import com.example.common.utils.ToastUtils;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 import com.example.emotion.user.R;
 
 /**

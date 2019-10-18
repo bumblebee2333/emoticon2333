@@ -19,7 +19,7 @@ import com.example.common.bean.User;
 import com.example.common.fragment.BottomMenuFragmentDialog;
 import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 import com.example.emotion.user.R;
 import com.example.emotion.user.adapter.EmoticonAdapter;
 import com.example.emotion.user.retrofit.UserProtocol;
@@ -81,7 +81,6 @@ public class UserEmoticonsActivity extends BaseActivity {
                     List<Emoticon> data = result.getData();
                     list.addAll(data);
 //                    adapter.notifyDataSetChanged();
-
                     adapter.notifyItemRangeInserted(adapter.getItemCount(), data.size());
                     if (result.getData().size() == 0) {
                         skip = skip - 40;
@@ -127,6 +126,7 @@ public class UserEmoticonsActivity extends BaseActivity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (layoutManager == null) return;
                 int firstCompletelyVisibleItemPosition = layoutManager.findFirstCompletelyVisibleItemPosition();
                 if (firstCompletelyVisibleItemPosition == 0) {
                     //Log.i(TAG, "滑动到顶部");
