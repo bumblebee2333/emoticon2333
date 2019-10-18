@@ -34,7 +34,7 @@ import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 import com.example.common.widget.Toolbar;
 import com.example.emoticon.R;
 import com.example.emoticon.adapter.EmoticonAddImageAdapter;

@@ -31,7 +31,7 @@ import com.example.common.bean.User;
 import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.retrofit.ReportProtocol;
 import com.example.common.utils.ToastUtils;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.example.common.base.BaseActivity;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 import com.example.emoticon.R;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.example.common.widget.HeadZoomScrollView
+    <com.example.emotion.user.widget.HeadZoomScrollView
         android:id="@+id/headZoomView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -98,7 +98,7 @@
                 android:layout_marginTop="10dp"
                 android:orientation="vertical"/>
         </LinearLayout>
-    </com.example.common.widget.HeadZoomScrollView>
+    </com.example.emotion.user.widget.HeadZoomScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"

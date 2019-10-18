@@ -25,7 +25,7 @@ import com.example.common.bean.User;
 import com.example.common.fragment.MAlertDialog;
 import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 import com.example.emoticon.activity.EmoticonAddActivity;
 import com.example.emoticon.activity.SearchActivity;
 import com.example.emoticon.fragment.CreativeFragment;

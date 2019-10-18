@@ -3,7 +3,7 @@ package com.example.emoticon;
 import android.app.Application;
 
 import com.example.common.app.ResourcesManager;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 
 /**
  * Author: shuike,
