@@ -1,4 +1,4 @@
-package com.example.common.widget;
+package com.example.emotion.user.widget;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
