@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.common.RetroClient;
 import com.example.common.app.ResourcesManager;
@@ -79,25 +80,19 @@ public class SpecificActivity extends BaseActivity {
         if (type == SearchActivity.EMOTICON) {
             adapter = new EmoticonAdapter(list, gridLayoutManager);
             recyclerView.setAdapter(adapter);
-            adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                    EmoticonLookDialog.newInstance(list.get(position).getImgUrl()).show(getSupportFragmentManager(), "emoticon_look");
-                }
+            adapter.setOnItemClickListener((view, position) -> {
+                EmoticonLookDialog.newInstance(list.get(position).getImgUrl()).show(getSupportFragmentManager(), "emoticon_look");
             });
         }else {
             typeAdapter = new EmoticonTypeAdapter(typeList, gridLayoutManager);
             recyclerView.setAdapter(typeAdapter);
-            typeAdapter.setOnItemClickListener(new EmoticonTypeAdapter.OnItemClickListener() {
-                @Override
-                public void OnItemClick(View view, int position) {
-                    Intent intent = new Intent(SpecificActivity.this,EmoticonAddActivity.class);
-                    intent.putExtra("title",typeList.get(position).getTitle());
-                    intent.putExtra("id",typeList.get(position).getId());
-                    intent.putExtra("addType",addType);
-                    setResult(Activity.RESULT_OK,intent);
-                    finish();
-                }
+            typeAdapter.setOnItemClickListener((view, position) -> {
+                Intent intent = new Intent(SpecificActivity.this,EmoticonAddActivity.class);
+                intent.putExtra("title",typeList.get(position).getTitle());
+                intent.putExtra("id",typeList.get(position).getId());
+                intent.putExtra("addType",addType);
+                setResult(Activity.RESULT_OK,intent);
+                finish();
             });
         }
 

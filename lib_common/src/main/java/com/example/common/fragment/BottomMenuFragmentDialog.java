@@ -6,10 +6,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +19,20 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+
 import com.example.common.R;
 import com.example.common.RetroClient;
 import com.example.common.bean.Emoticon;
 import com.example.common.bean.StatusResult;
 import com.example.common.bean.User;
+import com.example.common.manager.UserManager;
 import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.retrofit.ReportProtocol;
 import com.example.common.utils.ToastUtils;
-import com.example.common.manager.UserManager;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -1,5 +1,7 @@
 package com.example.emotion.user.contract;
 
+import androidx.annotation.NonNull;
+
 import com.example.common.base.BasePresenter;
 import com.example.common.base.BaseView;
 import com.example.common.bean.User;
@@ -12,17 +14,39 @@ import com.example.common.bean.User;
  */
 public interface UserContract {
     interface RegisterView extends BaseView<UserContract.Presenter> {
-        void onFinish(String s);
-        void onError(Exception e);
+        /**
+         * 获取成功回调
+         *
+         * @param s 获取的内容
+         */
+        void onFinish(@NonNull String s);
+
+        /**
+         * 获取失败回调
+         *
+         * @param e 错误内容
+         */
+        void onError(@NonNull Exception e);
     }
 
     interface LoginView extends BaseView<UserContract.Presenter> {
-        void onFinish(User user);
-        void onError(Exception e);
+        /**
+         * 获取成功回调
+         *
+         * @param user 获取的用户信息
+         */
+        void onFinish(@NonNull User user);
+
+        /**
+         * 获取失败回调
+         *
+         * @param e 错误内容
+         */
+        void onError(@NonNull Exception e);
     }
 
     /**
-     *
+     * UserPresenter
      */
     interface Presenter extends BasePresenter<User> {
         /**
@@ -31,7 +55,7 @@ public interface UserContract {
          * @param account  用户名或邮箱
          * @param password 密码
          */
-        void login(String account, String password);
+        void login(@NonNull String account, @NonNull String password);
 
         /**
          * 注册
@@ -40,6 +64,6 @@ public interface UserContract {
          * @param name     用户名
          * @param password 密码
          */
-        void register(String email, String name, String password);
+        void register(@NonNull String email, @NonNull String name, @NonNull String password);
     }
 }

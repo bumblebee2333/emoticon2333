@@ -3,11 +3,11 @@ package com.example.emotion.user.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 
 import com.example.common.app.ResourcesManager;
@@ -120,13 +120,13 @@ public class UserEmoticonsActivity extends BaseActivity implements UserEmoticons
     }
 
     @Override
-    public void onError(Exception e) {
+    public void onError(@NonNull Exception e) {
         String str = ResourcesManager.getRes().getString(com.example.emotion.user.R.string.request_error, e.getMessage());
         ToastUtils.showToast(str);
     }
 
     @Override
-    public void onFinish(List<Emoticon> emoticonList) {
+    public void onFinish(@NonNull List<Emoticon> emoticonList) {
         if (!next) list.clear();
         list.addAll(emoticonList);
         adapter.notifyItemRangeInserted(adapter.getItemCount(), emoticonList.size());

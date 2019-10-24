@@ -2,12 +2,13 @@ package com.example.emoticon.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
-import android.view.View;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.common.RetroClient;
 import com.example.common.app.ResourcesManager;
@@ -16,11 +17,13 @@ import com.example.common.bean.Emoticon;
 import com.example.common.bean.StatusResult;
 import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.utils.HttpUtils;
+import com.example.common.utils.ScreenUtils;
 import com.example.common.utils.ToastUtils;
 import com.example.common.widget.Toolbar;
 import com.example.emoticon.R;
 import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.emoticon.widget.EmoticonLookDialog;
+import com.example.qrcode.QrCodeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,18 +58,15 @@ public class EmoticonTypeActivity extends BaseActivity {
         recyclerView.setLayoutManager(gridLayoutManager);
         adapter = new EmoticonAdapter(list, gridLayoutManager);
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(new EmoticonAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                EmoticonLookDialog.newInstance(list.get(position).getImgUrl()).show(getSupportFragmentManager(), "emoticon_look");
-            }
+        adapter.setOnItemClickListener((v, position) -> {
+            EmoticonLookDialog.newInstance(list.get(position).getImgUrl()).show(getSupportFragmentManager(), "emoticon_look");
         });
+        toolbar.right1.setOnClickListener(v -> {
+            int width = (ScreenUtils.getScreenWidth(v.getContext()));
+            int height = width;
+            Bitmap qrCode = QrCodeUtils.createQrCode(id + title+"dhajhdfjaskhfhaskjfasjkaasfafasdf", width, height);
+            EmoticonLookDialog.newInstance(qrCode).show(getSupportFragmentManager(), "emoticon_look");
 
-        toolbar.right1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
         });
     }
 
@@ -74,19 +74,16 @@ public class EmoticonTypeActivity extends BaseActivity {
 
         EmoticonProtocol emoticonProtocol = RetroClient.getServices(EmoticonProtocol.class);
         Call<StatusResult<List<Emoticon>>> emoticonCall = emoticonProtocol.getEmoticonList(id, 30, 0);
-        HttpUtils.doRequest(emoticonCall, new HttpUtils.RequestFinishCallback<List<Emoticon>>() {
-            @Override
-            public void getRequest(StatusResult<List<Emoticon>> result) {
-                if (result == null) return;
-                if (!result.isSuccess()) {
-                    String str = ResourcesManager.getRes().getString(com.example.emotion.user.R.string.request_error, result.getMsg());
-                    ToastUtils.showToast(str);
-                    return;
-                }
-                if (result.getData() != null) {
-                    list.addAll(result.getData());
-                    adapter.notifyDataSetChanged();
-                }
+        HttpUtils.doRequest(emoticonCall, result -> {
+            if (result == null) return;
+            if (!result.isSuccess()) {
+                String str = ResourcesManager.getRes().getString(com.example.emotion.user.R.string.request_error, result.getMsg());
+                ToastUtils.showToast(str);
+                return;
+            }
+            if (result.getData() != null) {
+                list.addAll(result.getData());
+                adapter.notifyDataSetChanged();
             }
         });
         /*emoticonCall.enqueue(new Callback<StatusResult<List<Emoticon>>>() {

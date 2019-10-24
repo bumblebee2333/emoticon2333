@@ -1,7 +1,7 @@
 package com.example.emotion.user.presenter;
 
 import android.os.Build;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.example.common.RetroClient;
 import com.example.common.app.Config;
@@ -38,8 +38,13 @@ public class UserPresenter implements UserContract.Presenter {
         view.setPresenter(this);
     }
 
+    /**
+     * 登录方法
+     * @param account  用户名或邮箱
+     * @param password 密码
+     */
     @Override
-    public void login(String account, String password) {
+    public void login(@NonNull String account, @NonNull String password) {
         String device = Build.MODEL;
         UserProtocol userProtocol = RetroClient.getServices(UserProtocol.class);
         Call<StatusResult<User>> call = userProtocol.login(account, Config.getSessionKey(password), device);
@@ -59,8 +64,14 @@ public class UserPresenter implements UserContract.Presenter {
         });
     }
 
+    /**
+     * 注册方法
+     * @param email    邮箱
+     * @param name     用户名
+     * @param password 密码
+     */
     @Override
-    public void register(String email, String name, String password) {
+    public void register(@NonNull String email, @NonNull String name, @NonNull String password) {
         UserProtocol userProtocol = RetroClient.getRetroClient().create(UserProtocol.class);
         Call<JsonObject> call = userProtocol.register(email, name, password);
         call.enqueue(new Callback<JsonObject>() {

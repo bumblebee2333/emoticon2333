@@ -3,11 +3,11 @@ package com.example.emoticon.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
 import com.example.common.RetroClient;
@@ -54,34 +54,32 @@ public class ReportActivity extends BaseActivity {
         Intent intent = getIntent();
         final Emoticon emoticon = (Emoticon) intent.getSerializableExtra("emoticon");
         final ReportProtocol.TYPE reportType = (ReportProtocol.TYPE) intent.getSerializableExtra("type");
+        if (emoticon == null) return;
         Glide.with(this).load(emoticon.getImgUrl()).into(imageView);
 
-        toolbar.right1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editText.getText().toString().isEmpty()) {
-                    ToastUtils.showToast("内容不能为空");
-                    return;
-                }
-                ReportProtocol reportProtocol = RetroClient.getServices(ReportProtocol.class);
-                Call<StatusResult> call = reportProtocol.reportSubmit(emoticon.getId(), reportType, editText.getText().toString());
-                call.enqueue(new Callback<StatusResult>() {
-                    @Override
-                    public void onResponse(@NonNull Call<StatusResult> call, @NonNull Response<StatusResult> response) {
-                        if (response.body() != null) {
-                            ToastUtils.showToast(response.body().getMsg());
-                            if (response.body().isSuccess()) {
-                                finish();
-                            }
+        toolbar.right1.setOnClickListener(v -> {
+            if (editText.getText().toString().isEmpty()) {
+                ToastUtils.showToast("内容不能为空");
+                return;
+            }
+            ReportProtocol reportProtocol = RetroClient.getServices(ReportProtocol.class);
+            Call<StatusResult> call = reportProtocol.reportSubmit(emoticon.getId(), reportType, editText.getText().toString());
+            call.enqueue(new Callback<StatusResult>() {
+                @Override
+                public void onResponse(@NonNull Call<StatusResult> call, @NonNull Response<StatusResult> response) {
+                    if (response.body() != null) {
+                        ToastUtils.showToast(response.body().getMsg());
+                        if (response.body().isSuccess()) {
+                            finish();
                         }
                     }
+                }
 
-                    @Override
-                    public void onFailure(@NonNull Call<StatusResult> call, @NonNull Throwable t) {
-                        ToastUtils.showToast(t.getMessage());
-                    }
-                });
-            }
+                @Override
+                public void onFailure(@NonNull Call<StatusResult> call, @NonNull Throwable t) {
+                    ToastUtils.showToast(t.getMessage());
+                }
+            });
         });
     }
 

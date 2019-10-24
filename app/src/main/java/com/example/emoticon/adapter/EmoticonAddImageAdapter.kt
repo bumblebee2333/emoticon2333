@@ -1,8 +1,8 @@
 package com.example.emoticon.adapter
 
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +23,7 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy
  * PS: 表情添加页面RecyclerView适配器
  */
 
-class EmoticonAddImageAdapter(private val imageList: List<String?>, private val gridLayoutManager: GridLayoutManager) : RecyclerView.Adapter<EmoticonAddImageAdapter.ViewHolder>() {
+class EmoticonAddImageAdapter(private val imageList: List<String?>, private val gridLayoutManager: androidx.recyclerview.widget.GridLayoutManager) : androidx.recyclerview.widget.RecyclerView.Adapter<EmoticonAddImageAdapter.ViewHolder>() {
     //    val imageList: List<String?> = ArrayList()
     var onDeleteOnClickListener: OnDeleteOnClickListener? = null
 
@@ -69,7 +69,7 @@ class EmoticonAddImageAdapter(private val imageList: List<String?>, private val 
 
     }
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class ViewHolder(itemView: View) : androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.image)
         val delete: ImageView = itemView.findViewById(R.id.delete)
     }
