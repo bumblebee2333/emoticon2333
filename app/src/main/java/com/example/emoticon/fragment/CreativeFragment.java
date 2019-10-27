@@ -20,7 +20,7 @@ import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
 import com.example.common.manager.UserManager;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emoticon.R;
 import com.example.emoticon.activity.EmoticonAddActivity;
 import com.example.emoticon.adapter.EmoticonAdapter;
@@ -35,7 +35,7 @@ public class CreativeFragment extends Fragment implements View.OnClickListener, 
     private SwipeRefreshLayout swipeRefreshLayout;
     int skip = 0;
     EmoticonAdapter adapter;
-    private Toolbar toolbar;
+    private Topbar toolbar;
 
     public static CreativeFragment newInstance(String title) {
         CreativeFragment fragment = new CreativeFragment();

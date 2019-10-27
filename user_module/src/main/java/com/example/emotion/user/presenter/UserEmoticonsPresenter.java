@@ -27,8 +27,9 @@ public class UserEmoticonsPresenter implements UserEmoticonsContract.Presenter {
 
     /**
      * 获取用户表情数据
+     *
      * @param userId 用户ID
-     * @param skip 跳过几个数据
+     * @param skip   跳过几个数据
      */
     @Override
     public void loadData(int userId, int skip) {

@@ -19,7 +19,7 @@ import com.example.common.base.BaseActivity;
 import com.example.common.bean.User;
 import com.example.common.utils.ToastUtils;
 import com.example.common.manager.UserManager;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emotion.user.R;
 import com.example.emotion.user.contract.UserContract;
 import com.example.emotion.user.presenter.UserPresenter;
@@ -44,7 +44,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener,
         setTitle("");
         email = findViewById(R.id.email);
         pwd = findViewById(R.id.pwd);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Topbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolbar.back.setImageResource(R.drawable.close);
         findViewById(R.id.login).setOnClickListener(this);

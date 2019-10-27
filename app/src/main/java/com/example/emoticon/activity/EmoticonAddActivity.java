@@ -36,7 +36,7 @@ import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emoticon.R;
 import com.example.emoticon.adapter.EmoticonAddImageAdapter;
 import com.example.emoticon.adapter.LabelAdapter;
@@ -67,7 +67,7 @@ public class EmoticonAddActivity extends BaseActivity implements View.OnClickLis
     List<String> tagList = new ArrayList<>();
     List<String> imgList = new ArrayList<>();
     private FlowLayoutAdapter<String> flowLayoutAdapter;
-    Toolbar toolbar;
+    Topbar toolbar;
     ImageView imageSelect;
     int typeId = 0;
     String type_title;

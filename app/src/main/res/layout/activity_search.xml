@@ -15,22 +15,34 @@
         android:layout_below="@id/search_top"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:text="热门搜索"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="12dp"
+                android:text="热门搜索"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/hideHotWord"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:padding="10dp"
+                android:src="@drawable/hide" />
+        </RelativeLayout>
 
         <com.example.emoticon.widget.FlowLayout
             android:id="@+id/flowlayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_lsmall"
-            android:layout_marginLeft="@dimen/margin_lsmall"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:layout_marginRight="@dimen/margin_normal"
             android:layout_marginBottom="@dimen/margin_normal" />
 
         <RelativeLayout
@@ -49,9 +61,9 @@
 
             <ImageView
                 android:id="@+id/delete"
-                android:layout_width="wrap_content"
+                android:layout_width="40dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:padding="12dp"
                 android:src="@drawable/rubbish" />
         </RelativeLayout>
@@ -59,15 +71,12 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <com.example.emoticon.widget.FlowLayout
                 android:id="@+id/flowlayout_history_record"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_lsmall"
-                android:layout_marginLeft="@dimen/margin_lsmall"
                 android:layout_marginEnd="@dimen/margin_normal"
-                android:layout_marginRight="@dimen/margin_normal"
                 android:layout_marginBottom="@dimen/margin_lsmall" />
         </ScrollView>
     </LinearLayout>

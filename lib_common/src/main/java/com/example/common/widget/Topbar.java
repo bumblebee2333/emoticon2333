@@ -18,35 +18,36 @@ import com.example.common.R;
 import com.example.common.utils.DensityUtil;
 
 
-public class Toolbar extends LinearLayout implements View.OnClickListener {
+public class Topbar extends LinearLayout implements View.OnClickListener {
     TextView title;
     public ImageView right1, right2, back;
 
-    public Toolbar(Context context) {
+    public Topbar(Context context) {
         super(context);
-        initViews(context,null);
+        initViews(context, null);
     }
 
-    public Toolbar(Context context, @Nullable AttributeSet attrs) {
+    public Topbar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         initViews(context, attrs);
     }
 
-    public Toolbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public Topbar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initViews(context, attrs);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public Toolbar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public Topbar(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initViews(context, attrs);
     }
 
     private void initViews(Context context, AttributeSet attrs) {
-        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Toolbar);
-        boolean line = array.getBoolean(R.styleable.Toolbar_line, true);
-        boolean back_visibility = array.getBoolean(R.styleable.Toolbar_back_visibility, true);
+        TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.Topbar);
+        boolean line = array.getBoolean(R.styleable.Topbar_line, true);
+        boolean back_visibility = array.getBoolean(R.styleable.Topbar_back_visibility, true);
+        String titleText = array.getString(R.styleable.Topbar_title);
         array.recycle();
         View view = LayoutInflater.from(getContext()).inflate(R.layout.widget_toolbar, this, false);
         addView(view);
@@ -57,12 +58,13 @@ public class Toolbar extends LinearLayout implements View.OnClickListener {
         back.setOnClickListener(this);
 
         View lineView = findViewById(R.id.line);
-        lineView.setVisibility(line?VISIBLE:GONE);
-        back.setVisibility(back_visibility?VISIBLE:GONE);
-        int left = line?0: DensityUtil.dp2px(10);
-        title.setPadding(left,0,0,0);
-
-        if (((Activity) getContext()).getTitle() != null) {//判断该Activity标题是否为空，不为空设置到标题
+        lineView.setVisibility(line ? VISIBLE : GONE);
+        back.setVisibility(back_visibility ? VISIBLE : GONE);
+        int left = line ? 0 : DensityUtil.dp2px(10);
+        title.setPadding(left, 0, 0, 0);
+        if (titleText != null) {
+            title.setText(titleText);
+        }else if (((Activity) getContext()).getTitle() != null) {//判断该Activity标题是否为空，不为空设置到标题
             title.setText(((Activity) getContext()).getTitle());
         }
         setRightButtonOneShow(false);//按钮不可见（GONE）
@@ -79,6 +81,7 @@ public class Toolbar extends LinearLayout implements View.OnClickListener {
         int i = visibility ? View.VISIBLE : View.GONE;
         right1.setVisibility(i);
     }
+
     public void setRightButtonTwoShow(boolean visibility) {
         int i = visibility ? View.VISIBLE : View.GONE;
         right2.setVisibility(i);

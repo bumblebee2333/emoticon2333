@@ -27,7 +27,7 @@ import com.example.common.bean.Emoticon;
 import com.example.common.bean.EmoticonType;
 import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.common.utils.ToastUtils;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emoticon.R;
 import com.example.emoticon.adapter.MainPageAdapter;
 import com.example.emoticon.editmodule.activity.EditActivity;
@@ -75,7 +75,7 @@ public class PaintFragment extends Fragment implements View.OnClickListener {
         mViewPager.setAdapter(adapter);
         mTabLayout.setupWithViewPager(mViewPager);
 
-        Toolbar toolbar = view.findViewById(R.id.toolbar);
+        Topbar toolbar = view.findViewById(R.id.toolbar);
         toolbar.setRightButtonOneShow(true);
         toolbar.right1.setImageResource(R.drawable.cam);
         toolbar.right1.setOnClickListener(new View.OnClickListener() {

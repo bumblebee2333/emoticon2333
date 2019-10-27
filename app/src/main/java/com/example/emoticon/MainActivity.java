@@ -237,25 +237,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 showRequestPermissionDialog(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 
             } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSION_REQUEST_CODE);
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                        PERMISSION_REQUEST_CODE);
+                showRequestPermissionDialog(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+
             }
         }
     }
 
     private void showRequestPermissionDialog(final String[] permissions, final int requestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("使用表情包存储及发布需要使用SD卡权限\n是否再次开启权限");
-        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ActivityCompat.requestPermissions(MainActivity.this, permissions, requestCode);
-            }
+        MAlertDialog mAlertDialog = MAlertDialog.newInstance();
+        mAlertDialog.setMessage("使用表情包存储及发布需要使用SD卡权限\n是否授权开启权限");
+        mAlertDialog.setNegativeButton("取消", null);
+        mAlertDialog.setPositiveButton("授权", v -> {
+            ActivityCompat.requestPermissions(MainActivity.this, permissions, requestCode);
         });
-        builder.setNegativeButton("否", null);
-        builder.setCancelable(true);
-        builder.show();
+        mAlertDialog.show(getSupportFragmentManager(), "permission");
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("使用表情包存储及发布需要使用SD卡权限\n是否再次开启权限");
+//        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                ActivityCompat.requestPermissions(MainActivity.this, permissions, requestCode);
+//            }
+//        });
+//        builder.setNegativeButton("否", null);
+//        builder.setCancelable(true);
+//        builder.show();
     }
 
     /**

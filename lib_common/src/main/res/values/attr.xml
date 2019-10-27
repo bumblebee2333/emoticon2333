@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="Toolbar">
+    <declare-styleable name="Topbar">
         <attr name="line" format="boolean" />
         <attr name="back_visibility" format="boolean" />
+        <attr name="title"/>
     </declare-styleable>
 </resources>

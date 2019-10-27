@@ -21,6 +21,7 @@ import com.example.common.bean.Emoticon;
 import com.example.common.fragment.BottomMenuFragmentDialog;
 import com.example.common.utils.ImageUtils;
 import com.example.emoticon.R;
+import com.example.qrcode.BitmapUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,8 +115,8 @@ public class EmoticonAdapter extends RecyclerView.Adapter<EmoticonAdapter.ViewHo
         }
     }
 
-    public Bitmap getBitMap(int position) {
-        return bitmaps.get(position);
+    public String getBitMapCachePath(int position) {
+        return BitmapUtils.saveBitmapToCacheDir(bitmaps.get(position));
     }
 
     public interface OnItemClickListener {

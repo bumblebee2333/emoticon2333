@@ -13,7 +13,7 @@ import android.widget.EditText;
 import com.example.common.base.BaseActivity;
 import com.example.common.utils.ToastUtils;
 import com.example.common.utils.Utils;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emotion.user.R;
 import com.example.emotion.user.contract.UserContract;
 import com.example.emotion.user.presenter.UserPresenter;
@@ -32,7 +32,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void initViews() {
         presenter = new UserPresenter(this);
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        Topbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolbar.back.setImageResource(R.drawable.close);
 

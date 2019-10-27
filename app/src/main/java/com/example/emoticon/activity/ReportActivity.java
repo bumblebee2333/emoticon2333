@@ -16,7 +16,7 @@ import com.example.common.bean.Emoticon;
 import com.example.common.bean.StatusResult;
 import com.example.common.retrofit.ReportProtocol;
 import com.example.common.utils.ToastUtils;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emoticon.R;
 
 import retrofit2.Call;
@@ -30,7 +30,7 @@ import retrofit2.Response;
  * PS:
  */
 public class ReportActivity extends BaseActivity {
-    private Toolbar toolbar;
+    private Topbar toolbar;
     private ImageView imageView;
     private EditText editText;
 

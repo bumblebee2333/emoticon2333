@@ -3,11 +3,12 @@ package com.example.common.base;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.Nullable;
 
 import com.example.common.R;
 import com.example.common.app.ResourcesManager;

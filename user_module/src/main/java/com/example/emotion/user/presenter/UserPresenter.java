@@ -1,6 +1,7 @@
 package com.example.emotion.user.presenter;
 
 import android.os.Build;
+
 import androidx.annotation.NonNull;
 
 import com.example.common.RetroClient;
@@ -40,6 +41,7 @@ public class UserPresenter implements UserContract.Presenter {
 
     /**
      * 登录方法
+     *
      * @param account  用户名或邮箱
      * @param password 密码
      */
@@ -47,7 +49,7 @@ public class UserPresenter implements UserContract.Presenter {
     public void login(@NonNull String account, @NonNull String password) {
         String device = Build.MODEL;
         UserProtocol userProtocol = RetroClient.getServices(UserProtocol.class);
-        Call<StatusResult<User>> call = userProtocol.login(account, Config.getSessionKey(password), device);
+        Call<StatusResult<User>> call = userProtocol.login(account, Config.Session.getSessionKey(password), device);
         HttpUtils.doRequest(call, new HttpUtils.RequestFinishCallback<User>() {
             @Override
             public void getRequest(StatusResult<User> result) {
@@ -66,6 +68,7 @@ public class UserPresenter implements UserContract.Presenter {
 
     /**
      * 注册方法
+     *
      * @param email    邮箱
      * @param name     用户名
      * @param password 密码

@@ -21,7 +21,7 @@ import com.example.common.retrofit.EmoticonProtocol;
 import com.example.common.retrofit.EmoticonTypeProtocol;
 import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emoticon.R;
 import com.example.emoticon.adapter.EmoticonAdapter;
 import com.example.emoticon.adapter.EmoticonTypeAdapter;
@@ -41,7 +41,7 @@ public class SpecificActivity extends BaseActivity {
     private String title;//SearchActivity传递的表情标类型名称
     private int type;//SearchActivity传递的搜索类型
     @BindView(R.id.toolbar)
-    public Toolbar toolbar;
+    public Topbar toolbar;
 
     @BindView(R.id.recyclerview_specific)
     public RecyclerView recyclerView;
