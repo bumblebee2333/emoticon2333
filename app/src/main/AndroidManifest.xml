@@ -71,7 +71,7 @@
             android:label="@string/my_profile" />
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="PhotoPicker"
             android:exported="false"
             android:grantUriPermissions="true">

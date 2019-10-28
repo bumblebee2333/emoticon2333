@@ -2,22 +2,37 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
+    signingConfigs {
+        release {
+            storeFile file('D:\\Program Files\\Android\\key.jks')
+            keyAlias = 'key'
+            storePassword 'Mai19990325'
+            keyPassword 'Mai19990325'
+        }
+    }
     compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
     defaultConfig {
         applicationId "com.example.emoticon"
         minSdkVersion  rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    buildToolsVersion = '28.0.3'
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
 }
 
 dependencies {
@@ -26,6 +41,7 @@ dependencies {
     implementation project(':edit_module')
     implementation project(':user_module')
     api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
     implementation project(path: ':imagepicker')
+    implementation project(path: ':qrcode_module')
 }

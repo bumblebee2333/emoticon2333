@@ -3,28 +3,25 @@ package com.example.emotion.user.activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.common.RetroClient;
 import com.example.common.base.BaseActivity;
 import com.example.common.utils.ToastUtils;
 import com.example.common.utils.Utils;
-import com.example.common.widget.Toolbar;
+import com.example.common.widget.Topbar;
 import com.example.emotion.user.R;
-import com.example.emotion.user.retrofit.UserProtocol;
-import com.google.gson.JsonObject;
+import com.example.emotion.user.contract.UserContract;
+import com.example.emotion.user.presenter.UserPresenter;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class RegisterActivity extends BaseActivity implements View.OnClickListener {
+public class RegisterActivity extends BaseActivity implements View.OnClickListener, UserContract.RegisterView {
     private EditText email, name, pwd, pwdagain;
-    private Button register;
+    private ProgressDialog progressDialog;
+    UserContract.Presenter presenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +31,8 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void initViews() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        presenter = new UserPresenter(this);
+        Topbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolbar.back.setImageResource(R.drawable.close);
 
@@ -42,10 +40,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         pwdagain = findViewById(R.id.pwd2);
         name = findViewById(R.id.username);
         email = findViewById(R.id.email);
-        register = findViewById(R.id.register);
+        Button register = findViewById(R.id.register);
         register.setOnClickListener(this);
-
-       /* Drawable drawable1 = getResources().getDrawable(R.drawable.account_outline);
+/*
+        Drawable drawable1 = getResources().getDrawable(R.drawable.account_outline);
         drawable1.setBounds(0, 0, 80, 80);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
         Drawable drawable2 = getResources().getDrawable(R.drawable.lock_outline);
         drawable2.setBounds(0, 0, 80, 80);//第一0是距左边距离，第二0是距上边距离，40分别是长宽
@@ -62,8 +60,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.register) {
-            if (TextUtils.isEmpty(email.getText().toString()) | TextUtils.isEmpty(name.getText().toString())
-                    | TextUtils.isEmpty(pwdagain.getText().toString()) | TextUtils.isEmpty(pwd.getText().toString())) {
+            if (TextUtils.isEmpty(email.getText().toString())
+                    | TextUtils.isEmpty(name.getText().toString())
+                    | TextUtils.isEmpty(pwdagain.getText().toString())
+                    | TextUtils.isEmpty(pwd.getText().toString())) {
                 ToastUtils.showToast("不能有空内容");
                 return;
             } else if (!Utils.isEmail(email.getText().toString())) {
@@ -83,36 +83,42 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void register() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("正在注册。。");
         progressDialog.setCancelable(false);
         progressDialog.show();
-        UserProtocol userProtocol = RetroClient.getRetroClient().create(UserProtocol.class);
-        Call<JsonObject> call = userProtocol.register(email.getText().toString(), name.getText().toString(), pwd.getText().toString());
-        call.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                progressDialog.dismiss();
-                if (response.body() != null) {
-                    JsonObject jsonObject = response.body();
-                    String s = jsonObject.get("msg").getAsString();
-                    ToastUtils.showToast(s);
-                    if (jsonObject.get("status").getAsInt() == 200) {
+        presenter.register(
+                email.getText().toString(),
+                name.getText().toString(),
+                pwd.getText().toString()
+        );
 
-                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                ToastUtils.showToast(t.getMessage());
-                progressDialog.setMessage(getResources().getString(R.string.server_error));
-                progressDialog.setCancelable(false);
-            }
-        });
     }
 
+    @Override
+    public void onFinish(@NonNull String s) {
+        if (progressDialog != null) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
+        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    @Override
+    public void onError(@NonNull Exception e) {
+        if (progressDialog != null) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+        }
+        ToastUtils.showToast(e.getMessage());
+    }
+
+    @Override
+    public void setPresenter(UserContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
 }

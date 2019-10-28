@@ -4,19 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -28,6 +21,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+
+import com.bumptech.glide.Glide;
 import com.example.common.base.BaseActivity;
 import com.example.common.utils.ToastUtils;
 import com.example.emoticon.editmodule.Graffiti.Doodle;
@@ -38,11 +36,8 @@ import com.example.emoticon.editmodule.widget.DrawBitmap;
 import com.example.emoticon.editmodule.widget.QuitMakeDialog;
 import com.example.emoticon.editmodule.widget.TextEditBox;
 import com.example.emoticon.editmodule.widget.TextInputDialog;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,7 +67,8 @@ public class EditActivity extends BaseActivity {
 
     private DrawBitmap mDrawBitmap;
 
-    private Bitmap mBitmap;
+//    private Bitmap mBitmap;
+    private String mBitmapPath;
 
     public static final int MSG_BITMAP = 1;
 
@@ -85,7 +81,7 @@ public class EditActivity extends BaseActivity {
                 case MSG_BITMAP:
                     //mDrawBitmap = new DrawBitmap(EditActivity.this,mBitmap);
                     //String img = EditActivity.this.getIntent().getStringExtra("picture");
-                    images.setImageBitmap(mBitmap);
+//                    images.setImageBitmap(mBitmap);
                     //mDrawBitmap = new DrawBitmap(EditActivity.this,getBitmap(img));
                     break;
             }
@@ -135,18 +131,16 @@ public class EditActivity extends BaseActivity {
     }
 
     private void loadingImage(Activity activity){
-        mBitmap = activity.getIntent().getParcelableExtra("bitmap");
-        //Glide.with(this).load(img).into(images);
-        images.setImageBitmap(mBitmap);
+        mBitmapPath = activity.getIntent().getStringExtra("bitmap");
+        Glide.with(this).load(mBitmapPath).into(images);
+//        images.setImageBitmap(mBitmap);
 //        mBitmap=getBitmap(img);
-        if(mBitmap == null){
-            Log.e("null","null");
-        }
     }
 
     /**
      * 将图片url转换为Bitmap
      */
+/*
     public Bitmap getBitmap(final String url){
         //Log.e("bitmap_ccc",bitmap[0].toString());
         new Thread(new Runnable() {
@@ -181,6 +175,7 @@ public class EditActivity extends BaseActivity {
         }).start();
         return mBitmap;
     }
+*/
 
    @SuppressLint("NewApi")
    public void setToolBarListener(){
@@ -345,7 +340,9 @@ public class EditActivity extends BaseActivity {
                 createDoodle();
             } else if (i == R.id.bottom_eraser) {
                 item.setIcon(R.drawable.earser_copy);
-                mDoodle.clean();
+                if (mDoodle!=null) {
+                    mDoodle.clean();
+                }
             } else if (i == R.id.bottom_pic) {
                 item.setIcon(R.drawable.pic_copy);
 

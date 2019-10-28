@@ -1,10 +1,9 @@
-package com.example.common.utils;
+package com.example.common.manager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ShortcutManager;
 
-import com.example.common.app.ResourcesManager;
 import com.example.common.bean.User;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class UserManager {
     private static String name = "name", email = "email", token = "token", icon = "icon", id = "id", createTime = "createTime";
 
     public static void init(Context context) {
-        sAppContext = ResourcesManager.getAppContext();
+        sAppContext = context;
         sharedPreferences = context.getSharedPreferences("user", Context.MODE_PRIVATE);
     }
 

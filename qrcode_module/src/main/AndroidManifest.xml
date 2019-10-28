@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.qrcode">
+
+    <application>
+        <activity
+            android:name=".activity.ShareActivity"
+            android:label="分享" />
+    </application>
+</manifest>

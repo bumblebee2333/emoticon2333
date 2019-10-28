@@ -5,13 +5,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.example.common.RetroClient;
 import com.example.common.app.ResourcesManager;
@@ -47,6 +48,7 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
 
     public static final String SEARCH_HISTORY = "search_history";
     private int type;
+    private FlowLayout hotFlowLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +70,16 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     private void setHotWords() {
         HotWordProtocol hotWordProtocol = RetroClient.getServices(HotWordProtocol.class);
         Call<StatusResult<String[]>> hotSearchWord = hotWordProtocol.getHotSearchWord();
-        HttpUtils.doRequest(hotSearchWord, new HttpUtils.RequestFinishCallback<String[]>() {
-            @Override
-            public void getRequest(StatusResult<String[]> result) {
-                if (result == null) return;
-                if (!result.isSuccess()) {
-                    String str = ResourcesManager.getRes().getString(R.string.request_error, result.getMsg());
-                    ToastUtils.showToast(str);
-                    return;
-                }
-                if (result.getData() != null) {
-                    hotWords.addAll(Arrays.asList(result.getData()));
-                    initHotWordViews();//初始化
-                }
+        HttpUtils.doRequest(hotSearchWord, result -> {
+            if (result == null) return;
+            if (!result.isSuccess()) {
+                String str = ResourcesManager.getRes().getString(R.string.request_error, result.getMsg());
+                ToastUtils.showToast(str);
+                return;
+            }
+            if (result.getData() != null) {
+                hotWords.addAll(Arrays.asList(result.getData()));
+                initHotWordViews();//初始化
             }
         });
     }
@@ -101,22 +100,21 @@ public class SearchActivity extends BaseActivity implements View.OnClickListener
     @SuppressLint("NewApi")
     private void initHotWordViews() {
         //初始化FlowLayout
-        FlowLayout hotFlowLayout = findViewById(R.id.flowlayout);
+        hotFlowLayout = findViewById(R.id.flowlayout);
+        View hide = findViewById(R.id.hideHotWord);
+        hide.setOnClickListener(v->{
+            int visibility = hotFlowLayout.getVisibility();
+            visibility = visibility == View.GONE?View.VISIBLE:View.GONE;
+            hotFlowLayout.setVisibility(visibility);
+        });
         hotFlowLayout.initData(hotWords);
-        hotFlowLayout.setOnTabClickListener(new FlowLayout.OnTabClickListener() {
-            @Override
-            public void onTabClick(int position, TextView textView) {
+        hotFlowLayout.setOnTabClickListener((position, textView)-> {
                 title = textView.getText().toString();
                 saveList(title);
                 search(title);
                 //IntentUtil.get().goActivityPassing(SearchActivity.this, SpecificActivity.class, title);
-            }
-        });
-        hotFlowLayout.setOnTabLongClickListener(new FlowLayout.OnTabLongClickListener() {
-            @Override
-            public void onTabLongClick(int position, TextView textView) {
-
-            }
+            });
+        hotFlowLayout.setOnTabLongClickListener((position, textView)-> {
         });
     }
 

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar_edit"
         android:layout_width="match_parent"
         android:layout_height="50sp"
@@ -19,7 +19,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:gravity="center"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:text="编辑"
             android:textColor="@color/colorBlack"
             android:textSize="20sp" />
@@ -30,11 +30,11 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:gravity="center|left"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:text="下一步"
             android:textColor="@color/colorBlack"
             android:textSize="20sp" />
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/relative_layout_img"
@@ -48,8 +48,7 @@
         <ImageView
             android:id="@+id/photo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:layout_height="wrap_content" />
 
         <!--<com.example.emoticon.editmodule.widget.DrawBitmap-->
         <!--android:id="@+id/bitmap"-->
@@ -77,7 +76,7 @@
         <!--</LinearLayout>-->
     <!--</HorizontalScrollView>-->
 
-    <android.support.design.widget.BottomNavigationView
+    <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation_paint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -89,6 +88,6 @@
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom">
 
-    </android.support.design.widget.BottomNavigationView>
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </LinearLayout>

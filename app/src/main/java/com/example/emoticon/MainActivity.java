@@ -6,26 +6,26 @@ import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.HapticFeedbackConstants;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.common.RetroClient;
 import com.example.common.bean.StatusResult;
 import com.example.common.bean.User;
 import com.example.common.fragment.MAlertDialog;
+import com.example.common.manager.UserManager;
 import com.example.common.utils.HttpUtils;
 import com.example.common.utils.ToastUtils;
-import com.example.common.utils.UserManager;
 import com.example.emoticon.activity.EmoticonAddActivity;
 import com.example.emoticon.activity.SearchActivity;
 import com.example.emoticon.fragment.CreativeFragment;
@@ -33,6 +33,7 @@ import com.example.emoticon.fragment.EmoticonFragment;
 import com.example.emoticon.fragment.PaintFragment;
 import com.example.emoticon.fragment.PersonFragment;
 import com.example.emotion.user.retrofit.UserProtocol;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     int lastIndex = 0;
     private long pressTime = 0;
     private boolean userHintIsShow = false;
+    private PersonFragment personFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             @Override
             public boolean onLongClick(View v) {
                 v.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-                SearchActivity.startActivity(MainActivity.this,SearchActivity.EMOTICON);
+                SearchActivity.startActivity(MainActivity.this, SearchActivity.EMOTICON);
                 return false;
             }
         });
@@ -122,7 +124,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         fragments.add(EmoticonFragment.newInstance("表情包"));
         fragments.add(CreativeFragment.newInstance("创意工坊"));
         fragments.add(PaintFragment.newInstance("涂鸦"));
-        fragments.add(PersonFragment.newInstance("我的"));
+        personFragment = PersonFragment.newInstance("我的");
+        fragments.add(personFragment);
     }
 
     private void setFragmentPosition(int position) {
@@ -172,21 +175,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             HttpUtils.doRequest(userInfo, new HttpUtils.RequestFinishCallback<User>() {
                 @Override
                 public void getRequest(StatusResult<User> result) {
-//                    System.out.println(new Gson().toJson(result));
                     if (result == null) return;
                     if (result.isSuccess()) return;
-                    if(result.getData()!=null){
+                    if (result.getData() != null) {
                         if (userHintIsShow) return;
                         String device = result.getData().getDevice();
                         String time = result.getData().getUpdateTime();
                         MAlertDialog mAlertDialog = MAlertDialog.newInstance();
-                        mAlertDialog.setMessage("你的账号于("+time+")在另一台设备("+device+")登录。如非本人操作，则密码可能已泄露，请尽快修改密码");
+                        mAlertDialog.setMessage("你的账号于(" + time + ")在另一台设备(" + device + ")登录。如非本人操作，则密码可能已泄露，请尽快修改密码");
                         mAlertDialog.setCancelable(false);
                         mAlertDialog.setPositiveButton("确认", new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 UserManager.logout();
                                 userHintIsShow = false;
+                                if (personFragment != null) {
+                                    personFragment.onResume();
+                                }
                             }
                         });
                         mAlertDialog.show(getSupportFragmentManager(), "logoutHint");
@@ -194,39 +199,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     }
                 }
             });
-/*            userInfo.enqueue(new Callback<StatusResult<User>>() {
-                @Override
-                public void onResponse(@NonNull Call<StatusResult<User>> call, @NonNull Response<StatusResult<User>> response) {
-                    if (response.body() != null) {
-                        if (response.body().getStatus() == 200) {
-//                            Toast.makeText(MainActivity.this, response.body().getMsg(), Toast.LENGTH_SHORT).show();
-                        } else {
-                            if (userHintIsShow) return;
-                            String device = response.body().getData().getDevice();
-                            String time = response.body().getData().getUpdateTime();
-                            MAlertDialog mAlertDialog = MAlertDialog.newInstance();
-                            mAlertDialog.setMessage("你的账号于("+time+")在另一台设备("+device+")登录。如非本人操作，则密码可能已泄露，请尽快修改密码");
-                            mAlertDialog.setCancelable(false);
-//                            mAlertDialog.setNegativeButton("取消", null);
-                            mAlertDialog.setPositiveButton("确认", new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    UserManager.logout();
-                                    userHintIsShow = false;
-                                }
-                            });
-                            mAlertDialog.show(getSupportFragmentManager(), "logoutHint");
-                            userHintIsShow = true;
-                            //Toast.makeText(MainActivity.this, "该账户已在其他设备登录", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
 
-                @Override
-                public void onFailure(Call<StatusResult<User>> call, Throwable t) {
-
-                }
-            });*/
         }
         super.onResume();
     }
@@ -264,25 +237,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 showRequestPermissionDialog(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
 
             } else {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                        PERMISSION_REQUEST_CODE);
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+//                        PERMISSION_REQUEST_CODE);
+                showRequestPermissionDialog(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+
             }
         }
     }
 
     private void showRequestPermissionDialog(final String[] permissions, final int requestCode) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("使用表情包存储及发布需要使用SD卡权限\n是否再次开启权限");
-        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ActivityCompat.requestPermissions(MainActivity.this, permissions, requestCode);
-            }
+        MAlertDialog mAlertDialog = MAlertDialog.newInstance();
+        mAlertDialog.setMessage("使用表情包存储及发布需要使用SD卡权限\n是否授权开启权限");
+        mAlertDialog.setNegativeButton("取消", null);
+        mAlertDialog.setPositiveButton("授权", v -> {
+            ActivityCompat.requestPermissions(MainActivity.this, permissions, requestCode);
         });
-        builder.setNegativeButton("否", null);
-        builder.setCancelable(true);
-        builder.show();
+        mAlertDialog.show(getSupportFragmentManager(), "permission");
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setMessage("使用表情包存储及发布需要使用SD卡权限\n是否再次开启权限");
+//        builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                ActivityCompat.requestPermissions(MainActivity.this, permissions, requestCode);
+//            }
+//        });
+//        builder.setNegativeButton("否", null);
+//        builder.setCancelable(true);
+//        builder.show();
     }
 
     /**

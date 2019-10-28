@@ -3,7 +3,7 @@ package com.example.emotion.user.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,7 +15,7 @@ import com.example.common.app.ResourcesManager;
 import com.example.common.base.BaseActivity;
 import com.example.common.bean.User;
 import com.example.common.utils.ToastUtils;
-import com.example.common.utils.UserManager;
+import com.example.common.manager.UserManager;
 import com.example.emotion.user.R;
 
 /**

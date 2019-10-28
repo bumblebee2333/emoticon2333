@@ -1,6 +1,6 @@
 package com.example.common.utils;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 import com.example.common.R;
 import com.example.common.bean.StatusResult;
