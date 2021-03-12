@@ -23,4 +23,5 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib_common')
+    implementation 'com.orhanobut:logger:2.2.0'
 }
